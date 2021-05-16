@@ -6,32 +6,119 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".ui.home.HomeFragment">
-    <TextView
-            android:text="추천 환경"
-            android:id="@+id/title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintTop_toTopOf="parent" app:layout_constraintStart_toStartOf="parent"
-            android:layout_marginTop="16dp" android:layout_marginStart="16dp" android:textSize="18sp"
-            android:textStyle="bold" android:textColor="@color/black" android:fontFamily="monospace"/>
-    <LinearLayout
-            android:orientation="horizontal"
+    <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@id/title"
-            app:layout_constraintStart_toStartOf="parent" app:layout_constraintEnd_toEndOf="parent">
-        <LinearLayout
-                android:orientation="vertical"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" android:layout_weight="1">
+            android:layout_height="match_parent" app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent">
+        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                      android:orientation="vertical">
             <TextView
-                    android:text="TextView"
+                    android:text="추천 환경"
+                    android:id="@+id/title"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" android:id="@+id/textView3" android:layout_weight="1"/>
-            <TextView
-                    android:text="TextView"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp" android:layout_marginStart="16dp" android:textSize="20sp"
+                    android:textStyle="bold" android:textColor="@color/black" android:fontFamily="sans-serif"/>
+            <LinearLayout
+                    android:orientation="horizontal"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" android:id="@+id/textView" android:layout_weight="1"/>
+                    android:layout_height="wrap_content"
+                    android:gravity="center" android:padding="16dp" android:id="@+id/linearLayout">
+                <LinearLayout
+                        android:orientation="vertical"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" android:layout_weight="1"
+                        android:gravity="center" android:padding="16dp">
+                    <TextView
+                            android:text="30º"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" android:textColor="@color/navy_primary"
+                            android:layout_margin="8dp" android:textSize="24sp" android:textStyle="bold"/>
+                    <TextView
+                            android:text="책상 각도"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" android:textColor="@color/black"
+                            android:layout_margin="8dp"/>
+                </LinearLayout>
+                <LinearLayout
+                        android:orientation="vertical"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" android:layout_weight="1" android:gravity="center"
+                        android:padding="16dp">
+                    <TextView
+                            android:text="5000k"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" android:textColor="@color/navy_primary"
+                            android:layout_margin="8dp" android:textSize="24sp" android:textStyle="bold"/>
+                    <TextView
+                            android:text="램프 밝기"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" android:textColor="@color/black"
+                            android:layout_margin="8dp"/>
+                </LinearLayout>
+                <LinearLayout
+                        android:orientation="vertical"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" android:layout_weight="1" android:gravity="center"
+                        android:padding="16dp">
+                    <TextView
+                            android:text="빗소리"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" android:textColor="@color/navy_primary"
+                            android:layout_margin="8dp" android:textSize="24sp" android:textStyle="bold"/>
+                    <TextView
+                            android:text="백색 소음"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" android:textColor="@color/black"
+                            android:layout_margin="8dp"/>
+                </LinearLayout>
+
+            </LinearLayout>
+            <View
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:background="@color/gray_light"
+                    android:id="@+id/view"/>
+            <TextView
+                    android:text="통계"
+                    android:id="@+id/title2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp" android:textSize="20sp"
+                    android:textStyle="bold" android:textColor="@color/black" android:fontFamily="sans-serif"
+                    android:layout_marginTop="16dp"/>
+            <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp" android:id="@+id/linearLayout2" android:padding="16dp">
+                <Button
+                        android:text="일"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" android:id="@+id/button" android:layout_weight="1"
+                />
+                <Button
+                        android:text="주"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" android:id="@+id/button2" android:layout_weight="1"
+                        android:backgroundTint="@color/gray_light" android:textColor="@color/black"/>
+                <Button
+                        android:text="월"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" android:id="@+id/button3" android:layout_weight="1"
+                        android:backgroundTint="@color/gray_light" android:textColor="@color/black"/>
+                <Button
+                        android:text="달력"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" android:id="@+id/button4" android:layout_weight="1"
+                        android:backgroundTint="@color/gray_light" android:textColor="@color/black"/>
+            </LinearLayout>
+            <TextView
+                    android:text="그래프"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" android:id="@+id/textView4"
+                    android:layout_marginTop="32dp" android:textSize="72sp" android:layout_gravity="center"/>
         </LinearLayout>
-    </LinearLayout>
+    </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

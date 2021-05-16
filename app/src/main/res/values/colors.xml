@@ -10,4 +10,5 @@
     <color name="navy_primary">#ff023e7d</color>
     <color name="navy_light">#ff0353a4</color>
     <color name="navy_dark">#ff002855</color>
+    <color name="gray_light">#FFF1F1F7</color>
 </resources>
