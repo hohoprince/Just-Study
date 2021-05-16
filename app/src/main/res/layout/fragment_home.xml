@@ -18,7 +18,7 @@
                     android:id="@+id/title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp" android:layout_marginStart="16dp" android:textSize="20sp"
+                    android:layout_marginTop="16dp" android:layout_marginStart="16dp" android:textSize="18sp"
                     android:textStyle="bold" android:textColor="@color/black" android:fontFamily="sans-serif"/>
             <LinearLayout
                     android:orientation="horizontal"
@@ -33,13 +33,13 @@
                     <TextView
                             android:text="30º"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content" android:textColor="@color/navy_primary"
+                            android:layout_height="wrap_content" android:textColor="@color/navy_light"
                             android:layout_margin="8dp" android:textSize="24sp" android:textStyle="bold"/>
                     <TextView
                             android:text="책상 각도"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content" android:textColor="@color/black"
-                            android:layout_margin="8dp"/>
+                            android:layout_margin="8dp" android:textSize="12sp"/>
                 </LinearLayout>
                 <LinearLayout
                         android:orientation="vertical"
@@ -49,13 +49,13 @@
                     <TextView
                             android:text="5000k"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content" android:textColor="@color/navy_primary"
+                            android:layout_height="wrap_content" android:textColor="@color/navy_light"
                             android:layout_margin="8dp" android:textSize="24sp" android:textStyle="bold"/>
                     <TextView
                             android:text="램프 밝기"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content" android:textColor="@color/black"
-                            android:layout_margin="8dp"/>
+                            android:layout_margin="8dp" android:textSize="12sp"/>
                 </LinearLayout>
                 <LinearLayout
                         android:orientation="vertical"
@@ -65,13 +65,13 @@
                     <TextView
                             android:text="빗소리"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content" android:textColor="@color/navy_primary"
+                            android:layout_height="wrap_content" android:textColor="@color/navy_light"
                             android:layout_margin="8dp" android:textSize="24sp" android:textStyle="bold"/>
                     <TextView
                             android:text="백색 소음"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content" android:textColor="@color/black"
-                            android:layout_margin="8dp"/>
+                            android:layout_margin="8dp" android:textSize="12sp"/>
                 </LinearLayout>
 
             </LinearLayout>
@@ -85,7 +85,7 @@
                     android:id="@+id/title2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp" android:textSize="20sp"
+                    android:layout_marginStart="16dp" android:textSize="18sp"
                     android:textStyle="bold" android:textColor="@color/black" android:fontFamily="sans-serif"
                     android:layout_marginTop="16dp"/>
             <LinearLayout
@@ -97,17 +97,19 @@
                         android:text="일"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content" android:id="@+id/button" android:layout_weight="1"
-                />
+                        android:minWidth="60dp"/>
                 <Button
                         android:text="주"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content" android:id="@+id/button2" android:layout_weight="1"
-                        android:backgroundTint="@color/gray_light" android:textColor="@color/black"/>
+                        android:backgroundTint="@color/gray_light" android:textColor="@color/black"
+                        android:minWidth="60dp"/>
                 <Button
                         android:text="월"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content" android:id="@+id/button3" android:layout_weight="1"
-                        android:backgroundTint="@color/gray_light" android:textColor="@color/black"/>
+                        android:backgroundTint="@color/gray_light" android:textColor="@color/black"
+                        android:minWidth="60dp"/>
             </LinearLayout>
             <TextView
                     android:text="그래프"
