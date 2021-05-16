@@ -108,17 +108,12 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content" android:id="@+id/button3" android:layout_weight="1"
                         android:backgroundTint="@color/gray_light" android:textColor="@color/black"/>
-                <Button
-                        android:text="달력"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" android:id="@+id/button4" android:layout_weight="1"
-                        android:backgroundTint="@color/gray_light" android:textColor="@color/black"/>
             </LinearLayout>
             <TextView
                     android:text="그래프"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" android:id="@+id/textView4"
-                    android:layout_marginTop="32dp" android:textSize="72sp" android:layout_gravity="center"/>
+                    android:layout_height="500dp" android:id="@+id/textView4"
+                    android:layout_marginTop="32dp" android:textSize="100sp" android:layout_gravity="center"/>
         </LinearLayout>
     </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>
