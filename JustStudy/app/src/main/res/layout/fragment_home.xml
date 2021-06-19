@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".ui.home.HomeFragment">
+    <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent">
+        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                      android:orientation="vertical">
+            <TextView
+                    android:text="추천 환경"
+                    android:id="@+id/title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp" android:layout_marginStart="16dp" android:textSize="18sp"
+                    android:textStyle="bold" android:textColor="@color/black" android:fontFamily="sans-serif"/>
+            <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center" android:padding="16dp" android:id="@+id/linearLayout">
+                <LinearLayout
+                        android:orientation="vertical"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" android:layout_weight="1"
+                        android:gravity="center" android:padding="16dp">
+                    <TextView
+                            android:text="30º"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" android:textColor="@color/navy_light"
+                            android:layout_margin="8dp" android:textSize="24sp" android:textStyle="bold"/>
+                    <TextView
+                            android:text="책상 각도"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" android:textColor="@color/black"
+                            android:layout_margin="8dp" android:textSize="12sp"/>
+                </LinearLayout>
+                <LinearLayout
+                        android:orientation="vertical"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" android:layout_weight="1" android:gravity="center"
+                        android:padding="16dp">
+                    <TextView
+                            android:text="5000k"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" android:textColor="@color/navy_light"
+                            android:layout_margin="8dp" android:textSize="24sp" android:textStyle="bold"/>
+                    <TextView
+                            android:text="램프 밝기"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" android:textColor="@color/black"
+                            android:layout_margin="8dp" android:textSize="12sp"/>
+                </LinearLayout>
+                <LinearLayout
+                        android:orientation="vertical"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" android:layout_weight="1" android:gravity="center"
+                        android:padding="16dp">
+                    <TextView
+                            android:text="빗소리"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" android:textColor="@color/navy_light"
+                            android:layout_margin="8dp" android:textSize="24sp" android:textStyle="bold"/>
+                    <TextView
+                            android:text="백색 소음"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" android:textColor="@color/black"
+                            android:layout_margin="8dp" android:textSize="12sp"/>
+                </LinearLayout>
+
+            </LinearLayout>
+            <View
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:background="@color/gray_light"
+                    android:id="@+id/view"/>
+            <TextView
+                    android:text="통계"
+                    android:id="@+id/title2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp" android:textSize="18sp"
+                    android:textStyle="bold" android:textColor="@color/black" android:fontFamily="sans-serif"
+                    android:layout_marginTop="16dp"/>
+            <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp" android:id="@+id/linearLayout2" android:padding="16dp">
+                <Button
+                        android:text="일"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" android:id="@+id/button" android:layout_weight="1"
+                        android:minWidth="60dp"/>
+                <Button
+                        android:text="주"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" android:id="@+id/button2" android:layout_weight="1"
+                        android:backgroundTint="@color/gray_light" android:textColor="@color/black"
+                        android:minWidth="60dp"/>
+                <Button
+                        android:text="월"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" android:id="@+id/button3" android:layout_weight="1"
+                        android:backgroundTint="@color/gray_light" android:textColor="@color/black"
+                        android:minWidth="60dp"/>
+            </LinearLayout>
+            <TextView
+                    android:text="그래프"
+                    android:layout_width="wrap_content"
+                    android:layout_height="500dp" android:id="@+id/textView4"
+                    android:layout_marginTop="32dp" android:textSize="100sp" android:layout_gravity="center"/>
+        </LinearLayout>
+    </ScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>
