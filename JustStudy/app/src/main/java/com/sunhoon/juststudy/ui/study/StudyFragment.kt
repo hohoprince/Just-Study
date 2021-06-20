@@ -17,14 +17,14 @@ import com.sunhoon.juststudy.R
 
 class StudyFragment : Fragment() {
 
-    private lateinit var dashboardViewModel: StudyViewModel
+    private lateinit var studyViewModel: StudyViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        dashboardViewModel =
+        studyViewModel =
             ViewModelProvider(this).get(StudyViewModel::class.java)
         val root = inflater.inflate(R.layout.fragment_study, container, false)
 //        val textView: TextView = root.findViewById(R.id.text_dashboard)
@@ -32,6 +32,13 @@ class StudyFragment : Fragment() {
 //            textView.text = it
 //        })
 
+        // 스톱워치 / 타이머 텍스트뷰
+        val timeTextView: TextView = root.findViewById(R.id.time)
+        studyViewModel.time.observe(viewLifecycleOwner, Observer {
+            timeTextView.text = it
+        })
+
+        // 책상 각도 다이얼로그
         val angleLayout = root.findViewById<LinearLayout>(R.id.angle_layout);
         angleLayout.setOnClickListener {
             val dlg = Dialog(requireContext())
@@ -40,5 +47,12 @@ class StudyFragment : Fragment() {
         }
 
         return root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        studyViewModel.startTimer(60000)
+
     }
 }
