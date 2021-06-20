@@ -11,14 +11,24 @@ class StudyViewModel : ViewModel() {
     private val _time = MutableLiveData<String>().apply {
         value = "00:00:00"
     }
-
     val time: LiveData<String> = _time
-
     private lateinit var studyTimer : StudyTimer
+    private var remainTime: Long = 0L
 
-    fun startTimer(millis: Long) {
-        studyTimer = StudyTimer(millis, 1000, _time)
+
+    fun startTimer() {
+        studyTimer = StudyTimer(remainTime, 1000, _time)
         studyTimer.start()
+    }
+
+    fun setUserTime(userTime: Long) {
+        remainTime = userTime
+        val remainTotal = userTime / 1000
+        val remainHours = "%02d".format(remainTotal / (60 * 60))
+        val remainMinutes = "%02d".format((remainTotal % (60 * 60)) / 60)
+        val remainSeconds = "%02d".format(remainTotal % 60)
+
+        _time.value = "$remainHours:$remainMinutes:$remainSeconds"
     }
 
 //    private val _text = MutableLiveData<String>().apply {
