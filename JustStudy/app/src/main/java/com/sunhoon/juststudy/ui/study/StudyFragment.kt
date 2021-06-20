@@ -2,12 +2,15 @@ package com.sunhoon.juststudy.ui.study
 
 import android.app.AlertDialog
 import android.app.Dialog
+import android.app.TimePickerDialog
 import android.content.DialogInterface
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.ImageButton
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.fragment.app.Fragment
@@ -38,6 +41,17 @@ class StudyFragment : Fragment() {
             timeTextView.text = it
         })
 
+        // 시간 텍스트뷰 클릭시 시간 세팅
+        timeTextView.setOnClickListener {
+            val timePickerDialog = TimePickerDialog(it.context,
+                android.R.style.Theme_Holo_Light_Dialog_NoActionBar,
+                TimePickerDialog.OnTimeSetListener { _, hourOfDay, minute ->
+                    studyViewModel.setUserTime((hourOfDay * 60 * 60 * 1000 + minute * 60 * 1000).toLong())
+            }, 0, 0, true)
+            timePickerDialog.window?.setBackgroundDrawableResource(android.R.color.transparent);
+            timePickerDialog.show()
+        }
+
         // 책상 각도 다이얼로그
         val angleLayout = root.findViewById<LinearLayout>(R.id.angle_layout);
         angleLayout.setOnClickListener {
@@ -46,13 +60,18 @@ class StudyFragment : Fragment() {
             dlg.show()
         }
 
+        val playButton = root.findViewById<ImageButton>(R.id.play_button)
+        playButton.setOnClickListener {
+            studyViewModel.startTimer()
+        }
+
         return root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        studyViewModel.startTimer(60000)
+
 
     }
 }
