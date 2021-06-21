@@ -15,6 +15,6 @@ class StudyTimer(millisInFuture: Long, countDownInterval: Long, private var time
     }
 
     override fun onFinish() {
-        timeText.value = "Done!"
+        timeText.value = "Finish!"
     }
 }
