@@ -60,9 +60,16 @@ class StudyFragment : Fragment() {
             dlg.show()
         }
 
+        // 시작 버튼
         val playButton = root.findViewById<ImageButton>(R.id.play_button)
         playButton.setOnClickListener {
             studyViewModel.startTimer()
+        }
+
+        // 종료 버튼
+        val stopButton = root.findViewById<ImageButton>(R.id.stop_button)
+        stopButton.setOnClickListener {
+            studyViewModel.stopTimer()
         }
 
         return root

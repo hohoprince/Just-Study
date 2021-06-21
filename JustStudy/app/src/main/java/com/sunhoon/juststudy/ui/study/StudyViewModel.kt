@@ -16,9 +16,16 @@ class StudyViewModel : ViewModel() {
     private var remainTime: Long = 0L
 
 
+    // 타이머 시작
     fun startTimer() {
         studyTimer = StudyTimer(remainTime, 1000, _time)
         studyTimer.start()
+    }
+
+    // 타이머 종료
+    fun stopTimer() {
+        studyTimer.cancel()
+        studyTimer.onFinish()
     }
 
     fun setUserTime(userTime: Long) {
