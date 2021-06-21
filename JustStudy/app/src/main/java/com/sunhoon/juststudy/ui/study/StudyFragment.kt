@@ -17,6 +17,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.sunhoon.juststudy.R
+import com.sunhoon.juststudy.time.TimeConverter
 
 class StudyFragment : Fragment() {
 
@@ -46,7 +47,7 @@ class StudyFragment : Fragment() {
             val timePickerDialog = TimePickerDialog(it.context,
                 android.R.style.Theme_Holo_Light_Dialog_NoActionBar,
                 TimePickerDialog.OnTimeSetListener { _, hourOfDay, minute ->
-                    studyViewModel.setUserTime((hourOfDay * 60 * 60 * 1000 + minute * 60 * 1000).toLong())
+                    studyViewModel.setUserTime(TimeConverter.dayMinuteToLong(hourOfDay, minute))
             }, 0, 0, true)
             timePickerDialog.window?.setBackgroundDrawableResource(android.R.color.transparent);
             timePickerDialog.show()
