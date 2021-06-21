@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.sunhoon.juststudy.time.StudyTimer
+import com.sunhoon.juststudy.time.TimeConverter
 
 class StudyViewModel : ViewModel() {
 
@@ -28,14 +29,10 @@ class StudyViewModel : ViewModel() {
         studyTimer.onFinish()
     }
 
+    // 사용자 설정 시간
     fun setUserTime(userTime: Long) {
         remainTime = userTime
-        val remainTotal = userTime / 1000
-        val remainHours = "%02d".format(remainTotal / (60 * 60))
-        val remainMinutes = "%02d".format((remainTotal % (60 * 60)) / 60)
-        val remainSeconds = "%02d".format(remainTotal % 60)
-
-        _time.value = "$remainHours:$remainMinutes:$remainSeconds"
+        _time.value = TimeConverter.longToStringTime(userTime)
     }
 
 //    private val _text = MutableLiveData<String>().apply {
