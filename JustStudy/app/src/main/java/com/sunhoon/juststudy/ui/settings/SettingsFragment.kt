@@ -45,7 +45,7 @@ class SettingsFragment : Fragment() {
                 TimePickerDialog.OnTimeSetListener { _, hourOfDay, minute ->
                     settingsViewModel.setStringConTime(TimeConverter.dayMinuteToStringMinute(hourOfDay, minute))
                 }, 0, 0, true)
-            timePickerDialog.window?.setBackgroundDrawableResource(android.R.color.transparent);
+            timePickerDialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
             timePickerDialog.show()
         }
 

@@ -1,18 +1,13 @@
 package com.sunhoon.juststudy.ui.study
 
-import android.app.AlertDialog
 import android.app.Dialog
 import android.app.TimePickerDialog
-import android.content.DialogInterface
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.ImageButton
-import android.widget.LinearLayout
-import android.widget.TextView
+import android.widget.*
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -59,6 +54,28 @@ class StudyFragment : Fragment() {
             val dlg = Dialog(requireContext())
             dlg.setContentView(R.layout.dialog_angle)
             dlg.show()
+        }
+
+        // 램프 밝기 다이얼로그
+        val lightLayout = root.findViewById<LinearLayout>(R.id.light_layout);
+        lightLayout.setOnClickListener {
+            val dlg = Dialog(requireContext())
+            dlg.setContentView(R.layout.dialog_lamp)
+            dlg.show()
+        }
+
+        // 백색 소음 다이얼로그
+        val noiseLayout = root.findViewById<LinearLayout>(R.id.noise_layout);
+        noiseLayout.setOnClickListener {
+            val dlg = Dialog(requireContext())
+            dlg.setContentView(R.layout.dialog_white_noise)
+            dlg.show()
+        }
+
+        // 집중도 다이얼로그
+        val focusLayout = root.findViewById<LinearLayout>(R.id.focus_layout);
+        focusLayout.setOnClickListener {
+            Log.d("myLog", "미구현")
         }
 
         // 시작 버튼
