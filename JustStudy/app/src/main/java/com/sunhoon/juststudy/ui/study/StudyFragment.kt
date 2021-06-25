@@ -53,6 +53,18 @@ class StudyFragment : Fragment() {
         })
 
         val noiseTextView = root.findViewById<TextView>(R.id.noise_textview)
+        studyViewModel.currentNoise.observe(viewLifecycleOwner, Observer {
+            var text = ""
+            when (it) {
+                0 -> text = "자동"
+                1 -> text = "사용 안함"
+                2 -> text = "파도 소리"
+                3 -> text = "바람 소리"
+                4 -> text = "나뭇잎 소리"
+                5 -> text = "빗소리"
+            }
+            noiseTextView.text = text
+        })
 
         val focusTextView = root.findViewById<TextView>(R.id.focus_textview)
 
@@ -117,6 +129,36 @@ class StudyFragment : Fragment() {
         noiseLayout.setOnClickListener {
             val dlg = Dialog(requireContext())
             dlg.setContentView(R.layout.dialog_white_noise)
+
+            // 라디오 그룹
+            val radioGroup = dlg.findViewById<RadioGroup>(R.id.radioGroup)
+            var buttonId = 0
+            when (studyViewModel.currentNoise.value) {
+                0 -> buttonId = R.id.radio_noise_auto
+                1 -> buttonId = R.id.radio_noise_off
+                2 -> buttonId = R.id.radio_noise1
+                3 -> buttonId = R.id.radio_noise2
+                4 -> buttonId = R.id.radio_noise3
+                5 -> buttonId = R.id.radio_noise4
+            }
+            radioGroup.check(buttonId)
+            radioGroup.setOnCheckedChangeListener { _, checkedId ->
+                when (checkedId) {
+                    R.id.radio_noise_auto -> studyViewModel.setCurrentNoise(0)
+                    R.id.radio_noise_off -> studyViewModel.setCurrentNoise(1)
+                    R.id.radio_noise1 -> studyViewModel.setCurrentNoise(2)
+                    R.id.radio_noise2 -> studyViewModel.setCurrentNoise(3)
+                    R.id.radio_noise3 -> studyViewModel.setCurrentNoise(4)
+                    R.id.radio_noise4 -> studyViewModel.setCurrentNoise(5)
+                }
+            }
+
+            // 확인 버튼
+            val okButton = dlg.findViewById<Button>(R.id.noise_ok_button)
+            okButton.setOnClickListener {
+                dlg.dismiss()
+            }
+
             dlg.show()
         }
 
