@@ -16,6 +16,11 @@ class SettingsViewModel : ViewModel() {
         value = 0
     }
 
+    // 시작 화면 설정 값
+    val startScreen = MutableLiveData<Int>().apply {
+        value = 0
+    }
+
 
     fun setStringConTime(time: String) {
         _stringConcentrationTime.value = time
