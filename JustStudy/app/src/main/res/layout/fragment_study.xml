@@ -6,23 +6,62 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".ui.study.StudyFragment">
-    <com.google.android.material.tabs.TabLayout
-            android:layout_width="match_parent"
+<!--    <com.google.android.material.tabs.TabLayout-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            app:layout_constraintTop_toTopOf="parent" app:layout_constraintStart_toStartOf="parent"-->
+<!--            app:layout_constraintEnd_toEndOf="parent" android:id="@+id/tabLayout">-->
+
+<!--        <com.google.android.material.tabs.TabItem-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="스톱워치"/>-->
+
+<!--        <com.google.android.material.tabs.TabItem-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="타이머"/>-->
+
+<!--    </com.google.android.material.tabs.TabLayout> -->
+    <info.hoang8f.android.segmented.SegmentedGroup
+            android:id="@+id/segmented2"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toTopOf="parent" app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" android:id="@+id/tabLayout">
+            android:orientation="horizontal"
+            app:sc_border_width="2dp"
+            app:sc_corner_radius="8dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:sc_tint_color="@color/navy_primary"
+            app:sc_checked_text_color="@color/white"
+            android:checkedButton="@id/button21"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginTop="24dp">
 
-        <com.google.android.material.tabs.TabItem
-                android:layout_width="wrap_content"
+        <RadioButton
+                android:id="@+id/button21"
+                android:layout_width="100dp"
                 android:layout_height="wrap_content"
-                android:text="스톱워치"/>
+                android:text="타이머"
+                style="@style/RadioButton"
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"
+                />
 
-        <com.google.android.material.tabs.TabItem
-                android:layout_width="wrap_content"
+        <RadioButton
+                android:id="@+id/button22"
+                android:layout_width="100dp"
                 android:layout_height="wrap_content"
-                android:text="타이머"/>
-
-    </com.google.android.material.tabs.TabLayout>
+                android:text="스톱워치"
+                style="@style/RadioButton"
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"
+                />
+    </info.hoang8f.android.segmented.SegmentedGroup>
 
     <TextView
             android:text="00:00:00"
@@ -203,12 +242,5 @@
             app:layout_constraintTop_toTopOf="@+id/guideline3"
             app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" android:background="@android:color/transparent"/>
-    <ImageButton
-            android:text="Button"
-            android:src="@drawable/ic_baseline_stop_36"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" android:id="@+id/stop_button"
-            app:layout_constraintEnd_toStartOf="@+id/play_button" app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/guideline3" app:layout_constraintBottom_toBottomOf="parent"
-            android:background="@android:color/transparent" android:tint="@color/red_light"/>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

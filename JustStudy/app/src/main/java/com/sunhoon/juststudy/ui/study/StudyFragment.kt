@@ -2,6 +2,7 @@ package com.sunhoon.juststudy.ui.study
 
 import android.app.Dialog
 import android.app.TimePickerDialog
+import android.graphics.drawable.Icon
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -201,16 +202,19 @@ class StudyFragment : Fragment() {
             Log.d("myLog", "미구현")
         }
 
+        var isPlaying = false
         // 시작 버튼
         val playButton = root.findViewById<ImageButton>(R.id.play_button)
         playButton.setOnClickListener {
-            studyViewModel.startTimer()
-        }
-
-        // 종료 버튼
-        val stopButton = root.findViewById<ImageButton>(R.id.stop_button)
-        stopButton.setOnClickListener {
-            studyViewModel.stopTimer()
+            if (isPlaying) {
+                studyViewModel.stopTimer()
+                playButton.setImageResource(R.drawable.ic_baseline_play_arrow_36)
+                isPlaying = false
+            } else {
+                studyViewModel.startTimer()
+                playButton.setImageResource(R.drawable.ic_baseline_stop_36)
+                isPlaying = true
+            }
         }
 
         return root

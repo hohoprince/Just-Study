@@ -88,29 +88,45 @@
                     android:layout_marginStart="16dp" android:textSize="18sp"
                     android:textStyle="bold" android:textColor="@color/black" android:fontFamily="sans-serif"
                     android:layout_marginTop="16dp"/>
-            <LinearLayout
-                    android:orientation="horizontal"
-                    android:layout_width="match_parent"
+
+            <info.hoang8f.android.segmented.SegmentedGroup
+                    android:id="@+id/segmented2"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp" android:id="@+id/linearLayout2" android:padding="16dp">
-                <Button
+                    android:orientation="horizontal"
+                    app:sc_border_width="2dp"
+                    app:sc_corner_radius="8dp"
+                    android:layout_gravity="center"
+                    app:sc_tint_color="@color/navy_primary"
+                    app:sc_checked_text_color="@color/white"
+                    android:checkedButton="@id/button21"
+                    android:layout_marginTop="32dp"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginBottom="16dp"
+                    android:layout_marginRight="16dp">
+
+                <RadioButton
+                        android:id="@+id/button21"
+                        android:layout_width="100dp"
+                        android:layout_height="wrap_content"
                         android:text="일"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" android:id="@+id/button" android:layout_weight="1"
-                        android:minWidth="60dp"/>
-                <Button
+                        style="@style/RadioButton"/>
+
+                <RadioButton
+                        android:id="@+id/button22"
+                        android:layout_width="100dp"
+                        android:layout_height="wrap_content"
                         android:text="주"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" android:id="@+id/button2" android:layout_weight="1"
-                        android:backgroundTint="@color/gray_light" android:textColor="@color/black"
-                        android:minWidth="60dp"/>
-                <Button
+                        style="@style/RadioButton"/>
+
+                <RadioButton
+                        android:id="@+id/button23"
+                        android:layout_width="100dp"
+                        android:layout_height="wrap_content"
                         android:text="월"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" android:id="@+id/button3" android:layout_weight="1"
-                        android:backgroundTint="@color/gray_light" android:textColor="@color/black"
-                        android:minWidth="60dp"/>
-            </LinearLayout>
+                        style="@style/RadioButton"/>
+            </info.hoang8f.android.segmented.SegmentedGroup>
+
             <TextView
                     android:text="그래프"
                     android:layout_width="wrap_content"
