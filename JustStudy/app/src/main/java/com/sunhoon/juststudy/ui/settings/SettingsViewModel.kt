@@ -11,12 +11,11 @@ class SettingsViewModel : ViewModel() {
     }
     val stringConcentrationTime: LiveData<String> = _stringConcentrationTime
 
-    var breakTime: Long = 0L
+    // 휴식 시간 설정값
+    val breakTime = MutableLiveData<Int>().apply {
+        value = 0
+    }
 
-//    private val _text = MutableLiveData<String>().apply {
-//        value = "This is notifications Fragment"
-//    }
-//    val text: LiveData<String> = _text
 
     fun setStringConTime(time: String) {
         _stringConcentrationTime.value = time
