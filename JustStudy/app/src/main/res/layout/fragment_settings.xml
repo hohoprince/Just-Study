@@ -6,12 +6,17 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".ui.settings.SettingsFragment">
+
     <LinearLayout
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:layout_constraintTop_toTopOf="parent" app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" app:layout_constraintBottom_toBottomOf="parent">
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintVertical_bias="0.0">
 
         <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
@@ -28,7 +33,7 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    android:textSize="14sp"
+                    android:textSize="16sp"
                     android:textColor="@color/black"/>
 
             <TextView
@@ -38,13 +43,15 @@
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    android:textSize="14sp"
+                    android:textSize="16sp"
                     android:textColor="@color/navy_primary"
                     tools:text="0분"/>
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <View android:layout_width="match_parent" android:layout_height="1dp"
-            android:background="@color/gray_light"/>
+        <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/gray_light"/>
 
         <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
@@ -60,7 +67,7 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    android:textSize="14sp"
+                    android:textSize="16sp"
                     android:textColor="@color/black"/>
 
             <TextView
@@ -70,7 +77,7 @@
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    android:textSize="14sp"
+                    android:textSize="16sp"
                     android:textColor="@color/navy_primary"
                     tools:text="0분"/>
         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -95,7 +102,7 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    android:textSize="14sp"
+                    android:textSize="16sp"
                     android:textColor="@color/black"/>
 
             <TextView
@@ -105,7 +112,7 @@
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    android:textSize="14sp"
+                    android:textSize="16sp"
                     android:textColor="@color/navy_primary"
                     tools:text="홈"/>
         </androidx.constraintlayout.widget.ConstraintLayout>
