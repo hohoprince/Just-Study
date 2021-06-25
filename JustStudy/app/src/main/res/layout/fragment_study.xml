@@ -53,10 +53,10 @@
                     android:layout_height="100dp"
                     android:background="@drawable/rect"
                     android:layout_margin="16dp"
-                    android:padding="16dp"
                     android:id="@+id/angle_layout"
                     android:clickable="true"
-                    android:focusable="auto">
+                    android:focusable="auto"
+                    android:gravity="center_vertical">
 
                 <TextView
                         android:text="책상 각도"
@@ -72,9 +72,9 @@
                         android:text="15º"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:id="@+id/textView3"
+                        android:id="@+id/angle_textview"
                         android:layout_margin="4dp"
-                        android:textSize="24sp"
+                        android:textSize="22sp"
                         android:textColor="@color/navy_light"
                         android:gravity="center"/>
             </LinearLayout>
@@ -85,10 +85,10 @@
                     android:layout_height="100dp"
                     android:background="@drawable/rect"
                     android:layout_margin="16dp"
-                    android:padding="16dp"
                     android:id="@+id/light_layout"
                     android:clickable="true"
-                    android:focusable="auto">
+                    android:focusable="auto"
+                    android:gravity="center_vertical">
 
                 <TextView
                         android:text="램프 밝기"
@@ -104,9 +104,9 @@
                         android:text="자동"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:id="@+id/textView6"
+                        android:id="@+id/light_textview"
                         android:layout_margin="4dp"
-                        android:textSize="24sp"
+                        android:textSize="22sp"
                         android:textColor="@color/navy_light"
                         android:gravity="center"/>
             </LinearLayout>
@@ -122,10 +122,10 @@
                     android:layout_height="100dp"
                     android:background="@drawable/rect"
                     android:layout_margin="16dp"
-                    android:padding="16dp"
                     android:id="@+id/noise_layout"
                     android:clickable="true"
-                    android:focusable="auto">
+                    android:focusable="auto"
+                    android:gravity="center_vertical">
 
                 <TextView
                         android:text="백색 소음"
@@ -141,9 +141,9 @@
                         android:text="빗소리"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:id="@+id/textView8"
+                        android:id="@+id/noise_textview"
                         android:layout_margin="4dp"
-                        android:textSize="24sp"
+                        android:textSize="22sp"
                         android:textColor="@color/navy_light"
                         android:gravity="center"
                         android:maxWidth="60dp"
@@ -158,10 +158,10 @@
                     android:layout_height="100dp"
                     android:background="@drawable/rect"
                     android:layout_margin="16dp"
-                    android:padding="16dp"
                     android:id="@+id/focus_layout"
                     android:clickable="true"
-                    android:focusable="auto">
+                    android:focusable="auto"
+                    android:gravity="center_vertical">
 
                 <TextView
                         android:text="집중도"
@@ -177,9 +177,9 @@
                         android:text="20"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:id="@+id/textView10"
+                        android:id="@+id/focus_textview"
                         android:layout_margin="4dp"
-                        android:textSize="24sp"
+                        android:textSize="22sp"
                         android:textColor="@color/navy_light"
                         android:gravity="center"/>
             </LinearLayout>
