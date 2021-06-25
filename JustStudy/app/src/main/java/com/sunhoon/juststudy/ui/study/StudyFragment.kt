@@ -73,8 +73,6 @@ class StudyFragment : Fragment() {
             noiseTextView.text = text
         })
 
-        val focusTextView = root.findViewById<TextView>(R.id.focus_textview)
-
 
         // 시간 텍스트뷰 클릭시 시간 세팅
         timeTextView.setOnClickListener {

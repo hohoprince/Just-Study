@@ -50,6 +50,14 @@ class SettingsFragment : Fragment() {
             breakTimeTextView.text = text
         })
 
+        val startScreenTextView = root.findViewById<TextView>(R.id.start_screen_textview)
+        settingsViewModel.startScreen.observe(viewLifecycleOwner, Observer {
+            when (it) {
+                0 -> startScreenTextView.text = "홈"
+                1 -> startScreenTextView.text = "공부"
+                2 -> startScreenTextView.text = "설정"
+            }
+        })
 
         // 집중 시간 설정
         val constraintLayout = root.findViewById<ConstraintLayout>(R.id.concentrationTimeLayout)
@@ -106,6 +114,30 @@ class SettingsFragment : Fragment() {
         startScreenLayout.setOnClickListener {
             val dlg = Dialog(requireContext())
             dlg.setContentView(R.layout.dialog_start_screen)
+
+            // 라디오 그룹
+            val radioGroup = dlg.findViewById<RadioGroup>(R.id.radioGroup)
+            var buttonId = 0
+            when (settingsViewModel.startScreen.value) {
+                0 -> buttonId = R.id.radio_screen1
+                1 -> buttonId = R.id.radio_screen2
+                2 -> buttonId = R.id.radio_screen3
+            }
+            radioGroup.check(buttonId)
+            radioGroup.setOnCheckedChangeListener { _, checkedId ->
+                when (checkedId) {
+                    R.id.radio_screen1 -> settingsViewModel.startScreen.value = 0
+                    R.id.radio_screen2 -> settingsViewModel.startScreen.value = 1
+                    R.id.radio_screen3 -> settingsViewModel.startScreen.value = 2
+                }
+            }
+
+            // 확인 버튼
+            val okButton = dlg.findViewById<Button>(R.id.start_screen_ok_button)
+            okButton.setOnClickListener {
+                dlg.dismiss()
+            }
+
             dlg.show()
         }
 

@@ -32,7 +32,6 @@
                     android:textColor="@color/black"/>
 
             <TextView
-                    android:text="50분"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/text_con_time"
@@ -40,7 +39,8 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     android:textSize="14sp"
-                    android:textColor="@color/navy_primary"/>
+                    android:textColor="@color/navy_primary"
+                    tools:text="0분"/>
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <View android:layout_width="match_parent" android:layout_height="1dp"
@@ -64,7 +64,6 @@
                     android:textColor="@color/black"/>
 
             <TextView
-                    android:text="10분"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/break_time_textview"
@@ -72,7 +71,8 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     android:textSize="14sp"
-                    android:textColor="@color/navy_primary"/>
+                    android:textColor="@color/navy_primary"
+                    tools:text="0분"/>
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <View
@@ -99,15 +99,15 @@
                     android:textColor="@color/black"/>
 
             <TextView
-                    android:text="공부"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/textView18"
+                    android:id="@+id/start_screen_textview"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     android:textSize="14sp"
-                    android:textColor="@color/navy_primary"/>
+                    android:textColor="@color/navy_primary"
+                    tools:text="홈"/>
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <View
