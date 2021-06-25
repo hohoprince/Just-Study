@@ -21,6 +21,12 @@ class StudyViewModel : ViewModel() {
     }
     var currentLight: LiveData<Int> = _currentLight
 
+    // 현재 백색 소음
+    private val _currentNoise = MutableLiveData<Int>().apply {
+        value = 0
+    }
+    var currentNoise: LiveData<Int> = _currentNoise
+
     // 타이머
     private lateinit var studyTimer : StudyTimer
 
@@ -50,6 +56,10 @@ class StudyViewModel : ViewModel() {
 
     fun setCurrentLight(value: Int) {
         _currentLight.value = value
+    }
+
+    fun setCurrentNoise(value: Int) {
+        _currentNoise.value = value
     }
 
 //    private val _text = MutableLiveData<String>().apply {
