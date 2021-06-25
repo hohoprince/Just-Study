@@ -151,7 +151,7 @@
                         android:minLines="1"
                         tools:text="빗소리"
                         android:maxLines="1"
-                        android:autoText="true"/>
+                        />
             </LinearLayout>
 
             <LinearLayout

@@ -38,6 +38,17 @@ class StudyFragment : Fragment() {
         })
 
         val angleTextView = root.findViewById<TextView>(R.id.angle_textview)
+        studyViewModel.currentAngle.observe(viewLifecycleOwner, Observer {
+            var text = ""
+            when (it) {
+                0 -> text = "자동"
+                1 -> text = "0º"
+                2 -> text = "15º"
+                3 -> text = "30º"
+                4 -> text = "45º"
+            }
+            angleTextView.text = text
+        })
 
         val lightTextView = root.findViewById<TextView>(R.id.light_textview)
         studyViewModel.currentLight.observe(viewLifecycleOwner, Observer {
@@ -85,6 +96,34 @@ class StudyFragment : Fragment() {
         angleLayout.setOnClickListener {
             val dlg = Dialog(requireContext())
             dlg.setContentView(R.layout.dialog_angle)
+
+            // 라디오 그룹
+            val radioGroup = dlg.findViewById<RadioGroup>(R.id.radioGroup)
+            var buttonId = 0
+            when (studyViewModel.currentAngle.value) {
+                0 -> buttonId = R.id.radio_angle_auto
+                1 -> buttonId = R.id.radio_angle1
+                2 -> buttonId = R.id.radio_angle2
+                3 -> buttonId = R.id.radio_angle3
+                4 -> buttonId = R.id.radio_angle4
+            }
+            radioGroup.check(buttonId)
+            radioGroup.setOnCheckedChangeListener { _, checkedId ->
+                when (checkedId) {
+                    R.id.radio_angle_auto -> studyViewModel.setCurrentAngle(0)
+                    R.id.radio_angle1 -> studyViewModel.setCurrentAngle(1)
+                    R.id.radio_angle2 -> studyViewModel.setCurrentAngle(2)
+                    R.id.radio_angle3 -> studyViewModel.setCurrentAngle(3)
+                    R.id.radio_angle4 -> studyViewModel.setCurrentAngle(4)
+                }
+            }
+
+            // 확인 버튼
+            val okButton = dlg.findViewById<Button>(R.id.angle_ok_button)
+            okButton.setOnClickListener {
+                dlg.dismiss()
+            }
+
             dlg.show()
         }
 

@@ -15,6 +15,12 @@ class StudyViewModel : ViewModel() {
     }
     val time: LiveData<String> = _time
 
+    // 현재 책상 각도
+    private val _currentAngle = MutableLiveData<Int>().apply {
+        value = 0
+    }
+    var currentAngle: LiveData<Int> = _currentAngle
+
     // 현재 램프 밝기
     private val _currentLight = MutableLiveData<Int>().apply {
         value = 0
@@ -26,6 +32,7 @@ class StudyViewModel : ViewModel() {
         value = 0
     }
     var currentNoise: LiveData<Int> = _currentNoise
+
 
     // 타이머
     private lateinit var studyTimer : StudyTimer
@@ -60,6 +67,10 @@ class StudyViewModel : ViewModel() {
 
     fun setCurrentNoise(value: Int) {
         _currentNoise.value = value
+    }
+
+    fun setCurrentAngle(value: Int) {
+        _currentAngle.value = value
     }
 
 //    private val _text = MutableLiveData<String>().apply {
