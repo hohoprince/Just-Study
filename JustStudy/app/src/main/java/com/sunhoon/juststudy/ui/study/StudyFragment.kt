@@ -26,10 +26,6 @@ class StudyFragment : Fragment() {
         studyViewModel =
             ViewModelProvider(this).get(StudyViewModel::class.java)
         val root = inflater.inflate(R.layout.fragment_study, container, false)
-//        val textView: TextView = root.findViewById(R.id.text_dashboard)
-//        dashboardViewModel.text.observe(viewLifecycleOwner, Observer {
-//            textView.text = it
-//        })
 
         // 스톱워치 / 타이머 텍스트뷰
         val timeTextView = root.findViewById<TextView>(R.id.time)

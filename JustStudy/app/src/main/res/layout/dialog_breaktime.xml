@@ -18,37 +18,37 @@
                 android:text="5분"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/radio_lamp_auto"/>
+                android:id="@+id/radio_break_time1"/>
 
         <RadioButton
                 android:text="10분"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/radio_lamp_off"/>
+                android:id="@+id/radio_break_time2"/>
 
         <RadioButton
                 android:text="15분"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/radio_lamp_3500"/>
+                android:id="@+id/radio_break_time3"/>
 
         <RadioButton
                 android:text="20분"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/radio_lamp_5000"/>
+                android:id="@+id/radio_break_time4"/>
 
         <RadioButton
                 android:text="25분"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/radio_lamp_6500"/>
+                android:id="@+id/radio_break_time5"/>
 
         <RadioButton
                 android:text="30분"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/radioButton7"/>
+                android:id="@+id/radio_break_time6"/>
     </RadioGroup>
 
     <TextView
@@ -67,7 +67,7 @@
             android:text="확인"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/lamp_ok_button"
+            android:id="@+id/break_time_ok_button"
             app:layout_constraintTop_toBottomOf="@+id/radioGroup"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

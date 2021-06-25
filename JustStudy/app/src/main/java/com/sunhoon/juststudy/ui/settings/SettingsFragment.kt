@@ -6,6 +6,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.RadioGroup
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
@@ -26,16 +28,28 @@ class SettingsFragment : Fragment() {
         settingsViewModel =
             ViewModelProvider(this).get(SettingsViewModel::class.java)
         val root = inflater.inflate(R.layout.fragment_settings, container, false)
-//        val textView: TextView = root.findViewById(R.id.text_notifications)
-//        notificationsViewModel.text.observe(viewLifecycleOwner, Observer {
-//            textView.text = it
-//        })
 
         // 집중 시간 텍스트 뷰
         val textConTime = root.findViewById<TextView>(R.id.text_con_time)
         settingsViewModel.stringConcentrationTime.observe(viewLifecycleOwner, Observer {
             textConTime.text = it
         })
+
+        // 휴식 시간 텍스트 뷰
+        val breakTimeTextView = root.findViewById<TextView>(R.id.break_time_textview)
+        settingsViewModel.breakTime.observe(viewLifecycleOwner, Observer {
+            var text = ""
+            when (it) {
+                0 -> text = "5분"
+                1 -> text = "10분"
+                2 -> text = "15분"
+                3 -> text = "20분"
+                4 -> text = "25분"
+                5 -> text = "30분"
+            }
+            breakTimeTextView.text = text
+        })
+
 
         // 집중 시간 설정
         val constraintLayout = root.findViewById<ConstraintLayout>(R.id.concentrationTimeLayout)
@@ -54,6 +68,36 @@ class SettingsFragment : Fragment() {
         breakTimeLayout.setOnClickListener {
             val dlg = Dialog(requireContext())
             dlg.setContentView(R.layout.dialog_breaktime)
+
+            // 라디오 그룹
+            val radioGroup = dlg.findViewById<RadioGroup>(R.id.radioGroup)
+            var buttonId = 0
+            when (settingsViewModel.breakTime.value) {
+                0 -> buttonId = R.id.radio_break_time1
+                1 -> buttonId = R.id.radio_break_time2
+                2 -> buttonId = R.id.radio_break_time3
+                3 -> buttonId = R.id.radio_break_time4
+                4 -> buttonId = R.id.radio_break_time5
+                5 -> buttonId = R.id.radio_break_time6
+            }
+            radioGroup.check(buttonId)
+            radioGroup.setOnCheckedChangeListener { _, checkedId ->
+                when (checkedId) {
+                    R.id.radio_break_time1 -> settingsViewModel.breakTime.value = 0
+                    R.id.radio_break_time2 -> settingsViewModel.breakTime.value = 1
+                    R.id.radio_break_time3 -> settingsViewModel.breakTime.value = 2
+                    R.id.radio_break_time4 -> settingsViewModel.breakTime.value = 3
+                    R.id.radio_break_time5 -> settingsViewModel.breakTime.value = 4
+                    R.id.radio_break_time6 -> settingsViewModel.breakTime.value = 5
+                }
+            }
+
+            // 확인 버튼
+            val okButton = dlg.findViewById<Button>(R.id.break_time_ok_button)
+            okButton.setOnClickListener {
+                dlg.dismiss()
+            }
+
             dlg.show()
         }
 
