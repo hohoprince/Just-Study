@@ -9,12 +9,25 @@ import com.sunhoon.juststudy.time.TimeConverter
 
 class StudyViewModel : ViewModel() {
 
+    // 시간 텍스트
     private val _time = MutableLiveData<String>().apply {
         value = "00:00:00"
     }
     val time: LiveData<String> = _time
+
+    // 현재 램프 밝기
+    private val _currentLight = MutableLiveData<Int>().apply {
+        value = 0
+    }
+    var currentLight: LiveData<Int> = _currentLight
+
+    // 타이머
     private lateinit var studyTimer : StudyTimer
+
+    // 타이머의 남은 시간
     private var remainTime: Long = 0L
+
+
 
 
     // 타이머 시작
@@ -33,6 +46,10 @@ class StudyViewModel : ViewModel() {
     fun setUserTime(userTime: Long) {
         remainTime = userTime
         _time.value = TimeConverter.longToStringTime(userTime)
+    }
+
+    fun setCurrentLight(value: Int) {
+        _currentLight.value = value
     }
 
 //    private val _text = MutableLiveData<String>().apply {

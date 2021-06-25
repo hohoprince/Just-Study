@@ -32,10 +32,30 @@ class StudyFragment : Fragment() {
 //        })
 
         // 스톱워치 / 타이머 텍스트뷰
-        val timeTextView: TextView = root.findViewById(R.id.time)
+        val timeTextView = root.findViewById<TextView>(R.id.time)
         studyViewModel.time.observe(viewLifecycleOwner, Observer {
             timeTextView.text = it
         })
+
+        val angleTextView = root.findViewById<TextView>(R.id.angle_textview)
+
+        val lightTextView = root.findViewById<TextView>(R.id.light_textview)
+        studyViewModel.currentLight.observe(viewLifecycleOwner, Observer {
+            var text = ""
+            when (it) {
+                0 -> text = "자동"
+                1 -> text = "사용 안함"
+                2 -> text = "3500k"
+                3 -> text = "5000k"
+                4 -> text = "6500k"
+            }
+            lightTextView.text = text
+        })
+
+        val noiseTextView = root.findViewById<TextView>(R.id.noise_textview)
+
+        val focusTextView = root.findViewById<TextView>(R.id.focus_textview)
+
 
         // 시간 텍스트뷰 클릭시 시간 세팅
         timeTextView.setOnClickListener {
@@ -61,6 +81,34 @@ class StudyFragment : Fragment() {
         lightLayout.setOnClickListener {
             val dlg = Dialog(requireContext())
             dlg.setContentView(R.layout.dialog_lamp)
+
+            // 라디오 그룹
+            val radioGroup = dlg.findViewById<RadioGroup>(R.id.radioGroup)
+            var buttonId = 0
+            when (studyViewModel.currentLight.value) {
+                0 -> buttonId = R.id.radio_lamp_auto
+                1 -> buttonId = R.id.radio_lamp_off
+                2 -> buttonId = R.id.radio_lamp_3500
+                3 -> buttonId = R.id.radio_lamp_5000
+                4 -> buttonId = R.id.radio_lamp_6500
+            }
+            radioGroup.check(buttonId)
+            radioGroup.setOnCheckedChangeListener { _, checkedId ->
+                when (checkedId) {
+                    R.id.radio_lamp_auto -> studyViewModel.setCurrentLight(0)
+                    R.id.radio_lamp_off -> studyViewModel.setCurrentLight(1)
+                    R.id.radio_lamp_3500 -> studyViewModel.setCurrentLight(2)
+                    R.id.radio_lamp_5000 -> studyViewModel.setCurrentLight(3)
+                    R.id.radio_lamp_6500 -> studyViewModel.setCurrentLight(4)
+                }
+            }
+
+            // 확인 버튼
+            val okButton = dlg.findViewById<Button>(R.id.lamp_ok_button)
+            okButton.setOnClickListener {
+                dlg.dismiss()
+            }
+
             dlg.show()
         }
 

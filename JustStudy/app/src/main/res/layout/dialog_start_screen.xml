@@ -18,19 +18,19 @@
                 android:text="홈"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/radioButton"/>
+                android:id="@+id/radio_lamp_auto"/>
 
         <RadioButton
                 android:text="공부"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/radioButton2"/>
+                android:id="@+id/radio_lamp_off"/>
 
         <RadioButton
                 android:text="설정"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/radioButton3"/>
+                android:id="@+id/radio_lamp_3500"/>
 
     </RadioGroup>
 
@@ -50,7 +50,7 @@
             android:text="확인"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/button4"
+            android:id="@+id/lamp_ok_button"
             app:layout_constraintTop_toBottomOf="@+id/radioGroup"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
