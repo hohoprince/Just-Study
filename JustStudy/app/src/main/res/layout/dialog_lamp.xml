@@ -67,5 +67,5 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:cornerRadius="8dp"
-            android:backgroundTint="@color/orange"/>
+            android:backgroundTint="@color/navy_light"/>
 </androidx.constraintlayout.widget.ConstraintLayout>
