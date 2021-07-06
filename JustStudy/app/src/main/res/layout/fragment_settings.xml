@@ -37,17 +37,6 @@
                     app:layout_constraintStart_toEndOf="@+id/imageView"
                     android:layout_marginStart="8dp"/>
 
-            <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/text_con_time"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    android:textSize="16sp"
-                    android:textColor="@color/navy_primary"
-                    tools:text="0분"/>
-
             <ImageView
                     android:src="@drawable/ic_book_24dp"
                     android:layout_width="wrap_content"
@@ -56,6 +45,32 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent"/>
+
+            <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent">
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/text_con_time"
+                        android:textSize="16sp"
+                        android:textColor="@color/navy_primary"
+                        tools:text="0"/>
+
+                <TextView
+                        android:text="분"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/textView3"
+                        android:layout_weight="1"
+                        android:textColor="@color/navy_primary"
+                        android:textSize="16sp"/>
+            </LinearLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <View

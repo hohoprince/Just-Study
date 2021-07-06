@@ -17,7 +17,7 @@ class SettingsViewModel : ViewModel() {
     }
 
     // 시작 화면 설정 값
-    val startScreen = MutableLiveData<Int>().apply {
+    var startScreen = MutableLiveData<Int>().apply {
         value = 0
     }
 

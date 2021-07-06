@@ -222,7 +222,7 @@
                         android:textSize="22sp"
                         android:textColor="@color/navy_light"
                         android:gravity="center"
-                        tools:text="20"/>
+                        android:text="0"/>
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>

@@ -2,7 +2,6 @@ package com.sunhoon.juststudy.ui.study
 
 import android.app.Dialog
 import android.app.TimePickerDialog
-import android.graphics.drawable.Icon
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -13,6 +12,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.sunhoon.juststudy.R
+import com.sunhoon.juststudy.data.SharedPref
 import com.sunhoon.juststudy.time.TimeConverter
 
 class StudyFragment : Fragment() {
@@ -27,6 +27,12 @@ class StudyFragment : Fragment() {
         studyViewModel =
             ViewModelProvider(this).get(StudyViewModel::class.java)
         val root = inflater.inflate(R.layout.fragment_study, container, false)
+
+        // SharedPreference 값 불러오기
+        val sharedPref = SharedPref.getSharedPref(requireActivity())
+        studyViewModel.setCurrentAngle(sharedPref.getInt("angle", 0))
+        studyViewModel.setCurrentLight(sharedPref.getInt("light", 0))
+        studyViewModel.setCurrentNoise(sharedPref.getInt("whiteNoise", 0))
 
         // 스톱워치 / 타이머 텍스트뷰
         val timeTextView = root.findViewById<TextView>(R.id.time)
@@ -45,6 +51,7 @@ class StudyFragment : Fragment() {
                 4 -> text = "45º"
             }
             angleTextView.text = text
+            sharedPref.edit().putInt("angle", it).apply()
         })
 
         val lightTextView = root.findViewById<TextView>(R.id.light_textview)
@@ -58,6 +65,7 @@ class StudyFragment : Fragment() {
                 4 -> text = "6500k"
             }
             lightTextView.text = text
+            sharedPref.edit().putInt("light", it).apply()
         })
 
         val noiseTextView = root.findViewById<TextView>(R.id.noise_textview)
@@ -72,6 +80,7 @@ class StudyFragment : Fragment() {
                 5 -> text = "빗소리"
             }
             noiseTextView.text = text
+            sharedPref.edit().putInt("whiteNoise", it).apply()
         })
 
 
@@ -80,7 +89,7 @@ class StudyFragment : Fragment() {
             val timePickerDialog = TimePickerDialog(it.context,
                 android.R.style.Theme_Holo_Light_Dialog_NoActionBar,
                 TimePickerDialog.OnTimeSetListener { _, hourOfDay, minute ->
-                    studyViewModel.setUserTime(TimeConverter.dayMinuteToLong(hourOfDay, minute))
+                    studyViewModel.setUserTime(TimeConverter.hourMinuteToLong(hourOfDay, minute))
             }, 0, 0, true)
             timePickerDialog.window?.setBackgroundDrawableResource(android.R.color.transparent);
             timePickerDialog.show()

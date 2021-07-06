@@ -14,6 +14,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.sunhoon.juststudy.R
+import com.sunhoon.juststudy.data.SharedPref
 import com.sunhoon.juststudy.time.TimeConverter
 
 class SettingsFragment : Fragment() {
@@ -28,6 +29,12 @@ class SettingsFragment : Fragment() {
         settingsViewModel =
             ViewModelProvider(this).get(SettingsViewModel::class.java)
         val root = inflater.inflate(R.layout.fragment_settings, container, false)
+
+        // SharedPreference 값 불러오기
+        val sharedPref = SharedPref.getSharedPref(requireActivity())
+        settingsViewModel.startScreen.value = sharedPref.getInt("startScreen", 0)
+        settingsViewModel.breakTime.value = sharedPref.getInt("breakTime", 0)
+        settingsViewModel.setStringConTime(TimeConverter.longToStringMinute(sharedPref.getLong("conTime", 0L)))
 
         // 집중 시간 텍스트 뷰
         val textConTime = root.findViewById<TextView>(R.id.text_con_time)
@@ -48,6 +55,7 @@ class SettingsFragment : Fragment() {
                 5 -> text = "30분"
             }
             breakTimeTextView.text = text
+            sharedPref.edit().putInt("breakTime", it).apply()
         })
 
         val startScreenTextView = root.findViewById<TextView>(R.id.start_screen_textview)
@@ -57,6 +65,7 @@ class SettingsFragment : Fragment() {
                 1 -> startScreenTextView.text = "공부"
                 2 -> startScreenTextView.text = "설정"
             }
+            sharedPref.edit().putInt("startScreen", it).apply()
         })
 
         // 집중 시간 설정
@@ -65,7 +74,8 @@ class SettingsFragment : Fragment() {
             val timePickerDialog = TimePickerDialog(it.context,
                 android.R.style.Theme_Holo_Light_Dialog_NoActionBar,
                 TimePickerDialog.OnTimeSetListener { _, hourOfDay, minute ->
-                    settingsViewModel.setStringConTime(TimeConverter.dayMinuteToStringMinute(hourOfDay, minute))
+                    settingsViewModel.setStringConTime(TimeConverter.hourMinuteToStringMinute(hourOfDay, minute))
+                    sharedPref.edit().putLong("conTime", TimeConverter.hourMinuteToLong(hourOfDay, minute)).apply()
                 }, 0, 0, true)
             timePickerDialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
             timePickerDialog.show()
