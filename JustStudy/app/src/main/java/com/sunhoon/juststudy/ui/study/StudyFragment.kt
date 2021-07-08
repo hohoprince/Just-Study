@@ -13,11 +13,13 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.sunhoon.juststudy.R
 import com.sunhoon.juststudy.data.SharedPref
+import com.sunhoon.juststudy.data.StatusManager
 import com.sunhoon.juststudy.time.TimeConverter
 
 class StudyFragment : Fragment() {
 
     private lateinit var studyViewModel: StudyViewModel
+    private val statusManager = StatusManager.getInstance()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -33,6 +35,7 @@ class StudyFragment : Fragment() {
         studyViewModel.setCurrentAngle(sharedPref.getInt("angle", 0))
         studyViewModel.setCurrentLight(sharedPref.getInt("light", 0))
         studyViewModel.setCurrentNoise(sharedPref.getInt("whiteNoise", 0))
+        studyViewModel.setUserTime(sharedPref.getLong("conTime", 0L))
 
         // 스톱워치 / 타이머 텍스트뷰
         val timeTextView = root.findViewById<TextView>(R.id.time)
@@ -211,18 +214,22 @@ class StudyFragment : Fragment() {
             Log.d("myLog", "미구현")
         }
 
-        var isPlaying = false
         // 시작 버튼
         val playButton = root.findViewById<ImageButton>(R.id.play_button)
-        playButton.setOnClickListener {
-            if (isPlaying) {
-                studyViewModel.stopTimer()
+
+        studyViewModel.isPlaying.observe(viewLifecycleOwner, Observer {
+            if (it) {
+                playButton.setImageResource(R.drawable.ic_baseline_stop_36)
+            } else {
                 playButton.setImageResource(R.drawable.ic_baseline_play_arrow_36)
-                isPlaying = false
+            }
+        })
+
+        playButton.setOnClickListener {
+            if (studyViewModel.isPlaying.value == true) {
+                studyViewModel.stopTimer()
             } else {
                 studyViewModel.startTimer()
-                playButton.setImageResource(R.drawable.ic_baseline_stop_36)
-                isPlaying = true
             }
         }
 

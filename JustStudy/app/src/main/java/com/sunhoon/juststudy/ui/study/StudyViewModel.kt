@@ -4,10 +4,14 @@ import android.widget.Chronometer
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.sunhoon.juststudy.data.StatusManager
+import com.sunhoon.juststudy.enum.ProgressStatus
 import com.sunhoon.juststudy.time.StudyTimer
 import com.sunhoon.juststudy.time.TimeConverter
 
 class StudyViewModel : ViewModel() {
+
+    val statusManager = StatusManager.getInstance()
 
     // 시간 텍스트
     private val _time = MutableLiveData<String>().apply {
@@ -33,6 +37,10 @@ class StudyViewModel : ViewModel() {
     }
     var currentNoise: LiveData<Int> = _currentNoise
 
+    var isPlaying: MutableLiveData<Boolean> = MutableLiveData<Boolean>().apply {
+        value = false;
+    }
+
 
     // 타이머
     private lateinit var studyTimer : StudyTimer
@@ -45,12 +53,17 @@ class StudyViewModel : ViewModel() {
 
     // 타이머 시작
     fun startTimer() {
-        studyTimer = StudyTimer(remainTime, 1000, _time)
+        studyTimer = StudyTimer(remainTime, 1000, _time, this)
+        isPlaying.value = true;
+        if (statusManager.progressStatus == ProgressStatus.WAITING) {
+            statusManager.progressStatus = ProgressStatus.STUDYING
+        }
         studyTimer.start()
     }
 
     // 타이머 종료
     fun stopTimer() {
+        isPlaying.value = false;
         studyTimer.cancel()
         studyTimer.onFinish()
     }
