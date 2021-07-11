@@ -28,12 +28,12 @@ class StudyTimer(millisInFuture: Long, countDownInterval: Long, private var time
             ProgressStatus.STUDYING -> {
                 timeText.value = "공부 끝!"
                 statusManager.progressStatus = ProgressStatus.RESTING
-                viewModel.isPlaying.value = false;
+                viewModel.isPlaying.value = false
             }
             ProgressStatus.RESTING -> {
                 timeText.value = "휴식 끝!"
                 statusManager.progressStatus = ProgressStatus.WAITING
-                viewModel.isPlaying.value = false;
+                viewModel.isPlaying.value = false
             }
             else -> timeText.value = "Finish~"
         }

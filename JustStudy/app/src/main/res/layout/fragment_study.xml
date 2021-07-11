@@ -199,7 +199,7 @@
                     android:layout_height="100dp"
                     android:background="@drawable/rect"
                     android:layout_margin="16dp"
-                    android:id="@+id/focus_layout"
+                    android:id="@+id/concentration_layout"
                     android:clickable="true"
                     android:focusable="auto"
                     android:gravity="center_vertical">
@@ -217,7 +217,7 @@
                 <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:id="@+id/focus_textview"
+                        android:id="@+id/concentration_textview"
                         android:layout_margin="4dp"
                         android:textSize="22sp"
                         android:textColor="@color/navy_light"

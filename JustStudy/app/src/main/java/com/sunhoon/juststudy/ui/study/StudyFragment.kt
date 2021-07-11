@@ -12,9 +12,11 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.sunhoon.juststudy.R
+import com.sunhoon.juststudy.data.ConcentrationSource
 import com.sunhoon.juststudy.data.SharedPref
 import com.sunhoon.juststudy.data.StatusManager
 import com.sunhoon.juststudy.time.TimeConverter
+import org.w3c.dom.Text
 
 class StudyFragment : Fragment() {
 
@@ -43,6 +45,7 @@ class StudyFragment : Fragment() {
             timeTextView.text = it
         })
 
+        // 책상 각도 텍스트 뷰
         val angleTextView = root.findViewById<TextView>(R.id.angle_textview)
         studyViewModel.currentAngle.observe(viewLifecycleOwner, Observer {
             var text = ""
@@ -57,6 +60,7 @@ class StudyFragment : Fragment() {
             sharedPref.edit().putInt("angle", it).apply()
         })
 
+        // 램프 밝기 텍스트 뷰
         val lightTextView = root.findViewById<TextView>(R.id.light_textview)
         studyViewModel.currentLight.observe(viewLifecycleOwner, Observer {
             var text = ""
@@ -71,6 +75,7 @@ class StudyFragment : Fragment() {
             sharedPref.edit().putInt("light", it).apply()
         })
 
+        // 백색 소음 텍스트 뷰
         val noiseTextView = root.findViewById<TextView>(R.id.noise_textview)
         studyViewModel.currentNoise.observe(viewLifecycleOwner, Observer {
             var text = ""
@@ -86,6 +91,11 @@ class StudyFragment : Fragment() {
             sharedPref.edit().putInt("whiteNoise", it).apply()
         })
 
+        val concentrationTextView = root.findViewById<TextView>(R.id.concentration_textview)
+        studyViewModel.currentConcentration.observe(viewLifecycleOwner, Observer {
+            concentrationTextView.text = it.toString()
+        })
+
 
         // 시간 텍스트뷰 클릭시 시간 세팅
         timeTextView.setOnClickListener {
@@ -94,12 +104,12 @@ class StudyFragment : Fragment() {
                 TimePickerDialog.OnTimeSetListener { _, hourOfDay, minute ->
                     studyViewModel.setUserTime(TimeConverter.hourMinuteToLong(hourOfDay, minute))
             }, 0, 0, true)
-            timePickerDialog.window?.setBackgroundDrawableResource(android.R.color.transparent);
+            timePickerDialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
             timePickerDialog.show()
         }
 
         // 책상 각도 다이얼로그
-        val angleLayout = root.findViewById<LinearLayout>(R.id.angle_layout);
+        val angleLayout = root.findViewById<LinearLayout>(R.id.angle_layout)
         angleLayout.setOnClickListener {
             val dlg = Dialog(requireContext())
             dlg.setContentView(R.layout.dialog_angle)
@@ -135,7 +145,7 @@ class StudyFragment : Fragment() {
         }
 
         // 램프 밝기 다이얼로그
-        val lightLayout = root.findViewById<LinearLayout>(R.id.light_layout);
+        val lightLayout = root.findViewById<LinearLayout>(R.id.light_layout)
         lightLayout.setOnClickListener {
             val dlg = Dialog(requireContext())
             dlg.setContentView(R.layout.dialog_lamp)
@@ -171,7 +181,7 @@ class StudyFragment : Fragment() {
         }
 
         // 백색 소음 다이얼로그
-        val noiseLayout = root.findViewById<LinearLayout>(R.id.noise_layout);
+        val noiseLayout = root.findViewById<LinearLayout>(R.id.noise_layout)
         noiseLayout.setOnClickListener {
             val dlg = Dialog(requireContext())
             dlg.setContentView(R.layout.dialog_white_noise)
@@ -209,9 +219,35 @@ class StudyFragment : Fragment() {
         }
 
         // 집중도 다이얼로그
-        val focusLayout = root.findViewById<LinearLayout>(R.id.focus_layout);
-        focusLayout.setOnClickListener {
-            Log.d("myLog", "미구현")
+        val concentrationLayout = root.findViewById<LinearLayout>(R.id.concentration_layout)
+        concentrationLayout.setOnClickListener {
+            val dlg = Dialog(requireContext())
+            dlg.setContentView(R.layout.dialog_concentration)
+
+            val concentrationImageView = dlg.findViewById<ImageView>(R.id.concentration_image_view)
+            val concentrationTextView = dlg.findViewById<TextView>(R.id.concentration_textview)
+            val currentConcentration: Int = studyViewModel.currentConcentration.value!!
+
+            if (currentConcentration < 30) {
+                concentrationImageView.setImageResource(ConcentrationSource.lowConcentrationImageSource)
+                concentrationTextView.text = ConcentrationSource.lowConcentrationText
+            } else if (currentConcentration < 60) {
+                concentrationImageView.setImageResource(ConcentrationSource.normalConcentrationImageSource)
+                concentrationTextView.text = ConcentrationSource.normalConcentrationText
+            } else if (currentConcentration < 100) {
+                concentrationImageView.setImageResource(ConcentrationSource.highConcentrationImageSource)
+                concentrationTextView.text = ConcentrationSource.highConcentrationText
+            } else {
+                // TODO: error 처리
+            }
+
+            // 확인 버튼
+            val okButton = dlg.findViewById<Button>(R.id.concentration_ok_button)
+            okButton.setOnClickListener {
+                dlg.dismiss()
+            }
+
+            dlg.show()
         }
 
         // 시작 버튼

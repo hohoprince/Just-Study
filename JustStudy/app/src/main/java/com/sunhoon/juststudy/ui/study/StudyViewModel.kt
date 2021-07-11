@@ -37,8 +37,14 @@ class StudyViewModel : ViewModel() {
     }
     var currentNoise: LiveData<Int> = _currentNoise
 
+    // 현재 집중도
+    private val _currentConcentration = MutableLiveData<Int>().apply {
+        value = 61
+    }
+    var currentConcentration: LiveData<Int> = _currentConcentration
+
     var isPlaying: MutableLiveData<Boolean> = MutableLiveData<Boolean>().apply {
-        value = false;
+        value = false
     }
 
 
@@ -54,7 +60,7 @@ class StudyViewModel : ViewModel() {
     // 타이머 시작
     fun startTimer() {
         studyTimer = StudyTimer(remainTime, 1000, _time, this)
-        isPlaying.value = true;
+        isPlaying.value = true
         if (statusManager.progressStatus == ProgressStatus.WAITING) {
             statusManager.progressStatus = ProgressStatus.STUDYING
         }
@@ -63,7 +69,7 @@ class StudyViewModel : ViewModel() {
 
     // 타이머 종료
     fun stopTimer() {
-        isPlaying.value = false;
+        isPlaying.value = false
         studyTimer.cancel()
         studyTimer.onFinish()
     }
