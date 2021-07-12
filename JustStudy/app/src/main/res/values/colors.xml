@@ -10,6 +10,7 @@
     <color name="navy_primary">#ff1976D2</color>
     <color name="navy_light">#ff448AFF</color>
     <color name="navy_dark">#ff1976D2</color>
+    <color name="navy_alpha">#FF1976D2</color>
     <color name="gray_light">#FFF1F1F7</color>
     <color name="red_light">#FFFF5252</color>
     <color name="orange">#FFFF9800</color>

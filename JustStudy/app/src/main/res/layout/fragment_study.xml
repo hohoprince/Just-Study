@@ -6,23 +6,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".ui.study.StudyFragment">
-<!--    <com.google.android.material.tabs.TabLayout-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            app:layout_constraintTop_toTopOf="parent" app:layout_constraintStart_toStartOf="parent"-->
-<!--            app:layout_constraintEnd_toEndOf="parent" android:id="@+id/tabLayout">-->
 
-<!--        <com.google.android.material.tabs.TabItem-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:text="스톱워치"/>-->
-
-<!--        <com.google.android.material.tabs.TabItem-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:text="타이머"/>-->
-
-<!--    </com.google.android.material.tabs.TabLayout> -->
     <info.hoang8f.android.segmented.SegmentedGroup
             android:id="@+id/segmented2"
             android:layout_width="wrap_content"
@@ -74,13 +58,19 @@
             android:textSize="48sp"
             android:textColor="@color/black"
             app:layout_constraintBottom_toTopOf="@+id/guideline2"/>
+
     <LinearLayout
             android:orientation="vertical"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintStart_toStartOf="parent" app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             android:id="@+id/linearLayout3"
-            app:layout_constraintTop_toTopOf="@+id/guideline2" app:layout_constraintBottom_toTopOf="@+id/guideline3">
+            app:layout_constraintTop_toTopOf="@+id/guideline2"
+            app:layout_constraintBottom_toTopOf="@+id/guideline3"
+            android:background="@drawable/rect"
+            android:padding="8dp">
+
         <LinearLayout
                 android:orientation="horizontal"
                 android:layout_width="wrap_content"
@@ -90,8 +80,7 @@
                     android:orientation="vertical"
                     android:layout_width="100dp"
                     android:layout_height="100dp"
-                    android:background="@drawable/rect"
-                    android:layout_margin="16dp"
+                    android:layout_margin="8dp"
                     android:id="@+id/angle_layout"
                     android:clickable="true"
                     android:focusable="auto"
@@ -118,22 +107,28 @@
                         tools:text="15º"/>
             </LinearLayout>
 
+            <View
+                    android:layout_width="1dp"
+                    android:layout_height="match_parent"
+                    android:background="@color/gray_light"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"/>
+
             <LinearLayout
                     android:orientation="vertical"
                     android:layout_width="100dp"
                     android:layout_height="100dp"
-                    android:background="@drawable/rect"
-                    android:layout_margin="16dp"
-                    android:id="@+id/light_layout"
+                    android:layout_margin="8dp"
+                    android:id="@+id/height_layout"
                     android:clickable="true"
                     android:focusable="auto"
                     android:gravity="center_vertical">
 
                 <TextView
-                        android:text="램프 밝기"
+                        android:text="책상 높이"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:id="@+id/textView5"
+                        android:id="@+id/textView11"
                         android:layout_margin="4dp"
                         android:textSize="12sp"
                         android:textColor="@color/black"
@@ -142,14 +137,59 @@
                 <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:id="@+id/light_textview"
+                        android:id="@+id/height_textview"
                         android:layout_margin="4dp"
                         android:textSize="22sp"
                         android:textColor="@color/navy_light"
                         android:gravity="center"
-                        tools:text="6500k"/>
+                        android:text="50"
+                        tools:text="50"/>
+            </LinearLayout>
+
+            <View
+                    android:layout_width="1dp"
+                    android:layout_height="match_parent"
+                    android:background="@color/gray_light"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"/>
+
+            <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_margin="8dp"
+                    android:id="@+id/concentration_layout"
+                    android:clickable="true"
+                    android:focusable="auto"
+                    android:gravity="center_vertical">
+
+                <TextView
+                        android:text="집중도"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/textView9"
+                        android:layout_margin="4dp"
+                        android:textSize="12sp"
+                        android:textColor="@color/black"
+                        android:gravity="center"/>
+
+                <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/concentration_textview"
+                        android:layout_margin="4dp"
+                        android:textSize="22sp"
+                        android:textColor="@color/navy_light"
+                        android:gravity="center"
+                        android:text="0"/>
             </LinearLayout>
         </LinearLayout>
+
+        <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/gray_light"/>
+
         <LinearLayout
                 android:orientation="horizontal"
                 android:layout_width="wrap_content"
@@ -159,8 +199,7 @@
                     android:orientation="vertical"
                     android:layout_width="100dp"
                     android:layout_height="100dp"
-                    android:background="@drawable/rect"
-                    android:layout_margin="16dp"
+                    android:layout_margin="8dp"
                     android:id="@+id/noise_layout"
                     android:clickable="true"
                     android:focusable="auto"
@@ -193,22 +232,28 @@
                         />
             </LinearLayout>
 
+            <View
+                    android:layout_width="1dp"
+                    android:layout_height="match_parent"
+                    android:background="@color/gray_light"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"/>
+
             <LinearLayout
                     android:orientation="vertical"
                     android:layout_width="100dp"
                     android:layout_height="100dp"
-                    android:background="@drawable/rect"
-                    android:layout_margin="16dp"
-                    android:id="@+id/concentration_layout"
+                    android:layout_margin="8dp"
+                    android:id="@+id/light_layout"
                     android:clickable="true"
                     android:focusable="auto"
                     android:gravity="center_vertical">
 
                 <TextView
-                        android:text="집중도"
+                        android:text="램프 밝기"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:id="@+id/textView9"
+                        android:id="@+id/textView5"
                         android:layout_margin="4dp"
                         android:textSize="12sp"
                         android:textColor="@color/black"
@@ -217,13 +262,52 @@
                 <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:id="@+id/concentration_textview"
+                        android:id="@+id/light_textview"
+                        android:layout_margin="4dp"
+                        android:textSize="22sp"
+                        android:textColor="@color/navy_light"
+                        android:gravity="center"
+                        tools:text="6500k"/>
+            </LinearLayout>
+
+            <View
+                    android:layout_width="1dp"
+                    android:layout_height="match_parent"
+                    android:background="@color/gray_light"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"/>
+
+            <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_margin="8dp"
+                    android:id="@+id/min_concentration_layout"
+                    android:clickable="true"
+                    android:focusable="auto"
+                    android:gravity="center_vertical">
+
+                <TextView
+                        android:text="최소 집중도"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/textView91"
+                        android:layout_margin="4dp"
+                        android:textSize="12sp"
+                        android:textColor="@color/black"
+                        android:gravity="center"/>
+
+                <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/min_concentration_textview"
                         android:layout_margin="4dp"
                         android:textSize="22sp"
                         android:textColor="@color/navy_light"
                         android:gravity="center"
                         android:text="0"/>
             </LinearLayout>
+
         </LinearLayout>
     </LinearLayout>
     <androidx.constraintlayout.widget.Guideline
