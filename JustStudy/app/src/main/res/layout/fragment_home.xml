@@ -180,12 +180,12 @@
                         style="@style/RadioButton"/>
             </info.hoang8f.android.segmented.SegmentedGroup>
 
-            <TextView
-                    android:text="그래프"
-                    android:layout_width="wrap_content"
-                    android:layout_height="500dp" android:id="@+id/textView4"
-                    android:layout_marginTop="32dp" android:textSize="100sp" android:layout_gravity="center"/>
-
+            <com.github.mikephil.charting.charts.LineChart
+                    android:id="@+id/lineChart"
+                    android:layout_weight="1"
+                    android:layout_width="match_parent"
+                    android:layout_height="300dp"
+                    android:layout_margin="16dp"/>
         </LinearLayout>
     </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

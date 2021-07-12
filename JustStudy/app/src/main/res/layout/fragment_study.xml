@@ -305,7 +305,7 @@
                         android:textSize="22sp"
                         android:textColor="@color/navy_light"
                         android:gravity="center"
-                        android:text="0"/>
+                        android:text="20"/>
             </LinearLayout>
 
         </LinearLayout>
