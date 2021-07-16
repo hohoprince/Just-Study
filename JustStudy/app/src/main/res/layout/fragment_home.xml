@@ -13,13 +13,33 @@
             app:layout_constraintBottom_toBottomOf="parent">
         <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
                       android:orientation="vertical">
-            <TextView
-                    android:text="추천 환경"
-                    android:id="@+id/title"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp" android:layout_marginStart="16dp" android:textSize="18sp"
-                    android:textStyle="bold" android:textColor="@color/black" android:fontFamily="sans-serif"/>
+
+            <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="left|center_vertical"
+                    android:padding="16dp">
+
+                <ImageView
+                        android:src="@drawable/ic_desk_24dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/imageView5"
+                        />
+
+                <TextView
+                        android:text="추천 환경"
+                        android:id="@+id/title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/black"
+                        android:fontFamily="sans-serif"
+                        android:layout_marginLeft="8dp"/>
+            </LinearLayout>
+
             <LinearLayout
                     android:orientation="horizontal"
                     android:layout_width="match_parent"
@@ -30,11 +50,16 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content" android:layout_weight="1"
                         android:gravity="center" android:padding="16dp">
+
                     <TextView
-                            android:text="30º"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content" android:textColor="@color/navy_light"
-                            android:layout_margin="8dp" android:textSize="24sp" android:textStyle="bold"/>
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/navy_light"
+                            android:layout_margin="8dp"
+                            android:textSize="24sp"
+                            android:textStyle="bold"
+                            tools:text="0º"
+                            android:text="30º"/>
                     <TextView
                             android:text="책상 각도"
                             android:layout_width="wrap_content"
@@ -46,11 +71,16 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content" android:layout_weight="1" android:gravity="center"
                         android:padding="16dp">
+
                     <TextView
-                            android:text="5000k"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content" android:textColor="@color/navy_light"
-                            android:layout_margin="8dp" android:textSize="24sp" android:textStyle="bold"/>
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/navy_light"
+                            android:layout_margin="8dp"
+                            android:textSize="24sp"
+                            android:textStyle="bold"
+                            tools:text="0k"
+                            android:text="5000k"/>
                     <TextView
                             android:text="램프 밝기"
                             android:layout_width="wrap_content"
@@ -62,11 +92,16 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content" android:layout_weight="1" android:gravity="center"
                         android:padding="16dp">
+
                     <TextView
-                            android:text="빗소리"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content" android:textColor="@color/navy_light"
-                            android:layout_margin="8dp" android:textSize="24sp" android:textStyle="bold"/>
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/navy_light"
+                            android:layout_margin="8dp"
+                            android:textSize="24sp"
+                            android:textStyle="bold"
+                            tools:text="빗소리"
+                            android:text="빗소리"/>
                     <TextView
                             android:text="백색 소음"
                             android:layout_width="wrap_content"
@@ -80,42 +115,77 @@
                     android:layout_height="30dp"
                     android:background="@color/gray_light"
                     android:id="@+id/view"/>
-            <TextView
-                    android:text="통계"
-                    android:id="@+id/title2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp" android:textSize="18sp"
-                    android:textStyle="bold" android:textColor="@color/black" android:fontFamily="sans-serif"
-                    android:layout_marginTop="16dp"/>
+
             <LinearLayout
                     android:orientation="horizontal"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp" android:id="@+id/linearLayout2" android:padding="16dp">
-                <Button
-                        android:text="일"
+                    android:layout_height="match_parent"
+                    android:gravity="left|center_vertical"
+                    android:padding="16dp">
+
+                <ImageView
+                        android:src="@drawable/ic_statistics_24dp"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" android:id="@+id/button" android:layout_weight="1"
-                        android:minWidth="60dp"/>
-                <Button
-                        android:text="주"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/imageView6"
+                        />
+
+                <TextView
+                        android:text="통계"
+                        android:id="@+id/title2"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" android:id="@+id/button2" android:layout_weight="1"
-                        android:backgroundTint="@color/gray_light" android:textColor="@color/black"
-                        android:minWidth="60dp"/>
-                <Button
-                        android:text="월"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" android:id="@+id/button3" android:layout_weight="1"
-                        android:backgroundTint="@color/gray_light" android:textColor="@color/black"
-                        android:minWidth="60dp"/>
+                        android:layout_height="wrap_content"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/black"
+                        android:fontFamily="sans-serif"
+                        android:layout_marginLeft="8dp"/>
             </LinearLayout>
-            <TextView
-                    android:text="그래프"
+
+            <info.hoang8f.android.segmented.SegmentedGroup
+                    android:id="@+id/segmented2"
                     android:layout_width="wrap_content"
-                    android:layout_height="500dp" android:id="@+id/textView4"
-                    android:layout_marginTop="32dp" android:textSize="100sp" android:layout_gravity="center"/>
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    app:sc_border_width="2dp"
+                    app:sc_corner_radius="8dp"
+                    android:layout_gravity="center"
+                    app:sc_tint_color="@color/navy_primary"
+                    app:sc_checked_text_color="@color/white"
+                    android:checkedButton="@id/button21"
+                    android:layout_marginTop="32dp"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginBottom="16dp"
+                    android:layout_marginRight="16dp">
+
+                <RadioButton
+                        android:id="@+id/button21"
+                        android:layout_width="100dp"
+                        android:layout_height="wrap_content"
+                        android:text="일"
+                        style="@style/RadioButton"/>
+
+                <RadioButton
+                        android:id="@+id/button22"
+                        android:layout_width="100dp"
+                        android:layout_height="wrap_content"
+                        android:text="주"
+                        style="@style/RadioButton"/>
+
+                <RadioButton
+                        android:id="@+id/button23"
+                        android:layout_width="100dp"
+                        android:layout_height="wrap_content"
+                        android:text="월"
+                        style="@style/RadioButton"/>
+            </info.hoang8f.android.segmented.SegmentedGroup>
+
+            <com.github.mikephil.charting.charts.LineChart
+                    android:id="@+id/lineChart"
+                    android:layout_weight="1"
+                    android:layout_width="match_parent"
+                    android:layout_height="300dp"
+                    android:layout_margin="16dp"/>
         </LinearLayout>
     </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

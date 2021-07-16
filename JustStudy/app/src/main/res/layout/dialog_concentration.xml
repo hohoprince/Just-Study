@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                                                   xmlns:app="http://schemas.android.com/apk/res-auto"
+                                                   xmlns:tools="http://schemas.android.com/tools"
+                                                   android:layout_width="300dp"
+                                                   android:layout_height="450dp">
+
+    <TextView
+            android:text="집중 상태"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/textView11"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginTop="16dp"
+            android:layout_marginStart="16dp"
+            android:textSize="18sp"
+            android:textColor="@color/black"/>
+
+    <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toTopOf="@+id/concentration_ok_button"
+            app:layout_constraintTop_toBottomOf="@+id/textView11"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:gravity="center">
+
+        <ImageView
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                tools:srcCompat="@drawable/ic_low_concentration"
+                android:id="@+id/concentration_image_view"
+                android:layout_margin="32dp"/>
+
+        <TextView
+                android:text="집중도가 낮아요\n휴식을 취하는게 어떨까요?"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/concentration_textview"
+                android:textAlignment="center"
+                android:textColor="@color/black"
+                android:textSize="18sp"/>
+
+    </LinearLayout>
+
+    <Button
+            android:text="확인"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/concentration_ok_button"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:cornerRadius="8dp"
+            android:backgroundTint="@color/navy_light"
+            android:layout_marginBottom="16dp"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

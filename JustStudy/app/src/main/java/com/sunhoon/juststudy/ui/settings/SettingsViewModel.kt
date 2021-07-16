@@ -6,8 +6,24 @@ import androidx.lifecycle.ViewModel
 
 class SettingsViewModel : ViewModel() {
 
-    private val _text = MutableLiveData<String>().apply {
-        value = "This is notifications Fragment"
+    private val _stringConcentrationTime = MutableLiveData<String>().apply {
+        value = "0분"
     }
-    val text: LiveData<String> = _text
+    val stringConcentrationTime: LiveData<String> = _stringConcentrationTime
+
+    // 휴식 시간 설정값
+    val breakTime = MutableLiveData<Int>().apply {
+        value = 0
+    }
+
+    // 시작 화면 설정 값
+    var startScreen = MutableLiveData<Int>().apply {
+        value = 0
+    }
+
+
+    fun setStringConTime(time: String) {
+        _stringConcentrationTime.value = time
+    }
+
 }
