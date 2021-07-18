@@ -69,7 +69,8 @@
             app:layout_constraintTop_toTopOf="@+id/guideline2"
             app:layout_constraintBottom_toTopOf="@+id/guideline3"
             android:background="@drawable/rect"
-            android:padding="8dp">
+            android:padding="8dp"
+            >
 
         <LinearLayout
                 android:orientation="horizontal"
@@ -78,7 +79,7 @@
 
             <LinearLayout
                     android:orientation="vertical"
-                    android:layout_width="100dp"
+                    android:layout_width="80dp"
                     android:layout_height="100dp"
                     android:layout_margin="8dp"
                     android:id="@+id/angle_layout"
@@ -116,7 +117,7 @@
 
             <LinearLayout
                     android:orientation="vertical"
-                    android:layout_width="100dp"
+                    android:layout_width="80dp"
                     android:layout_height="100dp"
                     android:layout_margin="8dp"
                     android:id="@+id/height_layout"
@@ -155,7 +156,7 @@
 
             <LinearLayout
                     android:orientation="vertical"
-                    android:layout_width="100dp"
+                    android:layout_width="80dp"
                     android:layout_height="100dp"
                     android:layout_margin="8dp"
                     android:id="@+id/concentration_layout"
@@ -197,7 +198,7 @@
 
             <LinearLayout
                     android:orientation="vertical"
-                    android:layout_width="100dp"
+                    android:layout_width="80dp"
                     android:layout_height="100dp"
                     android:layout_margin="8dp"
                     android:id="@+id/noise_layout"
@@ -241,7 +242,7 @@
 
             <LinearLayout
                     android:orientation="vertical"
-                    android:layout_width="100dp"
+                    android:layout_width="80dp"
                     android:layout_height="100dp"
                     android:layout_margin="8dp"
                     android:id="@+id/light_layout"
@@ -279,7 +280,7 @@
 
             <LinearLayout
                     android:orientation="vertical"
-                    android:layout_width="100dp"
+                    android:layout_width="80dp"
                     android:layout_height="100dp"
                     android:layout_margin="8dp"
                     android:id="@+id/min_concentration_layout"

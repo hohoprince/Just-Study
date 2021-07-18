@@ -1,8 +1,8 @@
 package com.sunhoon.juststudy.time
 
 import android.os.CountDownTimer
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import com.sunhoon.juststudy.data.StatusManager
 import com.sunhoon.juststudy.enum.ProgressStatus
 import com.sunhoon.juststudy.ui.study.StudyViewModel
@@ -14,10 +14,9 @@ class StudyTimer(millisInFuture: Long, countDownInterval: Long, private var time
     private val statusManager = StatusManager.getInstance()
 
     override fun onTick(millisUntilFinished: Long) {
-        val remainTotal = millisUntilFinished / 1000
-        val remainHours = "%02d".format(remainTotal / (60 * 60))
-        val remainMinutes = "%02d".format((remainTotal % (60 * 60)) / 60)
-        val remainSeconds = "%02d".format(remainTotal % 60)
+        val remainHours = "%02d".format(millisUntilFinished / 1000 / (60 * 60))
+        val remainMinutes = "%02d".format((millisUntilFinished / 1000 % (60 * 60)) / 60)
+        val remainSeconds = "%02d".format(millisUntilFinished / 1000 % 60)
 
         timeText.value = "$remainHours:$remainMinutes:$remainSeconds"
     }
@@ -26,16 +25,16 @@ class StudyTimer(millisInFuture: Long, countDownInterval: Long, private var time
 
         when (statusManager.progressStatus) {
             ProgressStatus.STUDYING -> {
-                timeText.value = "공부 끝!"
+                Log.i("MyInfo", "학습 끝")
                 statusManager.progressStatus = ProgressStatus.RESTING
-                viewModel.isPlaying.value = false
+                viewModel.startBreakTimer()
             }
             ProgressStatus.RESTING -> {
-                timeText.value = "휴식 끝!"
-                statusManager.progressStatus = ProgressStatus.WAITING
-                viewModel.isPlaying.value = false
+                Log.i("MyInfo", "휴식 끝")
+                statusManager.progressStatus = ProgressStatus.STUDYING
+                viewModel.startStudyTimer()
             }
-            else -> timeText.value = "Finish~"
+            else -> timeText.value = "Finish"
         }
         // 알람
     }

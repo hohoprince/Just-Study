@@ -1,26 +1,21 @@
 package com.sunhoon.juststudy.ui.study
 
-import android.app.Application
 import android.app.Dialog
 import android.app.TimePickerDialog
+import android.media.MediaPlayer
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.room.Room
 import com.sunhoon.juststudy.R
 import com.sunhoon.juststudy.data.ConcentrationSource
 import com.sunhoon.juststudy.data.SharedPref
 import com.sunhoon.juststudy.data.StatusManager
-import com.sunhoon.juststudy.database.AppDatabase
 import com.sunhoon.juststudy.time.TimeConverter
-import org.w3c.dom.Text
 
 class StudyFragment : Fragment() {
 
@@ -42,7 +37,9 @@ class StudyFragment : Fragment() {
         studyViewModel.setCurrentAngle(sharedPref.getInt("angle", 0))
         studyViewModel.setCurrentLight(sharedPref.getInt("light", 0))
         studyViewModel.setCurrentNoise(sharedPref.getInt("whiteNoise", 0))
-        studyViewModel.setUserTime(sharedPref.getLong("conTime", 0L))
+        statusManager.studyTime = sharedPref.getLong("conTime", 0L)
+        statusManager.breakTime = sharedPref.getInt("breakTime", 0)
+        studyViewModel.setUserTime(statusManager.studyTime)
 
         // 스톱워치 / 타이머 텍스트뷰
         val timeTextView = root.findViewById<TextView>(R.id.time)
@@ -270,9 +267,21 @@ class StudyFragment : Fragment() {
             if (studyViewModel.isPlaying.value == true) {
                 studyViewModel.stopTimer()
             } else {
-                studyViewModel.startTimer()
+                studyViewModel.startStudyTimer()
             }
         }
+
+        // 효과음 플레이어
+        val mediaPlayer: MediaPlayer? = MediaPlayer.create(context, R.raw.pling)
+
+        // 토스트 메시지, 효과음 출력
+        studyViewModel.toastingMessage.observe(viewLifecycleOwner, Observer {
+            if (it != null) {
+                Toast.makeText(requireActivity().applicationContext, it, Toast.LENGTH_SHORT).show()
+                studyViewModel.toastingMessage.value = null
+                mediaPlayer?.start()
+            }
+        })
 
         return root
     }
