@@ -71,25 +71,24 @@ class StudyViewModel : ViewModel() {
     // 공부 타이머 시작
     fun startStudyTimer() {
         // studyTimer = StudyTimer(remainTime, 1000, _time, this)
-        // TODO: 테스트용 공부시간 10초
+        // TODO: 테스트용 공부시간
         studyTimer = StudyTimer((10 * 1000).toLong(), 1000, _time, this)
-        isPlaying.value = true
-        if (statusManager.progressStatus == ProgressStatus.WAITING) {
-            statusManager.progressStatus = ProgressStatus.STUDYING
-        }
         studyTimer.start()
+        isPlaying.value = true
+        statusManager.progressStatus = ProgressStatus.STUDYING
         toastingMessage.value = "공부 시작"
-        Log.i("MyInfo", "공부 종료, 공부 시작")
+        Log.i("MyInfo", "공부 시작")
     }
 
     // 휴식 타이머 시작
     fun startBreakTimer() {
 //        setUserTime((statusManager.breakTime * 60 * 1000).toLong())
 //        studyTimer = StudyTimer(remainTime, 1000, _time, this)
-        // TODO: 테스트용 휴식시간 10초
+        // TODO: 테스트용 휴식시간
         setUserTime((10 * 1000).toLong())
         studyTimer = StudyTimer((10 * 1000).toLong(), 1000, _time, this)
         studyTimer.start()
+        statusManager.progressStatus = ProgressStatus.RESTING
         toastingMessage.value = "휴식 시작"
         Log.i("MyInfo", "휴식 시작")
     }
