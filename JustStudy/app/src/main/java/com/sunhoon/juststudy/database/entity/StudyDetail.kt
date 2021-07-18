@@ -8,17 +8,17 @@ import java.time.LocalDateTime
 @Entity(tableName = "study_detail")
 data class StudyDetail(
 
-    @PrimaryKey
+    @PrimaryKey(autoGenerate = true)
     val id: Long,
 
     @ColumnInfo(name = "con_level")
     val conLevel: Int,
 
     @ColumnInfo(name = "start_time")
-    val startTime: LocalDateTime,
+    val startTime: Long,
 
     @ColumnInfo(name = "end_time")
-    val endTime: LocalDateTime,
+    val endTime: Long,
 
     @ColumnInfo(name = "angle_id")
     val angleId: Long,

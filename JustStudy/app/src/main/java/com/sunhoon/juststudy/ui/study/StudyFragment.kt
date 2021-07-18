@@ -1,5 +1,6 @@
 package com.sunhoon.juststudy.ui.study
 
+import android.app.Application
 import android.app.Dialog
 import android.app.TimePickerDialog
 import android.os.Bundle
@@ -9,12 +10,15 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.room.Room
 import com.sunhoon.juststudy.R
 import com.sunhoon.juststudy.data.ConcentrationSource
 import com.sunhoon.juststudy.data.SharedPref
 import com.sunhoon.juststudy.data.StatusManager
+import com.sunhoon.juststudy.database.AppDatabase
 import com.sunhoon.juststudy.time.TimeConverter
 import org.w3c.dom.Text
 
@@ -28,8 +32,9 @@ class StudyFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        studyViewModel =
-            ViewModelProvider(this).get(StudyViewModel::class.java)
+
+        studyViewModel = ViewModelProvider(this).get(StudyViewModel::class.java)
+
         val root = inflater.inflate(R.layout.fragment_study, container, false)
 
         // SharedPreference 값 불러오기

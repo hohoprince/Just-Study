@@ -1,17 +1,23 @@
 package com.sunhoon.juststudy.ui.study
 
-import android.widget.Chronometer
+import android.app.Application
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.room.Room
 import com.sunhoon.juststudy.data.StatusManager
+import com.sunhoon.juststudy.database.AppDatabase
+import com.sunhoon.juststudy.database.entity.StudyDetail
 import com.sunhoon.juststudy.enum.ProgressStatus
 import com.sunhoon.juststudy.time.StudyTimer
 import com.sunhoon.juststudy.time.TimeConverter
+import java.time.LocalDateTime
+import java.util.*
 
 class StudyViewModel : ViewModel() {
 
-    val statusManager = StatusManager.getInstance()
+    private val statusManager = StatusManager.getInstance()
 
     // 시간 텍스트
     private val _time = MutableLiveData<String>().apply {

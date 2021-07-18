@@ -13,6 +13,7 @@ import org.junit.runner.RunWith
 import org.junit.Assert.*
 import java.time.LocalDate
 import java.time.LocalDateTime
+import java.util.*
 
 /**
  * Instrumented test, which will execute on an Android device.
@@ -21,23 +22,30 @@ import java.time.LocalDateTime
  */
 @RunWith(AndroidJUnit4::class)
 class CrudInstrumentedTest {
+
     @Test
-    fun useAppContext() {
+    fun insertTest() {
         val appContext = InstrumentationRegistry.getInstrumentation().targetContext
 
-        val db = Room.databaseBuilder(
-            appContext,
-            AppDatabase::class.java, "database-name"
-        ).build()
+        val db = AppDatabase.getDatabase(appContext)
 
-        val mock = StudyDetail(1L, 60, LocalDateTime.now(), LocalDateTime.now(),
+        val mock = StudyDetail(1L, 60, Date().time, Date().time,
             1L, 1L, 1L, 1L, 1L)
 
         db.studyDetailDao().insert(mock)
 
-        val list: List<StudyDetail> = db.studyDetailDao().getAll()
+    }
 
-        list.forEach { l -> Log.d("testtest", l.toString()) }
+    @Test
+    fun readAllTest() {
+        val appContext = InstrumentationRegistry.getInstrumentation().targetContext
 
+        val db = AppDatabase.getDatabase(appContext)
+
+        val studyDetails = db.studyDetailDao().getAll()
+        println("hi")
+        studyDetails.forEach { _ ->
+            println(studyDetails)
+        }
     }
 }

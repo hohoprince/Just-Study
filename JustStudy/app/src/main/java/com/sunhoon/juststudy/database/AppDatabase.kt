@@ -1,6 +1,8 @@
 package com.sunhoon.juststudy.database
 
+import android.content.Context
 import androidx.room.Database
+import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.sunhoon.juststudy.database.dao.StudyDetailDao
 import com.sunhoon.juststudy.database.entity.StudyDetail
@@ -9,5 +11,22 @@ import com.sunhoon.juststudy.database.entity.StudyDetail
 abstract class AppDatabase : RoomDatabase() {
 
     abstract fun studyDetailDao(): StudyDetailDao
+
+    companion object {
+        @Volatile
+        private var INSTANCE: AppDatabase? = null
+
+        fun getDatabase(context: Context): AppDatabase {
+            return INSTANCE ?: synchronized(this) {
+                val instance = Room.databaseBuilder(
+                    context.applicationContext,
+                    AppDatabase::class.java,
+                    "app_database"
+                ).build()
+                INSTANCE = instance
+                instance
+            }
+        }
+    }
 
 }
