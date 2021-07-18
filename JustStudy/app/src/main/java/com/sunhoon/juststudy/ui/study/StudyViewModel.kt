@@ -1,11 +1,14 @@
 package com.sunhoon.juststudy.ui.study
 
 import android.app.Application
+import android.util.Log
+import android.widget.Toast
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.room.Room
+import com.sunhoon.juststudy.data.SharedPref
 import com.sunhoon.juststudy.data.StatusManager
 import com.sunhoon.juststudy.database.AppDatabase
 import com.sunhoon.juststudy.database.entity.StudyDetail
@@ -53,6 +56,10 @@ class StudyViewModel : ViewModel() {
         value = false
     }
 
+    var toastingMessage: MutableLiveData<String> = MutableLiveData<String>().apply {
+        value = null
+    }
+
 
     // 타이머
     private lateinit var studyTimer : StudyTimer
@@ -61,23 +68,40 @@ class StudyViewModel : ViewModel() {
     private var remainTime: Long = 0L
 
 
-
-
-    // 타이머 시작
-    fun startTimer() {
-        studyTimer = StudyTimer(remainTime, 1000, _time, this)
+    // 공부 타이머 시작
+    fun startStudyTimer() {
+        // studyTimer = StudyTimer(remainTime, 1000, _time, this)
+        // TODO: 테스트용 공부시간 10초
+        studyTimer = StudyTimer((10 * 1000).toLong(), 1000, _time, this)
         isPlaying.value = true
         if (statusManager.progressStatus == ProgressStatus.WAITING) {
             statusManager.progressStatus = ProgressStatus.STUDYING
         }
         studyTimer.start()
+        toastingMessage.value = "공부 시작"
+        Log.i("MyInfo", "공부 종료, 공부 시작")
+    }
+
+    // 휴식 타이머 시작
+    fun startBreakTimer() {
+//        setUserTime((statusManager.breakTime * 60 * 1000).toLong())
+//        studyTimer = StudyTimer(remainTime, 1000, _time, this)
+        // TODO: 테스트용 휴식시간 10초
+        setUserTime((10 * 1000).toLong())
+        studyTimer = StudyTimer((10 * 1000).toLong(), 1000, _time, this)
+        studyTimer.start()
+        toastingMessage.value = "휴식 시작"
+        Log.i("MyInfo", "휴식 시작")
     }
 
     // 타이머 종료
     fun stopTimer() {
         isPlaying.value = false
         studyTimer.cancel()
-        studyTimer.onFinish()
+        statusManager.progressStatus = ProgressStatus.WAITING
+        setUserTime(statusManager.studyTime)
+        toastingMessage.value = "공부 종료"
+        Log.i("MyInfo", "공부 종료, 타이머 종료")
     }
 
     // 사용자 설정 시간

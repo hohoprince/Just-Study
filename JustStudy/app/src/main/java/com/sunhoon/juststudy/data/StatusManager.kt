@@ -16,4 +16,7 @@ class StatusManager {
 
     var progressStatus = ProgressStatus.WAITING
 
+    var studyTime: Long = 0
+    var breakTime: Int = 0
+
 }
