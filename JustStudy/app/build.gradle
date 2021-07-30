@@ -61,4 +61,7 @@ dependencies {
     kapt "org.xerial:sqlite-jdbc:3.34.0"
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.4.1'
 
+    implementation 'com.akexorcist:bluetoothspp:1.0.0'
+
+
 }
