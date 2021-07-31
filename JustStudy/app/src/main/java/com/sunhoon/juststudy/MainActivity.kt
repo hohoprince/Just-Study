@@ -1,7 +1,5 @@
 package com.sunhoon.juststudy
 
-import android.bluetooth.BluetoothAdapter
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
@@ -13,11 +11,14 @@ import androidx.navigation.ui.setupWithNavController
 import app.akexorcist.bluetotohspp.library.BluetoothSPP
 import app.akexorcist.bluetotohspp.library.BluetoothState
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.sunhoon.juststudy.bluetooth.StudyManager
 
 
 class MainActivity : AppCompatActivity() {
 
-    var bluetoothSPP: BluetoothSPP = BluetoothSPP(this)
+    private var bluetoothSPP: BluetoothSPP = BluetoothSPP(this)
+
+    private val studyManager: StudyManager = StudyManager.getInstance(this)
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -36,23 +37,30 @@ class MainActivity : AppCompatActivity() {
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
 
-        bluetoothSPP.setOnDataReceivedListener { _, message ->
-            Log.i("MyInfo", "Received Message: $message")
-        }
+        startBluetoothService() // 블루투스 서비스 시작
 
     }
 
-    override fun onStart() {
-        super.onStart()
+    /**
+     * 블루투스 서비스
+     */
+    private fun startBluetoothService() {
         if (bluetoothSPP.isBluetoothEnabled) {
             bluetoothSPP.setupService()
             bluetoothSPP.startService(BluetoothState.DEVICE_OTHER)
             bluetoothSPP.pairedDeviceAddress.forEach { address ->
                 bluetoothSPP.connect(address)
+                Toast.makeText(this, "블루투스 연결 성공: address = $address", Toast.LENGTH_SHORT).show()
                 Log.i("MyInfo", "bluetooth 기기 연결: address = $address")
             }
         } else {
             Toast.makeText(this, "블루투스를 지원하지 않는 기기", Toast.LENGTH_LONG).show()
+            Log.w("MyWarn", "bluetooth를 지원하지 않는 기기")
+        }
+
+        bluetoothSPP.setOnDataReceivedListener { _, message ->
+            Log.i("MyInfo", "Received Message: $message")
+            studyManager.process(message)
         }
     }
 
