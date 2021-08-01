@@ -1,11 +1,16 @@
 package com.sunhoon.juststudy.bluetooth
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import app.akexorcist.bluetotohspp.library.BluetoothSPP
+import com.sunhoon.juststudy.data.StatusManager
 import com.sunhoon.juststudy.database.AppDatabase
+import com.sunhoon.juststudy.database.dao.StudyDao
+import com.sunhoon.juststudy.database.entity.Study
 import com.sunhoon.juststudy.database.entity.StudyDetail
 import com.sunhoon.juststudy.myEnum.Angle
 import com.sunhoon.juststudy.myEnum.Lamp
+import com.sunhoon.juststudy.myEnum.ProgressStatus
 import com.sunhoon.juststudy.myEnum.WhiteNoise
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -18,6 +23,7 @@ class StudyManager {
 
     lateinit var appDatabase: AppDatabase
     lateinit var bluetoothSPP: BluetoothSPP
+    private val statusManager: StatusManager = StatusManager.getInstance()
     var groupId: Long = 0L
 
     /* 현재 책상 각도 */
@@ -60,12 +66,31 @@ class StudyManager {
     }
 
 
+    fun createStudy() {
+        GlobalScope.launch(Dispatchers.IO) {
+            groupId = appDatabase.studyDao().insert(Study(startTime = Date().time))
+            Log.i("MyTag", "Study 생성")
+        }
+    }
+
+    fun updateStudy() {
+        GlobalScope.launch(Dispatchers.IO) {
+            val study = appDatabase.studyDao().readById(groupId)
+            study.endTime = Date().time
+            appDatabase.studyDao().update(study)
+            Log.i("MyTag", "Study 업데이트")
+        }
+    }
+
     fun process(msg: String) {
-        val changed: Int = msg.toInt()
-        val score: Int = max(0, 100 - 3 * changed) // 집중도 점수
+        if (statusManager.progressStatus == ProgressStatus.STUDYING) {
+            val changed: Int = msg.toInt()
+            val score: Int = max(0, 100 - 3 * changed) // 집중도 점수
+            Log.i("MyTag", "현재 집중도: $score")
+            currentConcentration.value = score
 
-        insertStudyDetail(score) // 집중도를 받은 시각의 데이터 삽입
-
+            insertStudyDetail(score) // 집중도를 받은 시각의 데이터 삽입
+        }
     }
 
     /**
@@ -73,12 +98,17 @@ class StudyManager {
      */
     private fun insertStudyDetail(score: Int) {
         GlobalScope.launch(Dispatchers.IO) {
-            appDatabase.studyDetailDao().insert(
-                StudyDetail(conLevel = score, time = Date().time, angleId = currentAngle.value!!.ordinal,
-                    height = currentHeight.value!!, lampId = currentLamp.value!!.ordinal,
-                    whiteNoiseId = currentWhiteNoise.value!!.ordinal, studyId = 1L)
-            )
+            val studyDetail = StudyDetail(conLevel = score, time = Date().time, angleId = currentAngle.value!!.ordinal,
+                height = currentHeight.value!!, lampId = currentLamp.value!!.ordinal,
+                whiteNoiseId = currentWhiteNoise.value!!.ordinal, studyId = groupId)
+            appDatabase.studyDetailDao().insert(studyDetail)
+            Log.i("MyTag", "studyDetail 삽입: $studyDetail")
+            writeMessage("aa")
         }
+    }
+
+    private fun writeMessage(msg: String) {
+        bluetoothSPP.send(msg, true)
     }
 
 }

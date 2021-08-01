@@ -17,7 +17,7 @@ class StudyViewModel : ViewModel() {
 
     private val statusManager = StatusManager.getInstance()
 
-    private val studyManager = StudyManager.getInstance()
+    val studyManager = StudyManager.getInstance()
 
     /* 시간 */
     private val _time = MutableLiveData<String>().apply {
@@ -56,6 +56,13 @@ class StudyViewModel : ViewModel() {
     // 타이머의 남은 시간
     private var remainTime: Long = 0L
 
+    fun createStudy() {
+        studyManager.createStudy()
+    }
+
+    fun updateStudy() {
+        studyManager.updateStudy()
+    }
 
     // 공부 타이머 시작
     fun startStudyTimer() {

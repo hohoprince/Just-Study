@@ -19,6 +19,4 @@ class StatusManager {
     var studyTime: Long = 0
     var breakTime: Int = 0
 
-    var isBluetoothConnected: Boolean = false
-
 }

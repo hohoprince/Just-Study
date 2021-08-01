@@ -4,13 +4,16 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import com.sunhoon.juststudy.database.dao.StudyDao
 import com.sunhoon.juststudy.database.dao.StudyDetailDao
+import com.sunhoon.juststudy.database.entity.Study
 import com.sunhoon.juststudy.database.entity.StudyDetail
 
-@Database(entities = [StudyDetail::class], version = 1)
+@Database(entities = [StudyDetail::class, Study::class], version = 1)
 abstract class AppDatabase : RoomDatabase() {
 
     abstract fun studyDetailDao(): StudyDetailDao
+    abstract fun studyDao(): StudyDao
 
     companion object {
         @Volatile

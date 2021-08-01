@@ -3,10 +3,16 @@ package com.sunhoon.juststudy.database.entity
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.sunhoon.juststudy.myEnum.Angle
+import com.sunhoon.juststudy.myEnum.Lamp
+import com.sunhoon.juststudy.myEnum.WhiteNoise
 import java.util.*
 
 @Entity(tableName = "study_detail")
 class StudyDetail(
+
+    @PrimaryKey(autoGenerate = true)
+    var id: Long? = null,
 
     @ColumnInfo(name = "con_level")
     val conLevel: Int,
@@ -30,7 +36,10 @@ class StudyDetail(
     val studyId: Long
     ) {
 
-    @PrimaryKey(autoGenerate = true)
-    var id: Long? = null
+    override fun toString(): String {
+        return "StudyDetail(집중도: $conLevel / 시간: ${Date(time)} / 책상 각도: ${Angle.getByValue(angleId)} " +
+                "/ 책상 높이: $height / 램프: ${Lamp.getByValue(lampId)} / 백색소음: ${WhiteNoise.getByValue(whiteNoiseId)}" +
+                " / studyId: $studyId)"
+    }
 }
 

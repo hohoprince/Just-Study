@@ -11,6 +11,7 @@ import android.widget.*
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import app.akexorcist.bluetotohspp.library.BluetoothState
 import com.sunhoon.juststudy.R
 import com.sunhoon.juststudy.data.ConcentrationSource
 import com.sunhoon.juststudy.data.SharedPref
@@ -65,6 +66,12 @@ class StudyFragment : Fragment() {
             sharedPref.edit().putInt("angle", it.ordinal).apply()
         })
 
+        // 책상 높이 텍스트 뷰
+        val heightTextView = root.findViewById<TextView>(R.id.height_textview)
+        studyViewModel.currentHeight.observe(viewLifecycleOwner, Observer {
+            heightTextView.text = it.toString()
+        })
+
         // 램프 밝기 텍스트 뷰
         val lightTextView = root.findViewById<TextView>(R.id.light_textview)
         studyViewModel.currentLamp.observe(viewLifecycleOwner, Observer {
@@ -72,9 +79,9 @@ class StudyFragment : Fragment() {
             text = when (it) {
                 Lamp.AUTO -> "자동"
                 Lamp.NONE -> "사용 안함"
-                Lamp.L_3500K -> "3500k"
-                Lamp.L_5000K -> "5000k"
-                Lamp.L_6500K -> "6500k"
+                Lamp.LAMP_3500K -> "3500k"
+                Lamp.LAMP_5000K -> "5000k"
+                Lamp.LAMP_6500K -> "6500k"
             }
             lightTextView.text = text
             sharedPref.edit().putInt("light", it.ordinal).apply()
@@ -161,18 +168,18 @@ class StudyFragment : Fragment() {
             when (studyViewModel.currentLamp.value) {
                 Lamp.AUTO -> buttonId = R.id.radio_lamp_auto
                 Lamp.NONE -> buttonId = R.id.radio_lamp_off
-                Lamp.L_3500K -> buttonId = R.id.radio_lamp_3500
-                Lamp.L_5000K -> buttonId = R.id.radio_lamp_5000
-                Lamp.L_6500K -> buttonId = R.id.radio_lamp_6500
+                Lamp.LAMP_3500K -> buttonId = R.id.radio_lamp_3500
+                Lamp.LAMP_5000K -> buttonId = R.id.radio_lamp_5000
+                Lamp.LAMP_6500K -> buttonId = R.id.radio_lamp_6500
             }
             radioGroup.check(buttonId)
             radioGroup.setOnCheckedChangeListener { _, checkedId ->
                 when (checkedId) {
                     R.id.radio_lamp_auto -> studyViewModel.setCurrentLamp(Lamp.AUTO)
                     R.id.radio_lamp_off -> studyViewModel.setCurrentLamp(Lamp.NONE)
-                    R.id.radio_lamp_3500 -> studyViewModel.setCurrentLamp(Lamp.L_3500K)
-                    R.id.radio_lamp_5000 -> studyViewModel.setCurrentLamp(Lamp.L_5000K)
-                    R.id.radio_lamp_6500 -> studyViewModel.setCurrentLamp(Lamp.L_6500K)
+                    R.id.radio_lamp_3500 -> studyViewModel.setCurrentLamp(Lamp.LAMP_3500K)
+                    R.id.radio_lamp_5000 -> studyViewModel.setCurrentLamp(Lamp.LAMP_5000K)
+                    R.id.radio_lamp_6500 -> studyViewModel.setCurrentLamp(Lamp.LAMP_6500K)
                 }
             }
 
@@ -267,10 +274,16 @@ class StudyFragment : Fragment() {
         })
 
         playButton.setOnClickListener {
+            if (studyViewModel.studyManager.bluetoothSPP.serviceState != BluetoothState.STATE_CONNECTED) {
+                Toast.makeText(requireActivity().applicationContext, "블루투스 기기를 연결 해주세요", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
             if (studyViewModel.isPlaying.value == true) {
                 studyViewModel.stopTimer()
+                studyViewModel.updateStudy()
             } else {
                 studyViewModel.startStudyTimer()
+                studyViewModel.createStudy()
             }
         }
 
