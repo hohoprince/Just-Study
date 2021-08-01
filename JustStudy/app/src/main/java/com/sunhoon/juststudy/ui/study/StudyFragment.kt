@@ -15,6 +15,9 @@ import com.sunhoon.juststudy.R
 import com.sunhoon.juststudy.data.ConcentrationSource
 import com.sunhoon.juststudy.data.SharedPref
 import com.sunhoon.juststudy.data.StatusManager
+import com.sunhoon.juststudy.myEnum.Angle
+import com.sunhoon.juststudy.myEnum.Lamp
+import com.sunhoon.juststudy.myEnum.WhiteNoise
 import com.sunhoon.juststudy.time.TimeConverter
 
 class StudyFragment : Fragment() {
@@ -34,9 +37,9 @@ class StudyFragment : Fragment() {
 
         // SharedPreference 값 불러오기
         val sharedPref = SharedPref.getSharedPref(requireActivity())
-        studyViewModel.setCurrentAngle(sharedPref.getInt("angle", 0))
-        studyViewModel.setCurrentLight(sharedPref.getInt("light", 0))
-        studyViewModel.setCurrentNoise(sharedPref.getInt("whiteNoise", 0))
+        studyViewModel.setCurrentAngle(Angle.getByValue(sharedPref.getInt("angle", 0)))
+        studyViewModel.setCurrentLamp(Lamp.getByValue(sharedPref.getInt("light", 0)))
+        studyViewModel.setCurrentWhiteNoise(WhiteNoise.getByValue(sharedPref.getInt("whiteNoise", 0)))
         statusManager.studyTime = sharedPref.getLong("conTime", 0L)
         statusManager.breakTime = sharedPref.getInt("breakTime", 0)
         studyViewModel.setUserTime(statusManager.studyTime)
@@ -52,45 +55,45 @@ class StudyFragment : Fragment() {
         studyViewModel.currentAngle.observe(viewLifecycleOwner, Observer {
             var text = ""
             when (it) {
-                0 -> text = "자동"
-                1 -> text = "0º"
-                2 -> text = "15º"
-                3 -> text = "30º"
-                4 -> text = "45º"
+                Angle.AUTO -> text = "자동"
+                Angle.DEGREE_0 -> text = "0º"
+                Angle.DEGREE_15 -> text = "15º"
+                Angle.DEGREE_30 -> text = "30º"
+                Angle.DEGREE_45 -> text = "45º"
             }
             angleTextView.text = text
-            sharedPref.edit().putInt("angle", it).apply()
+            sharedPref.edit().putInt("angle", it.ordinal).apply()
         })
 
         // 램프 밝기 텍스트 뷰
         val lightTextView = root.findViewById<TextView>(R.id.light_textview)
-        studyViewModel.currentLight.observe(viewLifecycleOwner, Observer {
+        studyViewModel.currentLamp.observe(viewLifecycleOwner, Observer {
             var text = ""
-            when (it) {
-                0 -> text = "자동"
-                1 -> text = "사용 안함"
-                2 -> text = "3500k"
-                3 -> text = "5000k"
-                4 -> text = "6500k"
+            text = when (it) {
+                Lamp.AUTO -> "자동"
+                Lamp.NONE -> "사용 안함"
+                Lamp.L_3500K -> "3500k"
+                Lamp.L_5000K -> "5000k"
+                Lamp.L_6500K -> "6500k"
             }
             lightTextView.text = text
-            sharedPref.edit().putInt("light", it).apply()
+            sharedPref.edit().putInt("light", it.ordinal).apply()
         })
 
         // 백색 소음 텍스트 뷰
         val noiseTextView = root.findViewById<TextView>(R.id.noise_textview)
-        studyViewModel.currentNoise.observe(viewLifecycleOwner, Observer {
+        studyViewModel.currentWhiteNoise.observe(viewLifecycleOwner, Observer {
             var text = ""
-            when (it) {
-                0 -> text = "자동"
-                1 -> text = "사용 안함"
-                2 -> text = "파도 소리"
-                3 -> text = "바람 소리"
-                4 -> text = "나뭇잎 소리"
-                5 -> text = "빗소리"
+            text = when (it) {
+                WhiteNoise.AUTO -> "자동"
+                WhiteNoise.NONE -> "사용 안함"
+                WhiteNoise.WAVE -> "파도 소리"
+                WhiteNoise.WIND -> "바람 소리"
+                WhiteNoise.LEAF -> "나뭇잎 소리"
+                WhiteNoise.RAIN -> "빗소리"
             }
             noiseTextView.text = text
-            sharedPref.edit().putInt("whiteNoise", it).apply()
+            sharedPref.edit().putInt("whiteNoise", it.ordinal).apply()
         })
 
         val concentrationTextView = root.findViewById<TextView>(R.id.concentration_textview)
@@ -120,20 +123,20 @@ class StudyFragment : Fragment() {
             val radioGroup = dlg.findViewById<RadioGroup>(R.id.radioGroup)
             var buttonId = 0
             when (studyViewModel.currentAngle.value) {
-                0 -> buttonId = R.id.radio_angle_auto
-                1 -> buttonId = R.id.radio_angle1
-                2 -> buttonId = R.id.radio_angle2
-                3 -> buttonId = R.id.radio_angle3
-                4 -> buttonId = R.id.radio_angle4
+                Angle.AUTO -> buttonId = R.id.radio_angle_auto
+                Angle.DEGREE_0 -> buttonId = R.id.radio_angle1
+                Angle.DEGREE_15 -> buttonId = R.id.radio_angle2
+                Angle.DEGREE_30 -> buttonId = R.id.radio_angle3
+                Angle.DEGREE_45 -> buttonId = R.id.radio_angle4
             }
             radioGroup.check(buttonId)
             radioGroup.setOnCheckedChangeListener { _, checkedId ->
                 when (checkedId) {
-                    R.id.radio_angle_auto -> studyViewModel.setCurrentAngle(0)
-                    R.id.radio_angle1 -> studyViewModel.setCurrentAngle(1)
-                    R.id.radio_angle2 -> studyViewModel.setCurrentAngle(2)
-                    R.id.radio_angle3 -> studyViewModel.setCurrentAngle(3)
-                    R.id.radio_angle4 -> studyViewModel.setCurrentAngle(4)
+                    R.id.radio_angle_auto -> studyViewModel.setCurrentAngle(Angle.AUTO)
+                    R.id.radio_angle1 -> studyViewModel.setCurrentAngle(Angle.DEGREE_0)
+                    R.id.radio_angle2 -> studyViewModel.setCurrentAngle(Angle.DEGREE_15)
+                    R.id.radio_angle3 -> studyViewModel.setCurrentAngle(Angle.DEGREE_30)
+                    R.id.radio_angle4 -> studyViewModel.setCurrentAngle(Angle.DEGREE_45)
                 }
             }
 
@@ -155,21 +158,21 @@ class StudyFragment : Fragment() {
             // 라디오 그룹
             val radioGroup = dlg.findViewById<RadioGroup>(R.id.radioGroup)
             var buttonId = 0
-            when (studyViewModel.currentLight.value) {
-                0 -> buttonId = R.id.radio_lamp_auto
-                1 -> buttonId = R.id.radio_lamp_off
-                2 -> buttonId = R.id.radio_lamp_3500
-                3 -> buttonId = R.id.radio_lamp_5000
-                4 -> buttonId = R.id.radio_lamp_6500
+            when (studyViewModel.currentLamp.value) {
+                Lamp.AUTO -> buttonId = R.id.radio_lamp_auto
+                Lamp.NONE -> buttonId = R.id.radio_lamp_off
+                Lamp.L_3500K -> buttonId = R.id.radio_lamp_3500
+                Lamp.L_5000K -> buttonId = R.id.radio_lamp_5000
+                Lamp.L_6500K -> buttonId = R.id.radio_lamp_6500
             }
             radioGroup.check(buttonId)
             radioGroup.setOnCheckedChangeListener { _, checkedId ->
                 when (checkedId) {
-                    R.id.radio_lamp_auto -> studyViewModel.setCurrentLight(0)
-                    R.id.radio_lamp_off -> studyViewModel.setCurrentLight(1)
-                    R.id.radio_lamp_3500 -> studyViewModel.setCurrentLight(2)
-                    R.id.radio_lamp_5000 -> studyViewModel.setCurrentLight(3)
-                    R.id.radio_lamp_6500 -> studyViewModel.setCurrentLight(4)
+                    R.id.radio_lamp_auto -> studyViewModel.setCurrentLamp(Lamp.AUTO)
+                    R.id.radio_lamp_off -> studyViewModel.setCurrentLamp(Lamp.NONE)
+                    R.id.radio_lamp_3500 -> studyViewModel.setCurrentLamp(Lamp.L_3500K)
+                    R.id.radio_lamp_5000 -> studyViewModel.setCurrentLamp(Lamp.L_5000K)
+                    R.id.radio_lamp_6500 -> studyViewModel.setCurrentLamp(Lamp.L_6500K)
                 }
             }
 
@@ -191,23 +194,23 @@ class StudyFragment : Fragment() {
             // 라디오 그룹
             val radioGroup = dlg.findViewById<RadioGroup>(R.id.radioGroup)
             var buttonId = 0
-            when (studyViewModel.currentNoise.value) {
-                0 -> buttonId = R.id.radio_noise_auto
-                1 -> buttonId = R.id.radio_noise_off
-                2 -> buttonId = R.id.radio_noise1
-                3 -> buttonId = R.id.radio_noise2
-                4 -> buttonId = R.id.radio_noise3
-                5 -> buttonId = R.id.radio_noise4
+            when (studyViewModel.currentWhiteNoise.value) {
+                WhiteNoise.AUTO -> buttonId = R.id.radio_noise_auto
+                WhiteNoise.NONE -> buttonId = R.id.radio_noise_off
+                WhiteNoise.WAVE -> buttonId = R.id.radio_noise1
+                WhiteNoise.WIND -> buttonId = R.id.radio_noise2
+                WhiteNoise.LEAF -> buttonId = R.id.radio_noise3
+                WhiteNoise.RAIN -> buttonId = R.id.radio_noise4
             }
             radioGroup.check(buttonId)
             radioGroup.setOnCheckedChangeListener { _, checkedId ->
                 when (checkedId) {
-                    R.id.radio_noise_auto -> studyViewModel.setCurrentNoise(0)
-                    R.id.radio_noise_off -> studyViewModel.setCurrentNoise(1)
-                    R.id.radio_noise1 -> studyViewModel.setCurrentNoise(2)
-                    R.id.radio_noise2 -> studyViewModel.setCurrentNoise(3)
-                    R.id.radio_noise3 -> studyViewModel.setCurrentNoise(4)
-                    R.id.radio_noise4 -> studyViewModel.setCurrentNoise(5)
+                    R.id.radio_noise_auto -> studyViewModel.setCurrentWhiteNoise(WhiteNoise.AUTO)
+                    R.id.radio_noise_off -> studyViewModel.setCurrentWhiteNoise(WhiteNoise.NONE)
+                    R.id.radio_noise1 -> studyViewModel.setCurrentWhiteNoise(WhiteNoise.WAVE)
+                    R.id.radio_noise2 -> studyViewModel.setCurrentWhiteNoise(WhiteNoise.WIND)
+                    R.id.radio_noise3 -> studyViewModel.setCurrentWhiteNoise(WhiteNoise.LEAF)
+                    R.id.radio_noise4 -> studyViewModel.setCurrentWhiteNoise(WhiteNoise.RAIN)
                 }
             }
 

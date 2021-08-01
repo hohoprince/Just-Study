@@ -1,6 +1,6 @@
 package com.sunhoon.juststudy.data
 
-import com.sunhoon.juststudy.enum.ProgressStatus
+import com.sunhoon.juststudy.myEnum.ProgressStatus
 
 class StatusManager {
 
