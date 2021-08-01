@@ -29,10 +29,10 @@ class CrudInstrumentedTest {
 
         val db = AppDatabase.getDatabase(appContext)
 
-        val mock = StudyDetail(1L, 60, Date().time, Date().time,
-            1L, 1L, 1L, 1L, 1L)
-
-        db.studyDetailDao().insert(mock)
+//        val mock = StudyDetail(1L, 60, Date().time, Date().time,
+//            1L, 1L, 1L, 1L, 1L)
+//
+//        db.studyDetailDao().insert(mock)
 
     }
 
