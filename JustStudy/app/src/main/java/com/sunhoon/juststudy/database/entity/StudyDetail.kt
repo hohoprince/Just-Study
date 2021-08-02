@@ -18,7 +18,7 @@ class StudyDetail(
     val conLevel: Int,
 
     @ColumnInfo(name = "time")
-    val time: Long,
+    val time: Date,
 
     @ColumnInfo(name = "angle_id")
     val angleId: Int,
@@ -37,7 +37,7 @@ class StudyDetail(
     ) {
 
     override fun toString(): String {
-        return "StudyDetail(집중도: $conLevel / 시간: ${Date(time)} / 책상 각도: ${Angle.getByValue(angleId)} " +
+        return "StudyDetail(집중도: $conLevel / 시간: $time / 책상 각도: ${Angle.getByValue(angleId)} " +
                 "/ 책상 높이: $height / 램프: ${Lamp.getByValue(lampId)} / 백색소음: ${WhiteNoise.getByValue(whiteNoiseId)}" +
                 " / studyId: $studyId)"
     }

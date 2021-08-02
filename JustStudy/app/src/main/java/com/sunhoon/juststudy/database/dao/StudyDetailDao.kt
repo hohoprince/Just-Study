@@ -5,6 +5,7 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
 import com.sunhoon.juststudy.database.entity.StudyDetail
+import java.util.*
 
 @Dao
 interface StudyDetailDao {
@@ -18,14 +19,7 @@ interface StudyDetailDao {
     @Delete
     fun delete(studyDetail: StudyDetail)
 
-//    @Query("SELECT * FROM user WHERE uid IN (:userIds)")
-//    fun loadAllByIds(userIds: IntArray): List<StudyDetail>
-
-//    @Query("SELECT * FROM StudyDetail WHERE first_name LIKE :first AND " +
-//            "last_name LIKE :last LIMIT 1")
-//    fun findByName(first: String, last: String): StudyDetail
-
-//    @Insert
-//    fun insertAll(vararg studyDetail: StudyDetail)
+    @Insert
+    fun insertAll(studyDetails: List<StudyDetail>)
 
 }

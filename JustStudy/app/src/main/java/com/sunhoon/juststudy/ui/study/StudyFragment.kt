@@ -240,13 +240,13 @@ class StudyFragment : Fragment() {
             val concentrationTextView = dlg.findViewById<TextView>(R.id.concentration_textview)
             val currentConcentration: Int = studyViewModel.currentConcentration.value!!
 
-            if (currentConcentration < 30) {
+            if (currentConcentration < 40) { // 0 ~ 39
                 concentrationImageView.setImageResource(ConcentrationSource.lowConcentrationImageSource)
                 concentrationTextView.text = ConcentrationSource.lowConcentrationText
-            } else if (currentConcentration < 60) {
+            } else if (currentConcentration < 70) { // 40 ~ 69
                 concentrationImageView.setImageResource(ConcentrationSource.normalConcentrationImageSource)
                 concentrationTextView.text = ConcentrationSource.normalConcentrationText
-            } else if (currentConcentration < 100) {
+            } else if (currentConcentration < 100) { // 70 ~ 100
                 concentrationImageView.setImageResource(ConcentrationSource.highConcentrationImageSource)
                 concentrationTextView.text = ConcentrationSource.highConcentrationText
             } else {

@@ -12,10 +12,10 @@ class Study(
     val id: Long? = null,
 
     @ColumnInfo(name = "start_time")
-    val startTime: Long,
+    val startTime: Date,
 
     @ColumnInfo(name = "end_time")
-    var endTime: Long? = null,
+    var endTime: Date? = null,
 
 ) {
     override fun toString(): String {

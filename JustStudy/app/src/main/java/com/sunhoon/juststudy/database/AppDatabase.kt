@@ -4,12 +4,15 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import androidx.room.TypeConverters
 import com.sunhoon.juststudy.database.dao.StudyDao
 import com.sunhoon.juststudy.database.dao.StudyDetailDao
 import com.sunhoon.juststudy.database.entity.Study
 import com.sunhoon.juststudy.database.entity.StudyDetail
+import com.sunhoon.juststudy.time.Converters
 
 @Database(entities = [StudyDetail::class, Study::class], version = 1)
+@TypeConverters(Converters::class)
 abstract class AppDatabase : RoomDatabase() {
 
     abstract fun studyDetailDao(): StudyDetailDao
