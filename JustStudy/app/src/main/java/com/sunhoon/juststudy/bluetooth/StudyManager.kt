@@ -1,12 +1,11 @@
 package com.sunhoon.juststudy.bluetooth
 
 import android.util.Log
-import androidx.core.util.rangeTo
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import app.akexorcist.bluetotohspp.library.BluetoothSPP
 import com.sunhoon.juststudy.data.StatusManager
 import com.sunhoon.juststudy.database.AppDatabase
-import com.sunhoon.juststudy.database.dao.StudyDao
 import com.sunhoon.juststudy.database.entity.Study
 import com.sunhoon.juststudy.database.entity.StudyDetail
 import com.sunhoon.juststudy.myEnum.Angle
@@ -16,9 +15,8 @@ import com.sunhoon.juststudy.myEnum.WhiteNoise
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import java.time.LocalDateTime
+import kotlinx.coroutines.withContext
 import java.util.*
-import kotlin.collections.ArrayList
 import kotlin.math.max
 
 class StudyManager {
@@ -106,6 +104,10 @@ class StudyManager {
 
     private fun writeMessage(msg: String) {
         bluetoothSPP.send(msg, true)
+    }
+
+    fun getAllOrderByDate(): LiveData<List<StudyDetail>> {
+        return appDatabase.studyDetailDao().getAllOrderByDate()
     }
 
     fun createTestData() {

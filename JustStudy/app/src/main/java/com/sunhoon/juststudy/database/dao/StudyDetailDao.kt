@@ -1,5 +1,6 @@
 package com.sunhoon.juststudy.database.dao
 
+import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
@@ -12,6 +13,9 @@ interface StudyDetailDao {
 
     @Query("SELECT * FROM study_detail")
     fun getAll(): List<StudyDetail>
+
+    @Query("SELECT * FROM study_detail ORDER BY time")
+    fun getAllOrderByDate(): LiveData<List<StudyDetail>>
 
     @Insert
     fun insert(studyDetail: StudyDetail)
