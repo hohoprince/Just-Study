@@ -65,7 +65,6 @@ class MainActivity : AppCompatActivity() {
             }
 
         })
-
     }
 
     /**
@@ -83,6 +82,11 @@ class MainActivity : AppCompatActivity() {
             Toast.makeText(this, "블루투스를 지원하지 않는 기기", Toast.LENGTH_LONG).show()
             Log.w("MyTag", "Bluetooth를 지원하지 않는 기기")
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        bluetoothSPP.disconnect()
     }
 
 }

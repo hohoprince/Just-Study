@@ -8,7 +8,7 @@
         tools:context=".ui.study.StudyFragment">
 
     <info.hoang8f.android.segmented.SegmentedGroup
-            android:id="@+id/segmented2"
+            android:id="@+id/segmented_group"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"

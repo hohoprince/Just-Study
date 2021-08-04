@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.RadioButton
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -17,8 +18,10 @@ import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
 import com.github.mikephil.charting.formatter.ValueFormatter
 import com.sunhoon.juststudy.R
+import com.sunhoon.juststudy.dataClass.XYLabels
 import com.sunhoon.juststudy.database.entity.StudyDetail
 import com.sunhoon.juststudy.myEnum.DateGroupType
+import info.hoang8f.android.segmented.SegmentedGroup
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -32,6 +35,7 @@ class HomeFragment : Fragment() {
     private lateinit var homeViewModel: HomeViewModel
     private var xLabels: List<String> = mutableListOf()
     private var dateGroupType: DateGroupType = DateGroupType.BY_DAY
+    private var studyDetailList: List<StudyDetail>? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -41,47 +45,76 @@ class HomeFragment : Fragment() {
         homeViewModel = ViewModelProviders.of(this).get(HomeViewModel::class.java)
         val root = inflater.inflate(R.layout.fragment_home, container, false)
 
-
         // 통계 라인 차트
         val lineChart = root.findViewById<LineChart>(R.id.lineChart)
         val xAxis = lineChart.xAxis
         val yAxis = lineChart.axisLeft
 
-        lineChart.axisRight.isEnabled = false; // 오른쪽 라인 사용 안함
-        lineChart.isDoubleTapToZoomEnabled = false;
-        lineChart.setPinchZoom(false);
-        lineChart.legend.isEnabled = false;
-        lineChart.description.isEnabled = false;
-        lineChart.isHighlightPerTapEnabled = false;
-        lineChart.isHighlightPerDragEnabled = false;
+        lineChart.axisRight.isEnabled = false // 오른쪽 라인 사용 안함
+        lineChart.isDoubleTapToZoomEnabled = false
+        lineChart.setPinchZoom(false)
+        lineChart.legend.isEnabled = false
+        lineChart.description.isEnabled = false
+        lineChart.isHighlightPerTapEnabled = false
+        lineChart.isHighlightPerDragEnabled = false
 
         val dataSet = mutableListOf<Entry>()
 
-        val formatter: ValueFormatter = object : ValueFormatter() {
+        xAxis.valueFormatter = object : ValueFormatter() {
             override fun getAxisLabel(value: Float, axis: AxisBase?): String {
                 return xLabels.getOrNull(value.toInt()) ?: value.toString()
             }
         }
-        xAxis.valueFormatter = formatter
+
+        yAxis.valueFormatter = object : ValueFormatter() {
+            override fun getAxisLabel(value: Float, axis: AxisBase?): String {
+                return "${value.toInt()}점"
+            }
+        }
 
         // 라인차트의 데이터 refresh
         homeViewModel.dataSet.observe(viewLifecycleOwner, Observer { studyDetailList ->
+            this.studyDetailList = studyDetailList
             refreshLineChartData(lineChart, dataSet, studyDetailList, dateGroupType)
         })
 
-        xAxis.position = XAxis.XAxisPosition.BOTTOM; // X축 아래로
-        xAxis.textColor = Color.BLACK;
-        xAxis.setDrawGridLines(false);
-        xAxis.granularity = 1f;
-        xAxis.isGranularityEnabled = true;
-        xAxis.textSize = 12.0f;
-        xAxis.spaceMin = 0.5f;
-        xAxis.spaceMax = 0.5f;
+        xAxis.position = XAxis.XAxisPosition.BOTTOM // X축 아래로
+        xAxis.textColor = Color.BLACK
+        xAxis.setDrawGridLines(false)
+        xAxis.granularity = 1f
+        xAxis.isGranularityEnabled = true
+        xAxis.textSize = 12.0f
+        xAxis.spaceMin = 0.5f
+        xAxis.spaceMax = 0.5f
 
         yAxis.textColor = Color.BLACK;
-        yAxis.granularity = 1f;
-        yAxis.textSize = 12.0f;
-        yAxis.xOffset = 15.0f;
+        yAxis.granularity = 1f
+        yAxis.textSize = 12.0f
+        yAxis.xOffset = 15.0f
+
+        val segmentedGroup = root.findViewById<SegmentedGroup>(R.id.date_segmented_group)
+
+        segmentedGroup?.setOnCheckedChangeListener { _, checkedId ->
+            val dateGroupType: DateGroupType = when (checkedId) {
+                R.id.button_day -> {
+                    Log.i("MyTag", "일별 조회 버튼 checked")
+                    DateGroupType.BY_DAY
+                }
+                R.id.button_week -> {
+                    Log.i("MyTag", "주별 조회 버튼 checked")
+                    DateGroupType.BY_WEEK
+                }
+                R.id.button_month -> {
+                    Log.i("MyTag", "월별 조회 버튼 checked")
+                    DateGroupType.BY_MONTH
+                }
+                else -> DateGroupType.BY_DAY
+            }
+
+            studyDetailList?.let {
+                refreshLineChartData(lineChart, dataSet, studyDetailList!!, dateGroupType)
+            }
+        }
 
         return root
     }
@@ -107,7 +140,7 @@ class HomeFragment : Fragment() {
             lineDataSet.circleHoleColor = resources.getColor(R.color.navy_light)
             lineDataSet.setCircleColor(resources.getColor(R.color.navy_light))
             lineDataSet.lineWidth = 3f
-            lineDataSet.valueTextSize = 10f
+            lineDataSet.valueTextSize = 12f
             lineDataSet.circleSize = 5f
             lineDataSet.mode = LineDataSet.Mode.HORIZONTAL_BEZIER;
             lineChart.data = LineData(lineDataSet)
@@ -167,5 +200,3 @@ class HomeFragment : Fragment() {
     }
 
 }
-
-data class XYLabels(val xLabels: List<String>, val yLabels: List<Int>)
