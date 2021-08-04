@@ -21,6 +21,10 @@ import com.github.mikephil.charting.formatter.ValueFormatter
 import com.sunhoon.juststudy.R
 import com.sunhoon.juststudy.database.entity.StudyDetail
 import com.sunhoon.juststudy.myEnum.DateGroupType
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.util.*
 import kotlin.math.roundToInt
 
@@ -65,24 +69,30 @@ class HomeFragment : Fragment() {
             }
         }
         xAxis.valueFormatter = formatter
-        
+
+        // 라인차트의 데이터 refresh
         homeViewModel.dataSet.observe(viewLifecycleOwner, Observer { studyDetailList ->
-            dataSet.clear()
-            val xyLabels = getXYLabels(studyDetailList, DateGroupType.BY_DAY)
-            xLabels = xyLabels.xLabels
-            xyLabels.yLabels.forEachIndexed { index, i ->
-                dataSet.add(Entry(index.toFloat(), i.toFloat()))
+            GlobalScope.launch {
+                dataSet.clear()
+                val xyLabels = getXYLabels(studyDetailList, DateGroupType.BY_DAY)
+                xLabels = xyLabels.xLabels
+                xyLabels.yLabels.forEachIndexed { index, i ->
+                    dataSet.add(Entry(index.toFloat(), i.toFloat()))
+                }
+                val lineDataSet = LineDataSet(dataSet, "label")
+                lineDataSet.color = resources.getColor(R.color.navy_light)
+                lineDataSet.circleHoleColor = resources.getColor(R.color.navy_light)
+                lineDataSet.setCircleColor(resources.getColor(R.color.navy_light))
+                lineDataSet.lineWidth = 3f
+                lineDataSet.valueTextSize = 10f
+                lineDataSet.circleSize = 5f
+                lineDataSet.mode = LineDataSet.Mode.HORIZONTAL_BEZIER;
+                lineChart.data = LineData(lineDataSet)
+                lineChart.notifyDataSetChanged()
+                withContext(Dispatchers.Main) {
+                    lineChart.invalidate()
+                }
             }
-            val lineDataSet = LineDataSet(dataSet, "label")
-            lineDataSet.color = resources.getColor(R.color.navy_light)
-            lineDataSet.circleHoleColor = resources.getColor(R.color.navy_light)
-            lineDataSet.setCircleColor(resources.getColor(R.color.navy_light))
-            lineDataSet.lineWidth = 3f
-            lineDataSet.valueTextSize = 10f
-            lineDataSet.circleSize = 5f
-            lineDataSet.mode = LineDataSet.Mode.HORIZONTAL_BEZIER;
-            lineChart.data = LineData(lineDataSet)
-            lineChart.notifyDataSetChanged()
         })
 
         xAxis.position = XAxis.XAxisPosition.BOTTOM; // X축 아래로
