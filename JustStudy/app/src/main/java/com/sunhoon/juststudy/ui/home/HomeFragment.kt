@@ -8,7 +8,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import com.github.mikephil.charting.charts.LineChart
 import com.github.mikephil.charting.components.AxisBase
@@ -16,7 +15,6 @@ import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
-import com.github.mikephil.charting.formatter.IAxisValueFormatter
 import com.github.mikephil.charting.formatter.ValueFormatter
 import com.sunhoon.juststudy.R
 import com.sunhoon.juststudy.database.entity.StudyDetail
@@ -33,6 +31,7 @@ class HomeFragment : Fragment() {
 
     private lateinit var homeViewModel: HomeViewModel
     private var xLabels: List<String> = mutableListOf()
+    private var dateGroupType: DateGroupType = DateGroupType.BY_DAY
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -40,8 +39,6 @@ class HomeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         homeViewModel = ViewModelProviders.of(this).get(HomeViewModel::class.java)
-//        homeViewModel =
-//            ViewModelProvider(this).get(HomeViewModel::class.java)
         val root = inflater.inflate(R.layout.fragment_home, container, false)
 
 
@@ -61,38 +58,15 @@ class HomeFragment : Fragment() {
         val dataSet = mutableListOf<Entry>()
 
         val formatter: ValueFormatter = object : ValueFormatter() {
-            override fun getFormattedValue(value: Float, axis: AxisBase): String {
-                if (xLabels.isNotEmpty()) {
-                    return xLabels[value.toInt()];
-                }
-                return "";
+            override fun getAxisLabel(value: Float, axis: AxisBase?): String {
+                return xLabels.getOrNull(value.toInt()) ?: value.toString()
             }
         }
         xAxis.valueFormatter = formatter
 
         // 라인차트의 데이터 refresh
         homeViewModel.dataSet.observe(viewLifecycleOwner, Observer { studyDetailList ->
-            GlobalScope.launch {
-                dataSet.clear()
-                val xyLabels = getXYLabels(studyDetailList, DateGroupType.BY_DAY)
-                xLabels = xyLabels.xLabels
-                xyLabels.yLabels.forEachIndexed { index, i ->
-                    dataSet.add(Entry(index.toFloat(), i.toFloat()))
-                }
-                val lineDataSet = LineDataSet(dataSet, "label")
-                lineDataSet.color = resources.getColor(R.color.navy_light)
-                lineDataSet.circleHoleColor = resources.getColor(R.color.navy_light)
-                lineDataSet.setCircleColor(resources.getColor(R.color.navy_light))
-                lineDataSet.lineWidth = 3f
-                lineDataSet.valueTextSize = 10f
-                lineDataSet.circleSize = 5f
-                lineDataSet.mode = LineDataSet.Mode.HORIZONTAL_BEZIER;
-                lineChart.data = LineData(lineDataSet)
-                lineChart.notifyDataSetChanged()
-                withContext(Dispatchers.Main) {
-                    lineChart.invalidate()
-                }
-            }
+            refreshLineChartData(lineChart, dataSet, studyDetailList, dateGroupType)
         })
 
         xAxis.position = XAxis.XAxisPosition.BOTTOM; // X축 아래로
@@ -112,6 +86,41 @@ class HomeFragment : Fragment() {
         return root
     }
 
+    /**
+     * 라인 차트의 데이터를 다시 로드한다.
+     */
+    private fun refreshLineChartData(lineChart: LineChart,
+                                     dataSet: MutableList<Entry>,
+                                     studyDetailList: List<StudyDetail>,
+                                     dateGroupType: DateGroupType) {
+        GlobalScope.launch {
+            dataSet.clear()
+            val xyLabels = getXYLabels(studyDetailList, dateGroupType)
+            xLabels = xyLabels.xLabels.map {
+                it.substring(5, it.length)
+            }
+            xyLabels.yLabels.forEachIndexed { index, i ->
+                dataSet.add(Entry(index.toFloat(), i.toFloat()))
+            }
+            val lineDataSet = LineDataSet(dataSet, "label")
+            lineDataSet.color = resources.getColor(R.color.navy_light)
+            lineDataSet.circleHoleColor = resources.getColor(R.color.navy_light)
+            lineDataSet.setCircleColor(resources.getColor(R.color.navy_light))
+            lineDataSet.lineWidth = 3f
+            lineDataSet.valueTextSize = 10f
+            lineDataSet.circleSize = 5f
+            lineDataSet.mode = LineDataSet.Mode.HORIZONTAL_BEZIER;
+            lineChart.data = LineData(lineDataSet)
+            lineChart.notifyDataSetChanged()
+            withContext(Dispatchers.Main) {
+                lineChart.invalidate()
+            }
+        }
+    }
+
+    /**
+     * X축 라벨과 Y축 라벨을 생성한다.
+     */
     private fun getXYLabels(studyDetailList: List<StudyDetail>, dateGroupType: DateGroupType): XYLabels {
         val tempMap: MutableMap<String, MutableList<Int>> = mutableMapOf()
         val statisticsMap: MutableMap<String, Int> = mutableMapOf()
@@ -122,15 +131,14 @@ class HomeFragment : Fragment() {
 
             val strDate = when (dateGroupType) {
                 DateGroupType.BY_DAY -> String.format("%d.%d.%d", date[Calendar.YEAR], date[Calendar.MONTH] + 1, date[Calendar.DAY_OF_MONTH])
-                DateGroupType.BY_WEEK -> String.format("%d.%d.%d주", date[Calendar.YEAR], date[Calendar.MONTH] + 1, date[Calendar.WEEK_OF_MONTH])
+                DateGroupType.BY_WEEK -> String.format("%d.%d.%d", date[Calendar.YEAR], date[Calendar.MONTH] + 1, date[Calendar.WEEK_OF_MONTH])
                 DateGroupType.BY_MONTH -> String.format("%d.%d", date[Calendar.YEAR], date[Calendar.MONTH] + 1)
             }
 
-            if (tempMap.contains(strDate)) {
-                tempMap[strDate]?.add(it.conLevel)
-            } else {
+            if (!tempMap.contains(strDate)) {
                 tempMap[strDate] = mutableListOf()
             }
+            tempMap[strDate]?.add(it.conLevel)
         }
         tempMap.forEach { (strDate, conLevelList) ->
             val conLevelOfAvg = conLevelList.average().roundToInt()
@@ -139,8 +147,17 @@ class HomeFragment : Fragment() {
         Log.i("MyTag", "tempMap: $tempMap")
         Log.i("MyTag", "statisticsMap: $statisticsMap")
 
-        val keyList = statisticsMap.keys.sorted().reversed()
-            .subList(0, Integer.min(7, statisticsMap.keys.size)).reversed()
+        val keyList = statisticsMap.keys.sortedWith(compareBy<String> {
+            val a = it.split(".")
+            a[0].toInt()
+        }.thenBy {
+            val a = it.split(".")
+            a[1].toInt()
+        }.thenBy {
+            val a = it.split(".")
+            a[2].toInt()
+        }).reversed().subList(0, Integer.min(7, statisticsMap.keys.size)).reversed()
+
         val yLabels = mutableListOf<Int>()
         keyList.forEach {
             yLabels.add(statisticsMap[it]!!)
@@ -148,6 +165,7 @@ class HomeFragment : Fragment() {
 
         return XYLabels(keyList, yLabels)
     }
+
 }
 
 data class XYLabels(val xLabels: List<String>, val yLabels: List<Int>)
