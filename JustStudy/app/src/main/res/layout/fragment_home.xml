@@ -56,7 +56,7 @@
                             android:layout_height="wrap_content"
                             android:textColor="@color/navy_light"
                             android:layout_margin="8dp"
-                            android:textSize="24sp"
+                            android:textSize="20sp"
                             android:textStyle="bold"
                             tools:text="30º"
                             android:id="@+id/best_angle_textview"/>
@@ -77,7 +77,7 @@
                             android:layout_height="wrap_content"
                             android:textColor="@color/navy_light"
                             android:layout_margin="8dp"
-                            android:textSize="24sp"
+                            android:textSize="20sp"
                             android:textStyle="bold"
                             tools:text="5000k"
                             android:id="@+id/best_lamp_textview"/>
@@ -98,7 +98,7 @@
                             android:layout_height="wrap_content"
                             android:textColor="@color/navy_light"
                             android:layout_margin="8dp"
-                            android:textSize="24sp"
+                            android:textSize="20sp"
                             android:textStyle="bold"
                             tools:text="빗소리"
                             android:id="@+id/best_white_noise_textview"/>

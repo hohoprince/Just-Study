@@ -1,16 +1,16 @@
 package com.sunhoon.juststudy.myEnum
 
-enum class Angle(description: String) : StudyEnvironment<Angle> {
+enum class Angle(val description: String) : StudyEnvironment<Angle> {
 
     AUTO("자동"),
-    DEGREE_0("0도"),
-    DEGREE_15("15도"),
-    DEGREE_30("30도"),
-    DEGREE_45("45도")
+    DEGREE_0("0º"),
+    DEGREE_15("15º"),
+    DEGREE_30("30º"),
+    DEGREE_45("45º")
     ;
 
     companion object {
-        private val VALUES = Angle.values()
+        private val VALUES = values()
         fun getByValue(value: Int) = VALUES.first { it.ordinal == value }
     }
 

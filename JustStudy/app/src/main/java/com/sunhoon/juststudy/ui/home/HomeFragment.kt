@@ -21,7 +21,10 @@ import com.github.mikephil.charting.formatter.ValueFormatter
 import com.sunhoon.juststudy.R
 import com.sunhoon.juststudy.dataClass.XYLabels
 import com.sunhoon.juststudy.database.entity.StudyDetail
+import com.sunhoon.juststudy.myEnum.Angle
 import com.sunhoon.juststudy.myEnum.DateGroupType
+import com.sunhoon.juststudy.myEnum.Lamp
+import com.sunhoon.juststudy.myEnum.WhiteNoise
 import info.hoang8f.android.segmented.SegmentedGroup
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -48,11 +51,14 @@ class HomeFragment : Fragment() {
 
         // 추천 환경
         val bestAngleTextView = root.findViewById<TextView>(R.id.best_angle_textview)
-//        homeViewModel.bestAngle.observe(viewLifecycleOwner, Observer {
-//            bestAngleTextView.text = it
-//        })
         val bestLampTextView = root.findViewById<TextView>(R.id.best_lamp_textview)
         val bestWhiteNoiseTextView = root.findViewById<TextView>(R.id.best_white_noise_textview)
+
+        homeViewModel.bestEnvironment.observe(viewLifecycleOwner, Observer {
+            bestAngleTextView.text = Angle.getByValue(it.bestAngle).description
+            bestLampTextView.text = Lamp.getByValue(it.bestLamp).description
+            bestWhiteNoiseTextView.text = WhiteNoise.getByValue(it.bestWhiteNoise).description
+        })
 
         // 통계 라인 차트
         val lineChart = root.findViewById<LineChart>(R.id.lineChart)

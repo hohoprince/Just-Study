@@ -10,6 +10,7 @@ import com.github.mikephil.charting.data.Entry
 import com.sunhoon.juststudy.bluetooth.StudyManager
 import com.sunhoon.juststudy.data.SharedPref
 import com.sunhoon.juststudy.database.AppDatabase
+import com.sunhoon.juststudy.database.entity.BestEnvironment
 import com.sunhoon.juststudy.database.entity.StudyDetail
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -20,13 +21,7 @@ class HomeViewModel(application: Application): AndroidViewModel(application) {
 
     private val db = AppDatabase.getDatabase(application)
 
-
     val dataSet: LiveData<List<StudyDetail>> = db.studyDetailDao().getAllOrderByDate()
 
-//    val bestAngle: LiveData<String> by lazy {
-//        MutableLiveData<String>().apply {
-//            value
-//        }
-//    }
-
+    val bestEnvironment: LiveData<BestEnvironment> = db.bestEnvironmentDao().readLiveData()
 }

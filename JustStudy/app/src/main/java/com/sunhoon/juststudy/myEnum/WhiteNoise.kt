@@ -1,6 +1,6 @@
 package com.sunhoon.juststudy.myEnum
 
-enum class WhiteNoise(description: String) : StudyEnvironment<WhiteNoise> {
+enum class WhiteNoise(val description: String) : StudyEnvironment<WhiteNoise> {
     AUTO("자동"),
     NONE("사용 안함"),
     WAVE("파도 소리"),
@@ -10,7 +10,7 @@ enum class WhiteNoise(description: String) : StudyEnvironment<WhiteNoise> {
     ;
 
     companion object {
-        private val VALUES = WhiteNoise.values()
+        private val VALUES = values()
         fun getByValue(value: Int) = VALUES.first { it.ordinal == value }
     }
 }

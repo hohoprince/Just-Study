@@ -54,15 +54,7 @@ class StudyFragment : Fragment() {
         // 책상 각도 텍스트 뷰
         val angleTextView = root.findViewById<TextView>(R.id.angle_textview)
         studyViewModel.currentAngle.observe(viewLifecycleOwner, Observer {
-            var text = ""
-            when (it) {
-                Angle.AUTO -> text = "자동"
-                Angle.DEGREE_0 -> text = "0º"
-                Angle.DEGREE_15 -> text = "15º"
-                Angle.DEGREE_30 -> text = "30º"
-                Angle.DEGREE_45 -> text = "45º"
-            }
-            angleTextView.text = text
+            angleTextView.text = it.description
             sharedPref.edit().putInt("angle", it.ordinal).apply()
         })
 
@@ -75,34 +67,18 @@ class StudyFragment : Fragment() {
         // 램프 밝기 텍스트 뷰
         val lightTextView = root.findViewById<TextView>(R.id.light_textview)
         studyViewModel.currentLamp.observe(viewLifecycleOwner, Observer {
-            var text = ""
-            text = when (it) {
-                Lamp.AUTO -> "자동"
-                Lamp.NONE -> "사용 안함"
-                Lamp.LAMP_3500K -> "3500k"
-                Lamp.LAMP_5000K -> "5000k"
-                Lamp.LAMP_6500K -> "6500k"
-            }
-            lightTextView.text = text
+            lightTextView.text = it.description
             sharedPref.edit().putInt("light", it.ordinal).apply()
         })
 
         // 백색 소음 텍스트 뷰
         val noiseTextView = root.findViewById<TextView>(R.id.noise_textview)
         studyViewModel.currentWhiteNoise.observe(viewLifecycleOwner, Observer {
-            var text = ""
-            text = when (it) {
-                WhiteNoise.AUTO -> "자동"
-                WhiteNoise.NONE -> "사용 안함"
-                WhiteNoise.WAVE -> "파도 소리"
-                WhiteNoise.WIND -> "바람 소리"
-                WhiteNoise.LEAF -> "나뭇잎 소리"
-                WhiteNoise.RAIN -> "빗소리"
-            }
-            noiseTextView.text = text
+            noiseTextView.text = it.description
             sharedPref.edit().putInt("whiteNoise", it.ordinal).apply()
         })
 
+        // 집중도 텍스트 뷰
         val concentrationTextView = root.findViewById<TextView>(R.id.concentration_textview)
         studyViewModel.currentConcentration.observe(viewLifecycleOwner, Observer {
             concentrationTextView.text = it.toString()

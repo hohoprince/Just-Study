@@ -18,5 +18,7 @@ interface BestEnvironmentDao {
 
     @Query("SELECT * FROM best_environment WHERE id = 1")
     fun read(): BestEnvironment?
-    
+
+    @Query("SELECT * FROM best_environment WHERE id = 1")
+    fun readLiveData(): LiveData<BestEnvironment>
 }
