@@ -21,4 +21,8 @@ interface BestEnvironmentDao {
 
     @Query("SELECT * FROM best_environment WHERE id = 1")
     fun readLiveData(): LiveData<BestEnvironment>
+
+    @Query("DELETE FROM best_environment")
+    fun deleteAll()
+
 }

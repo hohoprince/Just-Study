@@ -26,4 +26,7 @@ interface StudyDetailDao {
     @Insert
     fun insertAll(studyDetails: List<StudyDetail>)
 
+    @Query("DELETE FROM study_detail")
+    fun deleteAll()
+
 }

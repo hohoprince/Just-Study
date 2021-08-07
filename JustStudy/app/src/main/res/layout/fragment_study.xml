@@ -52,12 +52,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/time"
-            app:layout_constraintTop_toBottomOf="@+id/segmented2"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             android:textSize="48sp"
             android:textColor="@color/black"
-            app:layout_constraintBottom_toTopOf="@+id/guideline2"/>
+            app:layout_constraintTop_toBottomOf="@+id/segmented_group"
+            app:layout_constraintBottom_toTopOf="@+id/linearLayout3"/>
 
     <LinearLayout
             android:orientation="vertical"
@@ -66,7 +66,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             android:id="@+id/linearLayout3"
-            app:layout_constraintTop_toTopOf="@+id/guideline2"
             app:layout_constraintBottom_toTopOf="@+id/guideline3"
             android:background="@drawable/rect"
             android:padding="8dp"
@@ -308,10 +307,7 @@
 
         </LinearLayout>
     </LinearLayout>
-    <androidx.constraintlayout.widget.Guideline
-            android:orientation="horizontal"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" android:id="@+id/guideline2" app:layout_constraintGuide_percent=".3"/>
+
     <androidx.constraintlayout.widget.Guideline
             android:orientation="horizontal"
             android:layout_width="wrap_content"

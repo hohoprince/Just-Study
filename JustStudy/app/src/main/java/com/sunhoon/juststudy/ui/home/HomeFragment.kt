@@ -55,9 +55,11 @@ class HomeFragment : Fragment() {
         val bestWhiteNoiseTextView = root.findViewById<TextView>(R.id.best_white_noise_textview)
 
         homeViewModel.bestEnvironment.observe(viewLifecycleOwner, Observer {
-            bestAngleTextView.text = Angle.getByValue(it.bestAngle).description
-            bestLampTextView.text = Lamp.getByValue(it.bestLamp).description
-            bestWhiteNoiseTextView.text = WhiteNoise.getByValue(it.bestWhiteNoise).description
+            it?.let {
+                bestAngleTextView.text = Angle.getByValue(it.bestAngle).description
+                bestLampTextView.text = Lamp.getByValue(it.bestLamp).description
+                bestWhiteNoiseTextView.text = WhiteNoise.getByValue(it.bestWhiteNoise).description
+            }
         })
 
         // 통계 라인 차트

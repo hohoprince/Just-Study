@@ -106,34 +106,4 @@ class StudyManager {
         bluetoothSPP.send(msg, true)
     }
 
-
-
-    fun createTestData() {
-        val studyDetails = ArrayList<StudyDetail>()
-        val numOfStudy: Int = 100
-        val seed: Long = 1L
-        val startTimestamp = 1619823600 // 5월 1일
-        val endTimestamp = 1627772400 // 8월 1일
-
-        val random = Random(seed)
-
-        for (i in 0 until numOfStudy) {
-            studyDetails.add(
-                StudyDetail(
-                    conLevel = random.nextInt(71) + 30, // 30 ~ 100
-                    time = Date(((random.nextInt(endTimestamp - startTimestamp) + startTimestamp).toLong()) * 1000),
-                    angleId = random.nextInt(5),
-                    height = random.nextInt(10000),
-                    lampId = random.nextInt(5),
-                    whiteNoiseId = random.nextInt(6),
-                    studyId = (random.nextInt(numOfStudy) + 1).toLong(),
-                )
-            )
-        }
-
-        GlobalScope.launch(Dispatchers.IO) {
-            appDatabase.studyDetailDao().insertAll(studyDetails)
-        }
-    }
-
 }

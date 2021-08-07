@@ -18,4 +18,7 @@ interface StudyDao {
     @Query("SELECT * FROM study WHERE id=:id")
     fun readById(id: Long): Study
 
+    @Query("DELETE FROM study")
+    fun deleteAll()
+
 }

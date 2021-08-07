@@ -152,6 +152,16 @@ class SettingsFragment : Fragment() {
             dlg.show()
         }
 
+        // For Test...
+        val insertTestDataButton = root.findViewById<Button>(R.id.test_insert_button)
+        insertTestDataButton.setOnClickListener {
+            settingsViewModel.createTestData()
+        }
+        val deleteTestDataButton = root.findViewById<Button>(R.id.test_delete_button)
+        deleteTestDataButton.setOnClickListener {
+            settingsViewModel.deleteTestData()
+        }
+
         return root
     }
 
