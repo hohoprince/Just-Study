@@ -4,6 +4,8 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.Observer
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
@@ -13,9 +15,22 @@ import app.akexorcist.bluetotohspp.library.BluetoothState
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.sunhoon.juststudy.bluetooth.StudyManager
 import com.sunhoon.juststudy.database.AppDatabase
+import com.sunhoon.juststudy.database.dao.BestEnvironmentDao
+import com.sunhoon.juststudy.database.entity.BestEnvironment
+import com.sunhoon.juststudy.myEnum.Angle
+import com.sunhoon.juststudy.myEnum.Lamp
+import com.sunhoon.juststudy.myEnum.StudyEnvironment
+import com.sunhoon.juststudy.myEnum.WhiteNoise
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 
 class MainActivity : AppCompatActivity() {
+
+    private val appDatabase: AppDatabase by lazy {
+        AppDatabase.getDatabase(this)
+    }
 
     private var bluetoothSPP: BluetoothSPP = BluetoothSPP(this)
 
@@ -40,7 +55,7 @@ class MainActivity : AppCompatActivity() {
 
         startBluetoothService() // 블루투스 서비스 시작
 
-        studyManager.appDatabase = AppDatabase.getDatabase(this)
+        studyManager.appDatabase = appDatabase
         studyManager.bluetoothSPP = bluetoothSPP
 
         bluetoothSPP.setOnDataReceivedListener { _, message ->
@@ -65,6 +80,76 @@ class MainActivity : AppCompatActivity() {
             }
 
         })
+
+        appDatabase.studyDetailDao().getAllOrderByDate().observe(this, Observer { studyDetails ->
+            if (studyDetails.isNotEmpty()) {
+                val lampScoreMap: MutableMap<Lamp, Int> = mutableMapOf()
+                lampScoreMap[Lamp.LAMP_3500K] = 0
+                lampScoreMap[Lamp.LAMP_5000K] = 0
+                lampScoreMap[Lamp.LAMP_6500K] = 0
+                lampScoreMap[Lamp.AUTO] = 0
+                lampScoreMap[Lamp.NONE] = 0
+                val whiteNoiseScoreMap: MutableMap<WhiteNoise, Int> = mutableMapOf()
+                whiteNoiseScoreMap[WhiteNoise.RAIN] = 0
+                whiteNoiseScoreMap[WhiteNoise.LEAF] = 0
+                whiteNoiseScoreMap[WhiteNoise.WIND] = 0
+                whiteNoiseScoreMap[WhiteNoise.WAVE] = 0
+                whiteNoiseScoreMap[WhiteNoise.NONE] = 0
+                whiteNoiseScoreMap[WhiteNoise.AUTO] = 0
+                val angleScoreMap: MutableMap<Angle, Int> = mutableMapOf()
+                angleScoreMap[Angle.DEGREE_0] = 0
+                angleScoreMap[Angle.DEGREE_15] = 0
+                angleScoreMap[Angle.DEGREE_30] = 0
+                angleScoreMap[Angle.DEGREE_45] = 0
+                angleScoreMap[Angle.AUTO] = 0
+
+                studyDetails.forEach { studyDetail ->
+                    val score = studyDetail.conLevel
+                    lampScoreMap[Lamp.getByValue(studyDetail.lampId)] =
+                        lampScoreMap[Lamp.getByValue(studyDetail.lampId)]!!.plus(score)
+                    whiteNoiseScoreMap[WhiteNoise.getByValue(studyDetail.whiteNoiseId)] =
+                        whiteNoiseScoreMap[WhiteNoise.getByValue(studyDetail.whiteNoiseId)]!!.plus(score)
+                    angleScoreMap[Angle.getByValue(studyDetail.angleId)] =
+                        angleScoreMap[Angle.getByValue(studyDetail.angleId)]!!.plus(score)
+                }
+
+                val bestLamp = getBestEnvironment(lampScoreMap, studyDetails.size)
+                val bestAngle = getBestEnvironment(angleScoreMap, studyDetails.size)
+                val bestWhiteNoise = getBestEnvironment(whiteNoiseScoreMap, studyDetails.size)
+                Log.i("MyTag", "bestLamp: ${bestLamp.toString()}")
+                Log.i("MyTag", "bestAngle: ${bestAngle.toString()}")
+                Log.i("MyTag", "bestWhiteNoise: ${bestWhiteNoise.toString()}")
+                val bestEnvironment = BestEnvironment(
+                    bestAngle = bestAngle?.ordinal ?: Angle.DEGREE_0.ordinal,
+                    bestLamp = bestLamp?.ordinal ?: Lamp.NONE.ordinal,
+                    bestWhiteNoise = bestWhiteNoise?.ordinal ?: WhiteNoise.NONE.ordinal)
+                GlobalScope.launch(Dispatchers.IO) {
+                    val be: BestEnvironment? = appDatabase.bestEnvironmentDao().read()
+                    if (be == null) {
+                        appDatabase.bestEnvironmentDao().insert(bestEnvironment)
+                        Log.i("MyTag", "insert bestEnvironment: $bestEnvironment")
+                    } else {
+                        appDatabase.bestEnvironmentDao().update(bestEnvironment)
+                        Log.i("MyTag", "update bestEnvironment: $bestEnvironment")
+                    }
+                }
+            }
+        })
+    }
+
+    private fun <T : StudyEnvironment<T>> getBestEnvironment(scoreMap: MutableMap<T, Int>, size: Int): T? {
+        scoreMap.keys.forEach { key ->
+            scoreMap[key] = scoreMap[key]!! / size
+        }
+        val maxScore = scoreMap.values.maxOrNull()
+        maxScore?.let { maxScore ->
+            scoreMap.keys.forEach { key ->
+                if (scoreMap[key] == maxScore) {
+                    return key
+                }
+            }
+        }
+        return null
     }
 
     /**

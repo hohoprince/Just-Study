@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.RadioButton
+import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -44,6 +45,14 @@ class HomeFragment : Fragment() {
     ): View? {
         homeViewModel = ViewModelProviders.of(this).get(HomeViewModel::class.java)
         val root = inflater.inflate(R.layout.fragment_home, container, false)
+
+        // 추천 환경
+        val bestAngleTextView = root.findViewById<TextView>(R.id.best_angle_textview)
+//        homeViewModel.bestAngle.observe(viewLifecycleOwner, Observer {
+//            bestAngleTextView.text = it
+//        })
+        val bestLampTextView = root.findViewById<TextView>(R.id.best_lamp_textview)
+        val bestWhiteNoiseTextView = root.findViewById<TextView>(R.id.best_white_noise_textview)
 
         // 통계 라인 차트
         val lineChart = root.findViewById<LineChart>(R.id.lineChart)

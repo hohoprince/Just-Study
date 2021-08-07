@@ -1,10 +1,15 @@
 package com.sunhoon.juststudy.ui.settings
 
+import android.app.Application
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.sunhoon.juststudy.database.AppDatabase
 
-class SettingsViewModel : ViewModel() {
+class SettingsViewModel(application: Application): AndroidViewModel(application) {
+
+    private val appDatabase: AppDatabase = AppDatabase.getDatabase(application)
 
     private val _stringConcentrationTime = MutableLiveData<String>().apply {
         value = "0분"

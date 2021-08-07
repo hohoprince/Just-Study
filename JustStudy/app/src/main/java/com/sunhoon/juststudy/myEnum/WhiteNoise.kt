@@ -1,6 +1,6 @@
 package com.sunhoon.juststudy.myEnum
 
-enum class WhiteNoise(description: String) {
+enum class WhiteNoise(description: String) : StudyEnvironment<WhiteNoise> {
     AUTO("자동"),
     NONE("사용 안함"),
     WAVE("파도 소리"),

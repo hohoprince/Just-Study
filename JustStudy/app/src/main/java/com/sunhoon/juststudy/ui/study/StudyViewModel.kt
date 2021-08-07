@@ -1,11 +1,14 @@
 package com.sunhoon.juststudy.ui.study
 
+import android.app.Application
 import android.util.Log
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.sunhoon.juststudy.bluetooth.StudyManager
 import com.sunhoon.juststudy.data.StatusManager
+import com.sunhoon.juststudy.database.AppDatabase
 import com.sunhoon.juststudy.myEnum.Angle
 import com.sunhoon.juststudy.myEnum.Lamp
 import com.sunhoon.juststudy.myEnum.ProgressStatus
@@ -13,7 +16,9 @@ import com.sunhoon.juststudy.myEnum.WhiteNoise
 import com.sunhoon.juststudy.time.StudyTimer
 import com.sunhoon.juststudy.time.TimeConverter
 
-class StudyViewModel : ViewModel() {
+class StudyViewModel(application: Application): AndroidViewModel(application) {
+
+    private val appDatabase: AppDatabase = AppDatabase.getDatabase(application)
 
     private val statusManager = StatusManager.getInstance()
 

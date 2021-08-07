@@ -1,6 +1,6 @@
 package com.sunhoon.juststudy.myEnum
 
-enum class Lamp(description: String) {
+enum class Lamp(description: String) : StudyEnvironment<Lamp> {
     AUTO("자동"),
     NONE("사용 안함"),
     LAMP_3500K("3500K"),

@@ -24,7 +24,7 @@ class StudyManager {
     lateinit var appDatabase: AppDatabase
     lateinit var bluetoothSPP: BluetoothSPP
     private val statusManager: StatusManager = StatusManager.getInstance()
-    var groupId: Long = 0L
+    private var groupId: Long = 0L
 
     /* 현재 책상 각도 */
     val currentAngle = MutableLiveData<Angle>().apply {
@@ -106,9 +106,7 @@ class StudyManager {
         bluetoothSPP.send(msg, true)
     }
 
-    fun getAllOrderByDate(): LiveData<List<StudyDetail>> {
-        return appDatabase.studyDetailDao().getAllOrderByDate()
-    }
+
 
     fun createTestData() {
         val studyDetails = ArrayList<StudyDetail>()

@@ -1,6 +1,6 @@
 package com.sunhoon.juststudy.myEnum
 
-enum class Angle(description: String) {
+enum class Angle(description: String) : StudyEnvironment<Angle> {
 
     AUTO("자동"),
     DEGREE_0("0도"),

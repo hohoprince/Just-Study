@@ -58,8 +58,8 @@
                             android:layout_margin="8dp"
                             android:textSize="24sp"
                             android:textStyle="bold"
-                            tools:text="0º"
-                            android:text="30º"/>
+                            tools:text="30º"
+                            android:id="@+id/best_angle_textview"/>
                     <TextView
                             android:text="책상 각도"
                             android:layout_width="wrap_content"
@@ -79,8 +79,8 @@
                             android:layout_margin="8dp"
                             android:textSize="24sp"
                             android:textStyle="bold"
-                            tools:text="0k"
-                            android:text="5000k"/>
+                            tools:text="5000k"
+                            android:id="@+id/best_lamp_textview"/>
                     <TextView
                             android:text="램프 밝기"
                             android:layout_width="wrap_content"
@@ -101,7 +101,7 @@
                             android:textSize="24sp"
                             android:textStyle="bold"
                             tools:text="빗소리"
-                            android:text="빗소리"/>
+                            android:id="@+id/best_white_noise_textview"/>
                     <TextView
                             android:text="백색 소음"
                             android:layout_width="wrap_content"

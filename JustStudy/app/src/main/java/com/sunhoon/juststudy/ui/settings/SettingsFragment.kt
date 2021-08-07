@@ -13,9 +13,11 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelProviders
 import com.sunhoon.juststudy.R
 import com.sunhoon.juststudy.data.SharedPref
 import com.sunhoon.juststudy.time.TimeConverter
+import com.sunhoon.juststudy.ui.study.StudyViewModel
 
 class SettingsFragment : Fragment() {
 
@@ -26,8 +28,7 @@ class SettingsFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        settingsViewModel =
-            ViewModelProvider(this).get(SettingsViewModel::class.java)
+        settingsViewModel = ViewModelProviders.of(this).get(SettingsViewModel::class.java)
         val root = inflater.inflate(R.layout.fragment_settings, container, false)
 
         // SharedPreference 값 불러오기
