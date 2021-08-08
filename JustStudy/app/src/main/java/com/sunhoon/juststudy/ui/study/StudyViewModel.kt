@@ -2,55 +2,49 @@ package com.sunhoon.juststudy.ui.study
 
 import android.app.Application
 import android.util.Log
-import android.widget.Toast
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.room.Room
-import com.sunhoon.juststudy.data.SharedPref
+import com.sunhoon.juststudy.bluetooth.StudyManager
 import com.sunhoon.juststudy.data.StatusManager
 import com.sunhoon.juststudy.database.AppDatabase
-import com.sunhoon.juststudy.database.entity.StudyDetail
-import com.sunhoon.juststudy.enum.ProgressStatus
+import com.sunhoon.juststudy.myEnum.Angle
+import com.sunhoon.juststudy.myEnum.Lamp
+import com.sunhoon.juststudy.myEnum.ProgressStatus
+import com.sunhoon.juststudy.myEnum.WhiteNoise
 import com.sunhoon.juststudy.time.StudyTimer
 import com.sunhoon.juststudy.time.TimeConverter
-import java.time.LocalDateTime
-import java.util.*
 
-class StudyViewModel : ViewModel() {
+class StudyViewModel(application: Application): AndroidViewModel(application) {
+
+    private val appDatabase: AppDatabase = AppDatabase.getDatabase(application)
 
     private val statusManager = StatusManager.getInstance()
 
-    // 시간 텍스트
+    val studyManager = StudyManager.getInstance()
+
+    /* 시간 */
     private val _time = MutableLiveData<String>().apply {
         value = "00:00:00"
     }
     val time: LiveData<String> = _time
 
-    // 현재 책상 각도
-    private val _currentAngle = MutableLiveData<Int>().apply {
-        value = 0
-    }
-    var currentAngle: LiveData<Int> = _currentAngle
+    /* 현재 책상 각도 */
+    var currentAngle: LiveData<Angle> = studyManager.currentAngle
 
-    // 현재 램프 밝기
-    private val _currentLight = MutableLiveData<Int>().apply {
-        value = 0
-    }
-    var currentLight: LiveData<Int> = _currentLight
+    /* 현재 책상 높이 */
+    var currentHeight: LiveData<Int> = studyManager.currentHeight
 
-    // 현재 백색 소음
-    private val _currentNoise = MutableLiveData<Int>().apply {
-        value = 0
-    }
-    var currentNoise: LiveData<Int> = _currentNoise
+    /* 현재 램프 밝기 */
+    var currentLamp: LiveData<Lamp> = studyManager.currentLamp
 
-    // 현재 집중도
-    private val _currentConcentration = MutableLiveData<Int>().apply {
-        value = 61
-    }
-    var currentConcentration: LiveData<Int> = _currentConcentration
+    /* 현재 백색 소음 */
+    var currentWhiteNoise: LiveData<WhiteNoise> = studyManager.currentWhiteNoise
+
+    /* 현재 집중도 */
+    var currentConcentration: LiveData<Int> = studyManager.currentConcentration
+
 
     var isPlaying: MutableLiveData<Boolean> = MutableLiveData<Boolean>().apply {
         value = false
@@ -67,6 +61,13 @@ class StudyViewModel : ViewModel() {
     // 타이머의 남은 시간
     private var remainTime: Long = 0L
 
+    fun createStudy() {
+        studyManager.createStudy()
+    }
+
+    fun updateStudy() {
+        studyManager.updateStudy()
+    }
 
     // 공부 타이머 시작
     fun startStudyTimer() {
@@ -77,7 +78,7 @@ class StudyViewModel : ViewModel() {
         isPlaying.value = true
         statusManager.progressStatus = ProgressStatus.STUDYING
         toastingMessage.value = "공부 시작"
-        Log.i("MyInfo", "공부 시작")
+        Log.i("MyTag", "공부 시작")
     }
 
     // 휴식 타이머 시작
@@ -90,7 +91,7 @@ class StudyViewModel : ViewModel() {
         studyTimer.start()
         statusManager.progressStatus = ProgressStatus.RESTING
         toastingMessage.value = "휴식 시작"
-        Log.i("MyInfo", "휴식 시작")
+        Log.i("MyTag", "휴식 시작")
     }
 
     // 타이머 종료
@@ -100,7 +101,7 @@ class StudyViewModel : ViewModel() {
         statusManager.progressStatus = ProgressStatus.WAITING
         setUserTime(statusManager.studyTime)
         toastingMessage.value = "공부 종료"
-        Log.i("MyInfo", "공부 종료, 타이머 종료")
+        Log.i("MyTag", "공부 종료, 타이머 종료")
     }
 
     // 사용자 설정 시간
@@ -109,16 +110,16 @@ class StudyViewModel : ViewModel() {
         _time.value = TimeConverter.longToStringTime(userTime)
     }
 
-    fun setCurrentLight(value: Int) {
-        _currentLight.value = value
+    fun setCurrentLamp(value: Lamp) {
+        studyManager.currentLamp.value = value
     }
 
-    fun setCurrentNoise(value: Int) {
-        _currentNoise.value = value
+    fun setCurrentWhiteNoise(value: WhiteNoise) {
+        studyManager.currentWhiteNoise.value = value
     }
 
-    fun setCurrentAngle(value: Int) {
-        _currentAngle.value = value
+    fun setCurrentAngle(value: Angle) {
+        studyManager.currentAngle.value = value
     }
 
 }

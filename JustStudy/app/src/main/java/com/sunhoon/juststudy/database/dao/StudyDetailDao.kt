@@ -1,10 +1,12 @@
 package com.sunhoon.juststudy.database.dao
 
+import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
 import com.sunhoon.juststudy.database.entity.StudyDetail
+import java.util.*
 
 @Dao
 interface StudyDetailDao {
@@ -12,20 +14,19 @@ interface StudyDetailDao {
     @Query("SELECT * FROM study_detail")
     fun getAll(): List<StudyDetail>
 
+    @Query("SELECT * FROM study_detail ORDER BY time")
+    fun getAllOrderByDate(): LiveData<List<StudyDetail>>
+
     @Insert
     fun insert(studyDetail: StudyDetail)
 
     @Delete
     fun delete(studyDetail: StudyDetail)
 
-//    @Query("SELECT * FROM user WHERE uid IN (:userIds)")
-//    fun loadAllByIds(userIds: IntArray): List<StudyDetail>
+    @Insert
+    fun insertAll(studyDetails: List<StudyDetail>)
 
-//    @Query("SELECT * FROM StudyDetail WHERE first_name LIKE :first AND " +
-//            "last_name LIKE :last LIMIT 1")
-//    fun findByName(first: String, last: String): StudyDetail
-
-//    @Insert
-//    fun insertAll(vararg studyDetail: StudyDetail)
+    @Query("DELETE FROM study_detail")
+    fun deleteAll()
 
 }

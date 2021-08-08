@@ -167,5 +167,22 @@
                 android:layout_height="1dp"
                 android:background="@color/gray_light"
                 android:clickable="true"/>
+
+        <!-- 테스트 후 삭제 -->
+
+        <Button
+                android:text="insert_test_data"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/test_insert_button"/>
+
+        <Button
+                android:text="delete_test_data"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/test_delete_button"/>
+
+        <!-- /테스트 후 삭제 -->
+
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

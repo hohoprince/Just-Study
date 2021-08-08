@@ -45,68 +45,88 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center" android:padding="16dp" android:id="@+id/linearLayout">
+
                 <LinearLayout
                         android:orientation="vertical"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" android:layout_weight="1"
-                        android:gravity="center" android:padding="16dp">
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center">
 
                     <TextView
-                            android:layout_width="wrap_content"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:textColor="@color/navy_light"
                             android:layout_margin="8dp"
-                            android:textSize="24sp"
+                            android:textSize="20sp"
                             android:textStyle="bold"
-                            tools:text="0º"
-                            android:text="30º"/>
+                            android:id="@+id/best_angle_textview"
+                            android:gravity="center"
+                            android:text="정보 없음"/>
+
                     <TextView
                             android:text="책상 각도"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content" android:textColor="@color/black"
-                            android:layout_margin="8dp" android:textSize="12sp"/>
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/black"
+                            android:layout_margin="8dp"
+                            android:textSize="12sp"/>
                 </LinearLayout>
+
                 <LinearLayout
                         android:orientation="vertical"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" android:layout_weight="1" android:gravity="center"
-                        android:padding="16dp">
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        >
 
                     <TextView
-                            android:layout_width="wrap_content"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:textColor="@color/navy_light"
                             android:layout_margin="8dp"
-                            android:textSize="24sp"
+                            android:textSize="20sp"
                             android:textStyle="bold"
-                            tools:text="0k"
-                            android:text="5000k"/>
+                            android:id="@+id/best_lamp_textview"
+                            android:gravity="center"
+                            android:text="정보 없음"/>
+
                     <TextView
                             android:text="램프 밝기"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content" android:textColor="@color/black"
-                            android:layout_margin="8dp" android:textSize="12sp"/>
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/black"
+                            android:layout_margin="8dp"
+                            android:textSize="12sp"/>
                 </LinearLayout>
+
                 <LinearLayout
                         android:orientation="vertical"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" android:layout_weight="1" android:gravity="center"
-                        android:padding="16dp">
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        >
 
                     <TextView
-                            android:layout_width="wrap_content"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:textColor="@color/navy_light"
                             android:layout_margin="8dp"
-                            android:textSize="24sp"
+                            android:textSize="20sp"
                             android:textStyle="bold"
-                            tools:text="빗소리"
-                            android:text="빗소리"/>
+                            android:id="@+id/best_white_noise_textview"
+                            android:gravity="center"
+                            android:text="정보 없음"/>
+
                     <TextView
                             android:text="백색 소음"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content" android:textColor="@color/black"
-                            android:layout_margin="8dp" android:textSize="12sp"/>
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/black"
+                            android:layout_margin="8dp"
+                            android:textSize="12sp"/>
                 </LinearLayout>
 
             </LinearLayout>
@@ -143,7 +163,7 @@
             </LinearLayout>
 
             <info.hoang8f.android.segmented.SegmentedGroup
-                    android:id="@+id/segmented2"
+                    android:id="@+id/date_segmented_group"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
@@ -159,21 +179,22 @@
                     android:layout_marginRight="16dp">
 
                 <RadioButton
-                        android:id="@+id/button21"
+                        android:id="@+id/button_day"
                         android:layout_width="100dp"
                         android:layout_height="wrap_content"
                         android:text="일"
+                        android:checked="true"
                         style="@style/RadioButton"/>
 
                 <RadioButton
-                        android:id="@+id/button22"
+                        android:id="@+id/button_week"
                         android:layout_width="100dp"
                         android:layout_height="wrap_content"
                         android:text="주"
                         style="@style/RadioButton"/>
 
                 <RadioButton
-                        android:id="@+id/button23"
+                        android:id="@+id/button_month"
                         android:layout_width="100dp"
                         android:layout_height="wrap_content"
                         android:text="월"

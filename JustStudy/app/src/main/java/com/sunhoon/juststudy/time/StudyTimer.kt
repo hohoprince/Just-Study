@@ -4,7 +4,7 @@ import android.os.CountDownTimer
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.sunhoon.juststudy.data.StatusManager
-import com.sunhoon.juststudy.enum.ProgressStatus
+import com.sunhoon.juststudy.myEnum.ProgressStatus
 import com.sunhoon.juststudy.ui.study.StudyViewModel
 
 class StudyTimer(millisInFuture: Long, countDownInterval: Long, private var timeText: MutableLiveData<String>,
@@ -25,12 +25,12 @@ class StudyTimer(millisInFuture: Long, countDownInterval: Long, private var time
 
         when (statusManager.progressStatus) {
             ProgressStatus.STUDYING -> {
-                Log.i("MyInfo", "학습 끝")
+                Log.i("MyTag", "학습 끝")
                 statusManager.progressStatus = ProgressStatus.RESTING
                 viewModel.startBreakTimer()
             }
             ProgressStatus.RESTING -> {
-                Log.i("MyInfo", "휴식 끝")
+                Log.i("MyTag", "휴식 끝")
                 statusManager.progressStatus = ProgressStatus.STUDYING
                 viewModel.startStudyTimer()
             }
