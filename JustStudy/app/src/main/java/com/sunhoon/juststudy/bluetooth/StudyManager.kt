@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import app.akexorcist.bluetotohspp.library.BluetoothSPP
 import com.sunhoon.juststudy.data.StatusManager
 import com.sunhoon.juststudy.database.AppDatabase
+import com.sunhoon.juststudy.database.entity.BestEnvironment
 import com.sunhoon.juststudy.database.entity.Study
 import com.sunhoon.juststudy.database.entity.StudyDetail
 import com.sunhoon.juststudy.myEnum.Angle
@@ -25,6 +26,7 @@ class StudyManager {
     lateinit var bluetoothSPP: BluetoothSPP
     private val statusManager: StatusManager = StatusManager.getInstance()
     private var groupId: Long = 0L
+    var bestEnvironment: BestEnvironment? = null
 
     /* 현재 책상 각도 */
     val currentAngle = MutableLiveData<Angle>().apply {
@@ -93,10 +95,30 @@ class StudyManager {
     }
 
     private fun insertStudyDetail(score: Int) {
+        val angleId = if (currentAngle.value!! == Angle.AUTO) {
+            bestEnvironment?.bestAngle!!
+        } else {
+            currentAngle.value!!.ordinal
+        }
+        val whiteNoiseId = if (currentWhiteNoise.value!! == WhiteNoise.AUTO) {
+            bestEnvironment?.bestWhiteNoise!!
+        } else {
+            currentWhiteNoise.value!!.ordinal
+        }
+        val lampId = if (currentLamp.value!! == Lamp.AUTO) {
+            bestEnvironment?.bestLamp!!
+        } else {
+            currentLamp.value!!.ordinal
+        }
         GlobalScope.launch(Dispatchers.IO) {
-            val studyDetail = StudyDetail(conLevel = score, time = Date(), angleId = currentAngle.value!!.ordinal,
-                height = currentHeight.value!!, lampId = currentLamp.value!!.ordinal,
-                whiteNoiseId = currentWhiteNoise.value!!.ordinal, studyId = groupId)
+
+            val studyDetail = StudyDetail(
+                conLevel = score, time = Date(),
+                angleId = angleId,
+                height = currentHeight.value!!,
+                lampId = lampId,
+                whiteNoiseId = whiteNoiseId,
+                studyId = groupId)
             appDatabase.studyDetailDao().insert(studyDetail)
             Log.i("MyTag", "studyDetail 삽입: $studyDetail")
         }

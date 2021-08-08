@@ -132,6 +132,7 @@ class MainActivity : AppCompatActivity() {
                         appDatabase.bestEnvironmentDao().update(bestEnvironment)
                         Log.i("MyTag", "update bestEnvironment: $bestEnvironment")
                     }
+                    studyManager.bestEnvironment = be
                 }
             }
         })
