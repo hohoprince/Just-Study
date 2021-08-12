@@ -56,6 +56,7 @@ class StudyFragment : Fragment() {
         studyViewModel.currentAngle.observe(viewLifecycleOwner, Observer {
             angleTextView.text = it.description
             sharedPref.edit().putInt("angle", it.ordinal).apply()
+            studyViewModel.sendChangeAngleMessage(it)
         })
 
         // 책상 높이 텍스트 뷰
@@ -69,6 +70,7 @@ class StudyFragment : Fragment() {
         studyViewModel.currentLamp.observe(viewLifecycleOwner, Observer {
             lightTextView.text = it.description
             sharedPref.edit().putInt("light", it.ordinal).apply()
+            studyViewModel.sendChangeLampMessage(it)
         })
 
         // 백색 소음 텍스트 뷰
@@ -76,6 +78,7 @@ class StudyFragment : Fragment() {
         studyViewModel.currentWhiteNoise.observe(viewLifecycleOwner, Observer {
             noiseTextView.text = it.description
             sharedPref.edit().putInt("whiteNoise", it.ordinal).apply()
+            studyViewModel.sendChangeWhiteNoiseMessage(it)
         })
 
         // 집중도 텍스트 뷰
