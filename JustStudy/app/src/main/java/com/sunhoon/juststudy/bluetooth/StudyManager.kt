@@ -9,10 +9,7 @@ import com.sunhoon.juststudy.database.AppDatabase
 import com.sunhoon.juststudy.database.entity.BestEnvironment
 import com.sunhoon.juststudy.database.entity.Study
 import com.sunhoon.juststudy.database.entity.StudyDetail
-import com.sunhoon.juststudy.myEnum.Angle
-import com.sunhoon.juststudy.myEnum.Lamp
-import com.sunhoon.juststudy.myEnum.ProgressStatus
-import com.sunhoon.juststudy.myEnum.WhiteNoise
+import com.sunhoon.juststudy.myEnum.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -83,6 +80,9 @@ class StudyManager {
         }
     }
 
+    /**
+     * 전달받은 메시지를 처리한다
+     */
     fun process(msg: String) {
         if (statusManager.progressStatus == ProgressStatus.STUDYING) {
             val changed: Int = msg.toInt()
@@ -94,6 +94,9 @@ class StudyManager {
         }
     }
 
+    /**
+     * db에 학습 환경 정보를 저장한다
+     */
     private fun insertStudyDetail(score: Int) {
         val angleId = if (currentAngle.value!! == Angle.AUTO) {
             bestEnvironment?.bestAngle!!
@@ -124,8 +127,14 @@ class StudyManager {
         }
     }
 
-    private fun writeMessage(msg: String) {
-        bluetoothSPP.send(msg, true)
+    /**
+     * 책상에 메시지를 전송한다
+     */
+    fun writeMessage(msg: BluetoothMessage) {
+        bluetoothSPP.send(msg.value, true)
+        Log.i("MyTag", "Send Message: ${msg.value}(${msg.description})")
     }
+
+
 
 }
