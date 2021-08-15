@@ -194,8 +194,6 @@ class HomeFragment : Fragment() {
             val conLevelOfAvg = conLevelList.average().roundToInt()
             statisticsMap[strDate] = conLevelOfAvg
         }
-        Log.i("MyTag", "tempMap: $tempMap")
-        Log.i("MyTag", "statisticsMap: $statisticsMap")
 
         val keyList = statisticsMap.keys.sortedWith(compareBy<String> {
             val a = it.split(".")

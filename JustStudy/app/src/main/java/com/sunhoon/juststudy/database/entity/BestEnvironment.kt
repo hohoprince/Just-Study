@@ -20,5 +20,7 @@ class BestEnvironment(
     @ColumnInfo(name = "best_lamp")
     val bestLamp: Int
 ) {
-
+    override fun toString(): String {
+        return "BestEnvironment(id=$id, bestAngle=$bestAngle, bestWhiteNoise=$bestWhiteNoise, bestLamp=$bestLamp)"
+    }
 }

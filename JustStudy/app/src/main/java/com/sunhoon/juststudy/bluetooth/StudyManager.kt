@@ -1,7 +1,6 @@
 package com.sunhoon.juststudy.bluetooth
 
 import android.util.Log
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import app.akexorcist.bluetotohspp.library.BluetoothSPP
 import com.sunhoon.juststudy.data.StatusManager
@@ -13,7 +12,6 @@ import com.sunhoon.juststudy.myEnum.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import java.util.*
 import kotlin.math.max
 
@@ -24,6 +22,9 @@ class StudyManager {
     private val statusManager: StatusManager = StatusManager.getInstance()
     private var groupId: Long = 0L
     var bestEnvironment: BestEnvironment? = null
+    var angleRankingList: List<Angle> = mutableListOf()
+    var lampRankingList: List<Lamp> = mutableListOf()
+    var whiteNoiseRankingList: List<WhiteNoise> = mutableListOf()
 
     /* 현재 책상 각도 */
     val currentAngle = MutableLiveData<Angle>().apply {
