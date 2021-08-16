@@ -198,4 +198,11 @@ class StudyViewModel(application: Application): AndroidViewModel(application) {
         }
     }
 
+    /**
+     * 블루투스 메시지 전송 테스트용
+     */
+    fun sendMessageForTest(message: BluetoothMessage) {
+        studyManager.writeMessage(message)
+    }
+
 }

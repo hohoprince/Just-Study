@@ -24,7 +24,6 @@ enum class BluetoothMessage(val value: String, val description: String) {
 
     STUDY_START("q", "공부 시작"),
     BREAK_TIME_START("r", "휴식 시작"),
-    STUDY_END("s", "공부 종료"),
-
+    STUDY_END("s", "공부 종료")
 
 }

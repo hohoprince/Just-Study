@@ -66,6 +66,9 @@ class SettingsViewModel(application: Application): AndroidViewModel(application)
         }
     }
 
+    /**
+     * 테스트 데이터 삭제
+     */
     fun deleteTestData() {
         GlobalScope.launch(Dispatchers.IO) {
             appDatabase.studyDetailDao().deleteAll()

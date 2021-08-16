@@ -17,6 +17,7 @@ import com.sunhoon.juststudy.data.ConcentrationSource
 import com.sunhoon.juststudy.data.SharedPref
 import com.sunhoon.juststudy.data.StatusManager
 import com.sunhoon.juststudy.myEnum.Angle
+import com.sunhoon.juststudy.myEnum.BluetoothMessage
 import com.sunhoon.juststudy.myEnum.Lamp
 import com.sunhoon.juststudy.myEnum.WhiteNoise
 import com.sunhoon.juststudy.time.TimeConverter
@@ -278,13 +279,93 @@ class StudyFragment : Fragment() {
             }
         })
 
+        // 테스트용 메시지 전송 다이얼로그
+        val testSendMessageButton = root.findViewById<Button>(R.id.test_send_message_button)
+        testSendMessageButton.setOnClickListener {
+            val dlg = Dialog(requireContext())
+            dlg.setContentView(R.layout.dialog_message)
+
+            val test1 = dlg.findViewById<Button>(R.id.test_1)
+            test1.setOnClickListener {
+                studyViewModel.sendMessageForTest(BluetoothMessage.ANGLE_0)
+            }
+            val test2 = dlg.findViewById<Button>(R.id.test_2)
+            test2.setOnClickListener {
+                studyViewModel.sendMessageForTest(BluetoothMessage.ANGLE_15)
+            }
+            val test3 = dlg.findViewById<Button>(R.id.test_3)
+            test3.setOnClickListener {
+                studyViewModel.sendMessageForTest(BluetoothMessage.ANGLE_30)
+            }
+            val test4 = dlg.findViewById<Button>(R.id.test_4)
+            test4.setOnClickListener {
+                studyViewModel.sendMessageForTest(BluetoothMessage.ANGLE_45)
+            }
+            val test5 = dlg.findViewById<Button>(R.id.test_5)
+            test5.setOnClickListener {
+                studyViewModel.sendMessageForTest(BluetoothMessage.WHITE_NOISE_NONE)
+            }
+            val test6 = dlg.findViewById<Button>(R.id.test_6)
+            test6.setOnClickListener {
+                studyViewModel.sendMessageForTest(BluetoothMessage.WHITE_NOISE_WAVE)
+            }
+            val test7 = dlg.findViewById<Button>(R.id.test_7)
+            test7.setOnClickListener {
+                studyViewModel.sendMessageForTest(BluetoothMessage.WHITE_NOISE_WIND)
+            }
+            val test8 = dlg.findViewById<Button>(R.id.test_8)
+            test8.setOnClickListener {
+                studyViewModel.sendMessageForTest(BluetoothMessage.WHITE_NOISE_LEAF)
+            }
+            val test9 = dlg.findViewById<Button>(R.id.test_9)
+            test9.setOnClickListener {
+                studyViewModel.sendMessageForTest(BluetoothMessage.WHITE_NOISE_RAIN)
+            }
+            val test10 = dlg.findViewById<Button>(R.id.test_10)
+            test10.setOnClickListener {
+                studyViewModel.sendMessageForTest(BluetoothMessage.LAMP_NONE)
+            }
+            val test11 = dlg.findViewById<Button>(R.id.test_11)
+            test11.setOnClickListener {
+                studyViewModel.sendMessageForTest(BluetoothMessage.LAMP_3500K)
+            }
+            val test12 = dlg.findViewById<Button>(R.id.test_12)
+            test12.setOnClickListener {
+                studyViewModel.sendMessageForTest(BluetoothMessage.LAMP_5000K)
+            }
+            val test13 = dlg.findViewById<Button>(R.id.test_13)
+            test13.setOnClickListener {
+                studyViewModel.sendMessageForTest(BluetoothMessage.LAMP_6500K)
+            }
+            val test14 = dlg.findViewById<Button>(R.id.test_14)
+            test14.setOnClickListener {
+                studyViewModel.sendMessageForTest(BluetoothMessage.HEIGHT_UP)
+            }
+            val test15 = dlg.findViewById<Button>(R.id.test_15)
+            test15.setOnClickListener {
+                studyViewModel.sendMessageForTest(BluetoothMessage.HEIGHT_DOWN)
+            }
+            val test16 = dlg.findViewById<Button>(R.id.test_16)
+            test16.setOnClickListener {
+                studyViewModel.sendMessageForTest(BluetoothMessage.HEIGHT_STOP)
+            }
+            val test17 = dlg.findViewById<Button>(R.id.test_17)
+            test17.setOnClickListener {
+                studyViewModel.sendMessageForTest(BluetoothMessage.STUDY_START)
+            }
+            val test18 = dlg.findViewById<Button>(R.id.test_18)
+            test18.setOnClickListener {
+                studyViewModel.sendMessageForTest(BluetoothMessage.BREAK_TIME_START)
+            }
+            val test19 = dlg.findViewById<Button>(R.id.test_19)
+            test19.setOnClickListener {
+                studyViewModel.sendMessageForTest(BluetoothMessage.STUDY_END)
+            }
+
+            dlg.show()
+        }
+
         return root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-
-
-    }
 }
