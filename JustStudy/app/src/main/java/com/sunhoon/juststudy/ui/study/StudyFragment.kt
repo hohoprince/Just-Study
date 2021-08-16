@@ -254,10 +254,10 @@ class StudyFragment : Fragment() {
         })
 
         playButton.setOnClickListener {
-            if (studyViewModel.studyManager.bluetoothSPP.serviceState != BluetoothState.STATE_CONNECTED) {
-                Toast.makeText(requireActivity().applicationContext, "블루투스 기기를 연결 해주세요", Toast.LENGTH_SHORT).show()
-                return@setOnClickListener
-            }
+//            if (studyViewModel.studyManager.bluetoothSPP.serviceState != BluetoothState.STATE_CONNECTED) {
+//                Toast.makeText(requireActivity().applicationContext, "블루투스 기기를 연결 해주세요", Toast.LENGTH_SHORT).show()
+//                return@setOnClickListener
+//            }
             if (studyViewModel.isPlaying.value == true) {
                 studyViewModel.stopTimer()
                 studyViewModel.updateStudy()

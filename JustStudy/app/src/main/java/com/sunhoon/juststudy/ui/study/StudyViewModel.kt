@@ -40,7 +40,7 @@ class StudyViewModel(application: Application): AndroidViewModel(application) {
     var currentWhiteNoise: LiveData<WhiteNoise> = studyManager.currentWhiteNoise
 
     /* 현재 집중도 */
-    var currentConcentration: LiveData<Int> = studyManager.currentConcentration
+    var currentConcentration: LiveData<Int> = studyManager.currentConcentration.apply { value = 81 }
 
     /* 학습 진행 여부 */
     var isPlaying: MutableLiveData<Boolean> = MutableLiveData<Boolean>().apply {
@@ -52,12 +52,9 @@ class StudyViewModel(application: Application): AndroidViewModel(application) {
         value = null
     }
 
-
-    // 타이머
+    /* 타이머 */
     private lateinit var studyTimer : StudyTimer
 
-    // 타이머의 남은 시간
-    private var remainTime: Long = 0L
 
     /**
      * 새로운 Study 생성
@@ -77,7 +74,19 @@ class StudyViewModel(application: Application): AndroidViewModel(application) {
     fun startStudyTimer() {
         // studyTimer = StudyTimer(remainTime, 1000, _time, this)
         // TODO: 테스트용 공부시간
-        studyTimer = StudyTimer((10 * 1000).toLong(), 1000, _time, this)
+        studyTimer = StudyTimer((10 * 1000).toLong(), 100,
+            (10 * 1000).toLong(), _time, this)
+        studyTimer.setOnExtendTimeListener(object: StudyTimer.OnExtendTimeListener {
+            override fun onTime() {
+                if (currentConcentration.value!! > 80) {
+                    val time = statusManager.remainTime + 5000
+                    studyTimer.cancel()
+                    studyTimer = StudyTimer(time, 100,
+                        time, _time, this@StudyViewModel)
+                    studyTimer.start()
+                }
+            }
+        })
         studyTimer.start()
         isPlaying.value = true
         statusManager.progressStatus = ProgressStatus.STUDYING
@@ -91,7 +100,8 @@ class StudyViewModel(application: Application): AndroidViewModel(application) {
 //        studyTimer = StudyTimer(remainTime, 1000, _time, this)
         // TODO: 테스트용 휴식시간
         setUserTime((10 * 1000).toLong())
-        studyTimer = StudyTimer((10 * 1000).toLong(), 1000, _time, this)
+        studyTimer = StudyTimer((10 * 1000).toLong(),100, (10 * 1000).toLong()
+            , _time, this)
         studyTimer.start()
         statusManager.progressStatus = ProgressStatus.RESTING
         toastingMessage.value = "휴식 시작"
@@ -110,7 +120,7 @@ class StudyViewModel(application: Application): AndroidViewModel(application) {
 
     // 사용자 설정 시간
     fun setUserTime(userTime: Long) {
-        remainTime = userTime
+        statusManager.remainTime = userTime
         _time.value = TimeConverter.longToStringTime(userTime)
     }
 
