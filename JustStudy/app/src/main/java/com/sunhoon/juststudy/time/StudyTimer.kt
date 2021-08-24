@@ -27,11 +27,8 @@ class StudyTimer(millisInFuture: Long,
 
         timeText.value = "$remainHours:$remainMinutes:$remainSeconds"
 
-        Log.d("MyTag", "mill: $millisUntilFinished")
-        Log.d("MyTag", "setting: $settingTime")
-
-        // 공부가 80% 이상 진행되었을 때
         mOnExtendTimeListener?.let {
+            // 공부가 80% 이상 진행되었을 때
             if (millisUntilFinished < settingTime * 0.2) {
                 it.onTime()
             }
@@ -60,7 +57,7 @@ class StudyTimer(millisInFuture: Long,
         mOnExtendTimeListener = listener
     }
 
-    public interface OnExtendTimeListener {
+    interface OnExtendTimeListener {
         fun onTime()
     }
 }

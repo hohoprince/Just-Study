@@ -31,8 +31,7 @@
                 android:paddingTop="8dp"
                 android:paddingBottom="8dp"
                 android:paddingLeft="16dp"
-                android:paddingRight="16dp"
-                />
+                android:paddingRight="16dp"/>
 
         <RadioButton
                 android:id="@+id/button22"
@@ -43,8 +42,7 @@
                 android:paddingTop="8dp"
                 android:paddingBottom="8dp"
                 android:paddingLeft="16dp"
-                android:paddingRight="16dp"
-                />
+                android:paddingRight="16dp"/>
     </info.hoang8f.android.segmented.SegmentedGroup>
 
     <TextView
@@ -68,126 +66,7 @@
             android:id="@+id/linearLayout3"
             app:layout_constraintBottom_toTopOf="@+id/guideline3"
             android:background="@drawable/rect"
-            android:padding="8dp"
-            >
-
-        <LinearLayout
-                android:orientation="horizontal"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
-
-            <LinearLayout
-                    android:orientation="vertical"
-                    android:layout_width="80dp"
-                    android:layout_height="100dp"
-                    android:layout_margin="8dp"
-                    android:id="@+id/angle_layout"
-                    android:clickable="true"
-                    android:focusable="auto"
-                    android:gravity="center_vertical">
-
-                <TextView
-                        android:text="책상 각도"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/textView2"
-                        android:layout_margin="4dp"
-                        android:textSize="12sp"
-                        android:textColor="@color/black"
-                        android:gravity="center"/>
-
-                <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/angle_textview"
-                        android:layout_margin="4dp"
-                        android:textSize="22sp"
-                        android:textColor="@color/navy_light"
-                        android:gravity="center"
-                        tools:text="15º"/>
-            </LinearLayout>
-
-            <View
-                    android:layout_width="1dp"
-                    android:layout_height="match_parent"
-                    android:background="@color/gray_light"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginBottom="8dp"/>
-
-            <LinearLayout
-                    android:orientation="vertical"
-                    android:layout_width="80dp"
-                    android:layout_height="100dp"
-                    android:layout_margin="8dp"
-                    android:id="@+id/height_layout"
-                    android:clickable="true"
-                    android:focusable="auto"
-                    android:gravity="center_vertical">
-
-                <TextView
-                        android:text="책상 높이"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/textView11"
-                        android:layout_margin="4dp"
-                        android:textSize="12sp"
-                        android:textColor="@color/black"
-                        android:gravity="center"/>
-
-                <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/height_textview"
-                        android:layout_margin="4dp"
-                        android:textSize="22sp"
-                        android:textColor="@color/navy_light"
-                        android:gravity="center"
-                        tools:text="100"/>
-            </LinearLayout>
-
-            <View
-                    android:layout_width="1dp"
-                    android:layout_height="match_parent"
-                    android:background="@color/gray_light"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginBottom="8dp"/>
-
-            <LinearLayout
-                    android:orientation="vertical"
-                    android:layout_width="80dp"
-                    android:layout_height="100dp"
-                    android:layout_margin="8dp"
-                    android:id="@+id/concentration_layout"
-                    android:clickable="true"
-                    android:focusable="auto"
-                    android:gravity="center_vertical">
-
-                <TextView
-                        android:text="집중도"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/textView9"
-                        android:layout_margin="4dp"
-                        android:textSize="12sp"
-                        android:textColor="@color/black"
-                        android:gravity="center"/>
-
-                <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/concentration_textview"
-                        android:layout_margin="4dp"
-                        android:textSize="22sp"
-                        android:textColor="@color/navy_light"
-                        android:gravity="center"
-                        android:text="0"/>
-            </LinearLayout>
-        </LinearLayout>
-
-        <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/gray_light"/>
+            android:padding="8dp">
 
         <LinearLayout
                 android:orientation="horizontal"
@@ -219,12 +98,11 @@
                         android:layout_height="wrap_content"
                         android:id="@+id/noise_textview"
                         android:layout_margin="4dp"
-                        android:textSize="20sp"
+                        android:textSize="18sp"
                         android:textColor="@color/navy_light"
                         android:gravity="center"
                         android:maxWidth="60dp"
-                        tools:text="빗소리"
-                        />
+                        tools:text="빗소리"/>
             </LinearLayout>
 
             <View
@@ -252,19 +130,89 @@
                         android:layout_margin="4dp"
                         android:textSize="12sp"
                         android:textColor="@color/black"
-                        android:gravity="center"
-                        />
+                        android:gravity="center"/>
 
                 <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:id="@+id/light_textview"
                         android:layout_margin="4dp"
-                        android:textSize="22sp"
+                        android:textSize="18sp"
                         android:textColor="@color/navy_light"
                         android:gravity="center"
-                        tools:text="6500k"
+                        tools:text="6500k"/>
+            </LinearLayout>
+
+            <View
+                    android:layout_width="1dp"
+                    android:layout_height="match_parent"
+                    android:background="@color/gray_light"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"/>
+
+            <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="80dp"
+                    android:layout_height="100dp"
+                    android:layout_margin="8dp"
+                    android:id="@+id/height_layout"
+                    android:clickable="true"
+                    android:focusable="auto"
+                    android:gravity="center_vertical">
+
+                <TextView
+                        android:text="책상\n\n높이 조절"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/textView111"
+                        android:layout_margin="4dp"
+                        android:textSize="12sp"
+                        android:textColor="@color/black"
+                        android:gravity="center"
                         />
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/gray_light"/>
+
+        <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+            <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="80dp"
+                    android:layout_height="100dp"
+                    android:layout_margin="8dp"
+                    android:id="@+id/concentration_layout"
+                    android:clickable="true"
+                    android:focusable="auto"
+                    android:gravity="center_vertical">
+
+                <TextView
+                        android:text="현재 집중도"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/textView9"
+                        android:layout_margin="4dp"
+                        android:textSize="12sp"
+                        android:textColor="@color/black"
+                        android:gravity="center"/>
+
+                <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/concentration_textview"
+                        android:layout_margin="4dp"
+                        android:textSize="18sp"
+                        android:textColor="@color/navy_light"
+                        android:gravity="center"
+                        android:text="측정 전"/>
             </LinearLayout>
 
             <View
@@ -299,13 +247,42 @@
                         android:layout_height="wrap_content"
                         android:id="@+id/min_concentration_textview"
                         android:layout_margin="4dp"
-                        android:textSize="22sp"
+                        android:textSize="18sp"
                         android:textColor="@color/navy_light"
                         android:gravity="center"
-                        android:text="20"/>
+                        android:text="매우 낮음"/>
+            </LinearLayout>
+
+            <View
+                    android:layout_width="1dp"
+                    android:layout_height="match_parent"
+                    android:background="@color/gray_light"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"/>
+
+            <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="80dp"
+                    android:layout_height="100dp"
+                    android:layout_margin="8dp"
+                    android:id="@+id/angle_layout"
+                    android:clickable="true"
+                    android:focusable="auto"
+                    android:gravity="center_vertical">
+
+                <TextView
+                        android:text="책받침\n\n각도 조절"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/textView1121"
+                        android:layout_margin="4dp"
+                        android:textSize="12sp"
+                        android:textColor="@color/black"
+                        android:gravity="center"/>
             </LinearLayout>
 
         </LinearLayout>
+
     </LinearLayout>
 
     <androidx.constraintlayout.widget.Guideline
@@ -327,6 +304,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/test_send_message_button"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"/>
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:visibility="gone"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

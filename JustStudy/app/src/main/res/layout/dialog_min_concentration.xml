@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                                                   xmlns:app="http://schemas.android.com/apk/res-auto"
+                                                   xmlns:tools="http://schemas.android.com/tools"
+                                                   android:layout_width="300dp"
+                                                   android:layout_height="350dp">
+
+    <RadioGroup
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="16dp"
+            app:layout_constraintTop_toBottomOf="@+id/textView11"
+            android:layout_marginTop="32dp"
+            android:id="@+id/radioGroup">
+
+        <RadioButton
+                android:text="높음"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/radio_min_concentration1"/>
+
+        <RadioButton
+                android:text="중간"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/radio_min_concentration2"/>
+
+        <RadioButton
+                android:text="낮음"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/radio_min_concentration3"/>
+
+        <RadioButton
+                android:text="매우 낮음"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/radio_min_concentration4"
+                android:checked="true"/>
+
+    </RadioGroup>
+
+    <TextView
+            android:text="최소 집중도 설정"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/textView11"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginTop="16dp"
+            android:layout_marginStart="16dp"
+            android:textSize="18sp"
+            android:textColor="@color/black"/>
+
+    <Button
+            android:text="확인"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/start_screen_ok_button"
+            app:layout_constraintTop_toBottomOf="@+id/radioGroup"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:cornerRadius="8dp"
+            android:backgroundTint="@color/navy_light"
+            android:layout_marginTop="32dp"
+            android:layout_marginBottom="16dp"/>
+</androidx.constraintlayout.widget.ConstraintLayout>

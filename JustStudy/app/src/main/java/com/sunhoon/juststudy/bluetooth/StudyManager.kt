@@ -132,10 +132,8 @@ class StudyManager {
      * 책상에 메시지를 전송한다
      */
     fun writeMessage(msg: BluetoothMessage) {
-        bluetoothSPP.send(msg.value, true)
+        bluetoothSPP.send(msg.value, false)
         Log.i("MyTag", "Send Message: ${msg.value}(${msg.description})")
     }
-
-
-
+    
 }

@@ -16,10 +16,7 @@ import com.sunhoon.juststudy.R
 import com.sunhoon.juststudy.data.ConcentrationSource
 import com.sunhoon.juststudy.data.SharedPref
 import com.sunhoon.juststudy.data.StatusManager
-import com.sunhoon.juststudy.myEnum.Angle
-import com.sunhoon.juststudy.myEnum.BluetoothMessage
-import com.sunhoon.juststudy.myEnum.Lamp
-import com.sunhoon.juststudy.myEnum.WhiteNoise
+import com.sunhoon.juststudy.myEnum.*
 import com.sunhoon.juststudy.time.TimeConverter
 import com.sunhoon.juststudy.ui.home.HomeViewModel
 
@@ -52,20 +49,6 @@ class StudyFragment : Fragment() {
             timeTextView.text = it
         })
 
-        // 책상 각도 텍스트 뷰
-        val angleTextView = root.findViewById<TextView>(R.id.angle_textview)
-        studyViewModel.currentAngle.observe(viewLifecycleOwner, Observer {
-            angleTextView.text = it.description
-            sharedPref.edit().putInt("angle", it.ordinal).apply()
-            studyViewModel.sendChangeAngleMessage(it)
-        })
-
-        // 책상 높이 텍스트 뷰
-        val heightTextView = root.findViewById<TextView>(R.id.height_textview)
-        studyViewModel.currentHeight.observe(viewLifecycleOwner, Observer {
-            heightTextView.text = it.toString()
-        })
-
         // 램프 밝기 텍스트 뷰
         val lightTextView = root.findViewById<TextView>(R.id.light_textview)
         studyViewModel.currentLamp.observe(viewLifecycleOwner, Observer {
@@ -85,7 +68,11 @@ class StudyFragment : Fragment() {
         // 집중도 텍스트 뷰
         val concentrationTextView = root.findViewById<TextView>(R.id.concentration_textview)
         studyViewModel.currentConcentration.observe(viewLifecycleOwner, Observer {
-            concentrationTextView.text = it.toString()
+            if (statusManager.progressStatus == ProgressStatus.WAITING && it == 0) {
+                concentrationTextView.text = "측정 전"
+            } else {
+                concentrationTextView.text = it.toString()
+            }
         })
 
 
@@ -98,42 +85,6 @@ class StudyFragment : Fragment() {
             }, 0, 0, true)
             timePickerDialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
             timePickerDialog.show()
-        }
-
-        // 책상 각도 다이얼로그
-        val angleLayout = root.findViewById<LinearLayout>(R.id.angle_layout)
-        angleLayout.setOnClickListener {
-            val dlg = Dialog(requireContext())
-            dlg.setContentView(R.layout.dialog_angle)
-
-            // 라디오 그룹
-            val radioGroup = dlg.findViewById<RadioGroup>(R.id.radioGroup)
-            var buttonId = 0
-            when (studyViewModel.currentAngle.value) {
-                Angle.AUTO -> buttonId = R.id.radio_angle_auto
-                Angle.DEGREE_0 -> buttonId = R.id.radio_angle1
-                Angle.DEGREE_15 -> buttonId = R.id.radio_angle2
-                Angle.DEGREE_30 -> buttonId = R.id.radio_angle3
-                Angle.DEGREE_45 -> buttonId = R.id.radio_angle4
-            }
-            radioGroup.check(buttonId)
-            radioGroup.setOnCheckedChangeListener { _, checkedId ->
-                when (checkedId) {
-                    R.id.radio_angle_auto -> studyViewModel.setCurrentAngle(Angle.AUTO)
-                    R.id.radio_angle1 -> studyViewModel.setCurrentAngle(Angle.DEGREE_0)
-                    R.id.radio_angle2 -> studyViewModel.setCurrentAngle(Angle.DEGREE_15)
-                    R.id.radio_angle3 -> studyViewModel.setCurrentAngle(Angle.DEGREE_30)
-                    R.id.radio_angle4 -> studyViewModel.setCurrentAngle(Angle.DEGREE_45)
-                }
-            }
-
-            // 확인 버튼
-            val okButton = dlg.findViewById<Button>(R.id.angle_ok_button)
-            okButton.setOnClickListener {
-                dlg.dismiss()
-            }
-
-            dlg.show()
         }
 
         // 램프 밝기 다이얼로그
@@ -238,6 +189,24 @@ class StudyFragment : Fragment() {
             okButton.setOnClickListener {
                 dlg.dismiss()
             }
+
+            dlg.show()
+        }
+
+        // 첵싱 높이 다이얼로그
+        val heightLayout = root.findViewById<LinearLayout>(R.id.height_layout)
+        heightLayout.setOnClickListener {
+            val dlg = Dialog(requireContext())
+            dlg.setContentView(R.layout.dialog_height_up_down)
+
+            dlg.show()
+        }
+
+        // 책받침 각도 다이얼로그
+        val angleLayout = root.findViewById<LinearLayout>(R.id.angle_layout)
+        angleLayout.setOnClickListener {
+            val dlg = Dialog(requireContext())
+            dlg.setContentView(R.layout.dialog_angle_up_down)
 
             dlg.show()
         }

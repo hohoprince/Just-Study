@@ -59,6 +59,22 @@ class SettingsFragment : Fragment() {
             sharedPref.edit().putInt("breakTime", it).apply()
         })
 
+        // 휴식 시간 텍스트 뷰
+//        val minConcentrationTextView = root.findViewById<TextView>(R.id.min_concentration_textview)
+//        settingsViewModel.breakTime.observe(viewLifecycleOwner, Observer {
+//            var text = ""
+//            when (it) {
+//                0 -> text = "5분"
+//                1 -> text = "10분"
+//                2 -> text = "15분"
+//                3 -> text = "20분"
+//                4 -> text = "25분"
+//                5 -> text = "30분"
+//            }
+//            breakTimeTextView.text = text
+//            sharedPref.edit().putInt("breakTime", it).apply()
+//        })
+
         val startScreenTextView = root.findViewById<TextView>(R.id.start_screen_textview)
         settingsViewModel.startScreen.observe(viewLifecycleOwner, Observer {
             when (it) {
@@ -113,6 +129,38 @@ class SettingsFragment : Fragment() {
 
             // 확인 버튼
             val okButton = dlg.findViewById<Button>(R.id.break_time_ok_button)
+            okButton.setOnClickListener {
+                dlg.dismiss()
+            }
+
+            dlg.show()
+        }
+
+        // 최소 집중도 설정
+        val minConcentrationLayout = root.findViewById<ConstraintLayout>(R.id.min_concentration_layout)
+        minConcentrationLayout.setOnClickListener {
+            val dlg = Dialog(requireContext())
+            dlg.setContentView(R.layout.dialog_min_concentration)
+
+//            // 라디오 그룹
+//            val radioGroup = dlg.findViewById<RadioGroup>(R.id.radioGroup)
+//            var buttonId = 0
+//            when (settingsViewModel.startScreen.value) {
+//                0 -> buttonId = R.id.radio_screen1
+//                1 -> buttonId = R.id.radio_screen2
+//                2 -> buttonId = R.id.radio_screen3
+//            }
+//            radioGroup.check(buttonId)
+//            radioGroup.setOnCheckedChangeListener { _, checkedId ->
+//                when (checkedId) {
+//                    R.id.radio_screen1 -> settingsViewModel.startScreen.value = 0
+//                    R.id.radio_screen2 -> settingsViewModel.startScreen.value = 1
+//                    R.id.radio_screen3 -> settingsViewModel.startScreen.value = 2
+//                }
+//            }
+
+            // 확인 버튼
+            val okButton = dlg.findViewById<Button>(R.id.start_screen_ok_button)
             okButton.setOnClickListener {
                 dlg.dismiss()
             }
