@@ -41,7 +41,7 @@ class SettingsViewModel(application: Application): AndroidViewModel(application)
      */
     fun createTestData() {
         val studyDetails = ArrayList<StudyDetail>()
-        val numOfStudy: Int = 100
+        val numOfStudy = 100
         val startTimestamp = 1619823600 // 5월 1일
         val endTimestamp = 1628439505// 8월 8일
 
@@ -52,10 +52,9 @@ class SettingsViewModel(application: Application): AndroidViewModel(application)
                 StudyDetail(
                     conLevel = random.nextInt(51) + 50, // 50 ~ 100
                     time = Date(((random.nextInt(endTimestamp - startTimestamp) + startTimestamp).toLong()) * 1000),
-                    angleId = random.nextInt(4) + 1,
                     height = random.nextInt(10000),
                     lampId = random.nextInt(4) + 1,
-                    whiteNoiseId = random.nextInt(5) + 1,
+                    whiteNoiseId = random.nextInt(6) + 1,
                     studyId = (random.nextInt(numOfStudy) + 1).toLong()
                 )
             )

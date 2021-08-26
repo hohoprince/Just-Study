@@ -30,13 +30,13 @@
                 android:text="50분"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/radio_lamp_3500"/>
+                android:id="@+id/radio_lamp_2700"/>
 
         <RadioButton
                 android:text="20분"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/radio_lamp_5000"/>
+                android:id="@+id/radio_lamp_4000"/>
 
         <RadioButton
                 android:text="25분"

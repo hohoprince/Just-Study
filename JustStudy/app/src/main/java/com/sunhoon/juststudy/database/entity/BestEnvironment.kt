@@ -11,9 +11,6 @@ class BestEnvironment(
     @PrimaryKey
     val id: Long = 1L,
 
-    @ColumnInfo(name = "best_angle")
-    val bestAngle: Int,
-
     @ColumnInfo(name = "best_white_noise")
     val bestWhiteNoise: Int,
 
@@ -21,6 +18,6 @@ class BestEnvironment(
     val bestLamp: Int
 ) {
     override fun toString(): String {
-        return "BestEnvironment(id=$id, bestAngle=$bestAngle, bestWhiteNoise=$bestWhiteNoise, bestLamp=$bestLamp)"
+        return "BestEnvironment(id=$id, bestWhiteNoise=$bestWhiteNoise, bestLamp=$bestLamp)"
     }
 }

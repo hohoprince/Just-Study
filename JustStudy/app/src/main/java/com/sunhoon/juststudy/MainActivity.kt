@@ -15,7 +15,6 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.sunhoon.juststudy.bluetooth.StudyManager
 import com.sunhoon.juststudy.database.AppDatabase
 import com.sunhoon.juststudy.database.entity.BestEnvironment
-import com.sunhoon.juststudy.myEnum.Angle
 import com.sunhoon.juststudy.myEnum.Lamp
 import com.sunhoon.juststudy.myEnum.WhiteNoise
 import kotlinx.coroutines.Dispatchers
@@ -81,42 +80,33 @@ class MainActivity : AppCompatActivity() {
         appDatabase.studyDetailDao().getAllOrderByDate().observe(this, Observer { studyDetails ->
             if (studyDetails.isNotEmpty()) {
                 val lampScoreListMap: MutableMap<Lamp, MutableList<Int>> = mutableMapOf()
-                lampScoreListMap[Lamp.LAMP_3500K] = mutableListOf()
-                lampScoreListMap[Lamp.LAMP_5000K] = mutableListOf()
+                lampScoreListMap[Lamp.LAMP_2700K] = mutableListOf()
+                lampScoreListMap[Lamp.LAMP_4000K] = mutableListOf()
                 lampScoreListMap[Lamp.LAMP_6500K] = mutableListOf()
                 lampScoreListMap[Lamp.NONE] = mutableListOf()
                 val whiteNoiseScoreListMap: MutableMap<WhiteNoise, MutableList<Int>> = mutableMapOf()
                 whiteNoiseScoreListMap[WhiteNoise.RAIN] = mutableListOf()
-                whiteNoiseScoreListMap[WhiteNoise.LEAF] = mutableListOf()
-                whiteNoiseScoreListMap[WhiteNoise.WIND] = mutableListOf()
-                whiteNoiseScoreListMap[WhiteNoise.WAVE] = mutableListOf()
+                whiteNoiseScoreListMap[WhiteNoise.MUSIC_2] = mutableListOf()
+                whiteNoiseScoreListMap[WhiteNoise.MUSIC_1] = mutableListOf()
+                whiteNoiseScoreListMap[WhiteNoise.FIREWOOD] = mutableListOf()
+                whiteNoiseScoreListMap[WhiteNoise.MUSIC_3] = mutableListOf()
                 whiteNoiseScoreListMap[WhiteNoise.NONE] = mutableListOf()
-                val angleScoreListMap: MutableMap<Angle, MutableList<Int>> = mutableMapOf()
-                angleScoreListMap[Angle.DEGREE_0] = mutableListOf()
-                angleScoreListMap[Angle.DEGREE_15] = mutableListOf()
-                angleScoreListMap[Angle.DEGREE_30] = mutableListOf()
-                angleScoreListMap[Angle.DEGREE_45] = mutableListOf()
 
                 studyDetails.forEach { studyDetail ->
                     val score = studyDetail.conLevel
                     lampScoreListMap[Lamp.getByValue(studyDetail.lampId)]!!.add(score)
                     whiteNoiseScoreListMap[WhiteNoise.getByValue(studyDetail.whiteNoiseId)]!!.add(score)
-                    angleScoreListMap[Angle.getByValue(studyDetail.angleId)]!!.add(score)
                 }
 
                 val lampScoreRankList = convertToScoreRankList(lampScoreListMap)
-                val angleScoreRankList = convertToScoreRankList(angleScoreListMap)
                 val whiteNoiseScoreRankList = convertToScoreRankList(whiteNoiseScoreListMap)
-                studyManager.angleRankingList = angleScoreRankList
                 studyManager.lampRankingList = lampScoreRankList
                 studyManager.whiteNoiseRankingList = whiteNoiseScoreRankList
 
                 Log.d("MyTag", "lamp scoreList: $lampScoreRankList")
-                Log.d("MyTag", "angle scoreList: $angleScoreRankList")
                 Log.d("MyTag", "whiteNoise scoreList: $whiteNoiseScoreRankList")
 
                 val bestEnvironment = BestEnvironment(
-                    bestAngle = angleScoreRankList[0].ordinal,
                     bestLamp = lampScoreRankList[0].ordinal,
                     bestWhiteNoise = whiteNoiseScoreRankList[0].ordinal)
 

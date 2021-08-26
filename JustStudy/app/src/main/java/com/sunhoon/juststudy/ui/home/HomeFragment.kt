@@ -21,10 +21,7 @@ import com.github.mikephil.charting.formatter.ValueFormatter
 import com.sunhoon.juststudy.R
 import com.sunhoon.juststudy.dataClass.XYLabels
 import com.sunhoon.juststudy.database.entity.StudyDetail
-import com.sunhoon.juststudy.myEnum.Angle
-import com.sunhoon.juststudy.myEnum.DateGroupType
-import com.sunhoon.juststudy.myEnum.Lamp
-import com.sunhoon.juststudy.myEnum.WhiteNoise
+import com.sunhoon.juststudy.myEnum.*
 import info.hoang8f.android.segmented.SegmentedGroup
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -38,6 +35,13 @@ class HomeFragment : Fragment() {
 
     private lateinit var homeViewModel: HomeViewModel
     private var xLabels: List<String> = mutableListOf()
+    private var yLabels: List<String> = listOf(
+        ConcentrationLevel.VERY_LOW.description,
+        ConcentrationLevel.LOW.description,
+        ConcentrationLevel.NORMAL.description,
+        ConcentrationLevel.HIGH.description,
+        ConcentrationLevel.VERY_HIGH.description
+    )
     private var dateGroupType: DateGroupType = DateGroupType.BY_DAY
     private var studyDetailList: List<StudyDetail>? = null
 
@@ -50,13 +54,11 @@ class HomeFragment : Fragment() {
         val root = inflater.inflate(R.layout.fragment_home, container, false)
 
         // 추천 환경
-        val bestAngleTextView = root.findViewById<TextView>(R.id.best_angle_textview)
         val bestLampTextView = root.findViewById<TextView>(R.id.best_lamp_textview)
         val bestWhiteNoiseTextView = root.findViewById<TextView>(R.id.best_white_noise_textview)
 
         homeViewModel.bestEnvironment.observe(viewLifecycleOwner, Observer {
             it?.let {
-                bestAngleTextView.text = Angle.getByValue(it.bestAngle).description
                 bestLampTextView.text = Lamp.getByValue(it.bestLamp).description
                 bestWhiteNoiseTextView.text = WhiteNoise.getByValue(it.bestWhiteNoise).description
             }
@@ -85,7 +87,7 @@ class HomeFragment : Fragment() {
 
         yAxis.valueFormatter = object : ValueFormatter() {
             override fun getAxisLabel(value: Float, axis: AxisBase?): String {
-                return "${value.toInt()}점"
+                return yLabels[value.toInt()]
             }
         }
 
@@ -157,7 +159,7 @@ class HomeFragment : Fragment() {
             lineDataSet.circleHoleColor = resources.getColor(R.color.navy_light)
             lineDataSet.setCircleColor(resources.getColor(R.color.navy_light))
             lineDataSet.lineWidth = 3f
-            lineDataSet.valueTextSize = 12f
+            lineDataSet.valueTextSize = 0f
             lineDataSet.circleSize = 5f
             lineDataSet.mode = LineDataSet.Mode.HORIZONTAL_BEZIER;
             lineChart.data = LineData(lineDataSet)
@@ -208,7 +210,7 @@ class HomeFragment : Fragment() {
 
         val yLabels = mutableListOf<Int>()
         keyList.forEach {
-            yLabels.add(statisticsMap[it]!!)
+            yLabels.add(ConcentrationLevel.getByValue(statisticsMap[it]!!).ordinal)
         }
 
         return XYLabels(keyList, yLabels)

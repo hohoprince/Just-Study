@@ -22,14 +22,9 @@ class StudyManager {
     private val statusManager: StatusManager = StatusManager.getInstance()
     private var groupId: Long = 0L
     var bestEnvironment: BestEnvironment? = null
-    var angleRankingList: List<Angle> = mutableListOf()
     var lampRankingList: List<Lamp> = mutableListOf()
     var whiteNoiseRankingList: List<WhiteNoise> = mutableListOf()
 
-    /* 현재 책상 각도 */
-    val currentAngle = MutableLiveData<Angle>().apply {
-        value = Angle.DEGREE_0
-    }
 
     /* 현재 책상 높이 */
     val currentHeight = MutableLiveData<Int>().apply {
@@ -99,11 +94,6 @@ class StudyManager {
      * db에 학습 환경 정보를 저장한다
      */
     private fun insertStudyDetail(score: Int) {
-        val angleId = if (currentAngle.value!! == Angle.AUTO) {
-            bestEnvironment?.bestAngle!!
-        } else {
-            currentAngle.value!!.ordinal
-        }
         val whiteNoiseId = if (currentWhiteNoise.value!! == WhiteNoise.AUTO) {
             bestEnvironment?.bestWhiteNoise!!
         } else {
@@ -118,7 +108,6 @@ class StudyManager {
 
             val studyDetail = StudyDetail(
                 conLevel = score, time = Date(),
-                angleId = angleId,
                 height = currentHeight.value!!,
                 lampId = lampId,
                 whiteNoiseId = whiteNoiseId,

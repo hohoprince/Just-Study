@@ -5,7 +5,6 @@ import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import com.sunhoon.juststudy.bluetooth.StudyManager
 import com.sunhoon.juststudy.data.StatusManager
 import com.sunhoon.juststudy.database.AppDatabase
@@ -26,9 +25,6 @@ class StudyViewModel(application: Application): AndroidViewModel(application) {
         value = "00:00:00"
     }
     val time: LiveData<String> = _time
-
-    /* 현재 책상 각도 */
-    var currentAngle: LiveData<Angle> = studyManager.currentAngle
 
     /* 현재 책상 높이 */
     var currentHeight: LiveData<Int> = studyManager.currentHeight
@@ -150,30 +146,6 @@ class StudyViewModel(application: Application): AndroidViewModel(application) {
     }
 
     /**
-     * 현재 책상 각도 정보를 세팅
-     */
-    fun setCurrentAngle(value: Angle) {
-        studyManager.currentAngle.value = value
-    }
-
-    /**
-     * 책상 각도 변경 메시지를 보낸다
-     */
-    fun sendChangeAngleMessage(angle: Angle) {
-        when (angle) {
-            Angle.AUTO -> {
-                studyManager.bestEnvironment?.bestAngle?.let {
-                    sendChangeAngleMessage(Angle.getByValue(it))
-                }
-            }
-            Angle.DEGREE_0 -> studyManager.writeMessage(BluetoothMessage.ANGLE_0)
-            Angle.DEGREE_15 -> studyManager.writeMessage(BluetoothMessage.ANGLE_15)
-            Angle.DEGREE_30 -> studyManager.writeMessage(BluetoothMessage.ANGLE_30)
-            Angle.DEGREE_45 -> studyManager.writeMessage(BluetoothMessage.ANGLE_45)
-        }
-    }
-
-    /**
      * 책상 높이 변경 메시지를 보낸다
      */
     fun sendChangeHeightMessage(height: Height) {
@@ -195,10 +167,11 @@ class StudyViewModel(application: Application): AndroidViewModel(application) {
                 }
             }
             WhiteNoise.NONE -> studyManager.writeMessage(BluetoothMessage.WHITE_NOISE_NONE)
-            WhiteNoise.WAVE -> studyManager.writeMessage(BluetoothMessage.WHITE_NOISE_WAVE)
-            WhiteNoise.WIND -> studyManager.writeMessage(BluetoothMessage.WHITE_NOISE_WIND)
-            WhiteNoise.LEAF -> studyManager.writeMessage(BluetoothMessage.WHITE_NOISE_LEAF)
+            WhiteNoise.FIREWOOD -> studyManager.writeMessage(BluetoothMessage.WHITE_NOISE_FIREWOOD)
+            WhiteNoise.MUSIC_1 -> studyManager.writeMessage(BluetoothMessage.WHITE_NOISE_MUSIC_1)
+            WhiteNoise.MUSIC_2 -> studyManager.writeMessage(BluetoothMessage.WHITE_NOISE_MUSIC_2)
             WhiteNoise.RAIN -> studyManager.writeMessage(BluetoothMessage.WHITE_NOISE_RAIN)
+            WhiteNoise.MUSIC_3 -> studyManager.writeMessage(BluetoothMessage.WHITE_NOISE_MUSIC_3)
         }
     }
 
@@ -213,8 +186,8 @@ class StudyViewModel(application: Application): AndroidViewModel(application) {
                 }
             }
             Lamp.NONE -> studyManager.writeMessage(BluetoothMessage.LAMP_NONE)
-            Lamp.LAMP_3500K -> studyManager.writeMessage(BluetoothMessage.LAMP_3500K)
-            Lamp.LAMP_5000K -> studyManager.writeMessage(BluetoothMessage.LAMP_5000K)
+            Lamp.LAMP_2700K -> studyManager.writeMessage(BluetoothMessage.LAMP_2700K)
+            Lamp.LAMP_4000K -> studyManager.writeMessage(BluetoothMessage.LAMP_4000K)
             Lamp.LAMP_6500K -> studyManager.writeMessage(BluetoothMessage.LAMP_6500K)
         }
     }

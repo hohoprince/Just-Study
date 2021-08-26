@@ -3,7 +3,7 @@
                                                    xmlns:app="http://schemas.android.com/apk/res-auto"
                                                    xmlns:tools="http://schemas.android.com/tools"
                                                    android:layout_width="300dp"
-                                                   android:layout_height="450dp">
+                                                   android:layout_height="500dp">
 
     <RadioGroup
             android:layout_width="wrap_content"
@@ -27,19 +27,19 @@
                 android:id="@+id/radio_noise_off"/>
 
         <RadioButton
-                android:text="파도 소리"
+                android:text="장작 타는 소리"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/radio_noise1"/>
 
         <RadioButton
-                android:text="바람 소리"
+                android:text="음악 1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/radio_noise2"/>
 
         <RadioButton
-                android:text="나뭇잎 소리"
+                android:text="음악 2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/radio_noise3"/>
@@ -49,6 +49,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/radio_noise4"/>
+
+        <RadioButton
+                android:text="음악 3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/radio_noise5"/>
+
     </RadioGroup>
 
     <TextView
