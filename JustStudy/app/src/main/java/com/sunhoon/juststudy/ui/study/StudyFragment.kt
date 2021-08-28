@@ -69,7 +69,7 @@ class StudyFragment : Fragment() {
             if (statusManager.progressStatus == ProgressStatus.WAITING && it == 0) {
                 concentrationTextView.text = "측정 전"
             } else {
-                concentrationTextView.text = it.toString()
+                concentrationTextView.text = ConcentrationLevel.getByValue(it).description
             }
         })
 
