@@ -4,6 +4,7 @@ import android.app.Dialog
 import android.app.TimePickerDialog
 import android.media.MediaPlayer
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -254,10 +255,23 @@ class StudyFragment : Fragment() {
                 Toast.makeText(requireActivity().applicationContext, "블루투스 기기를 연결 해주세요", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
-            if (studyViewModel.isPlaying.value == true) {
+            if (studyViewModel.isPlaying.value == true) { // 공부 종료
                 studyViewModel.stopTimer()
                 studyViewModel.updateStudy()
-            } else {
+                val dlg = Dialog(requireContext()) // 지우개 가루 청소
+                dlg.setContentView(R.layout.dialog_clean)
+                val okButton = dlg.findViewById<Button>(R.id.clean_ok_button)
+                okButton.setOnClickListener {
+                    Log.i("MyTag", "지우개 가루 청소")
+                    studyViewModel.sendCleanMessage()
+                    dlg.dismiss()
+                }
+                val noButton = dlg.findViewById<Button>(R.id.clean_no_button)
+                noButton.setOnClickListener {
+                    dlg.dismiss()
+                }
+                dlg.show()
+            } else { // 공부 시작
                 studyViewModel.startStudyTimer()
                 studyViewModel.createStudy()
             }

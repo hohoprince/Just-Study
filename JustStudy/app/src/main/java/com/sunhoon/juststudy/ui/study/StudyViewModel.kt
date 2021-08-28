@@ -204,6 +204,13 @@ class StudyViewModel(application: Application): AndroidViewModel(application) {
     }
 
     /**
+     * 지우개 가루 청소 메시지를 보낸다
+     */
+    fun sendCleanMessage() {
+        studyManager.writeMessage(BluetoothMessage.CLEAN)
+    }
+
+    /**
      * 블루투스 메시지 전송 테스트용
      */
     fun sendMessageForTest(message: BluetoothMessage) {

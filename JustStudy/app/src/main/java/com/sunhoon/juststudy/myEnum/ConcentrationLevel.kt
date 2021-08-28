@@ -9,7 +9,7 @@ enum class ConcentrationLevel(val description: String) {
     VERY_HIGH("매우 높음");
 
     companion object {
-        private val VALUES = Lamp.values()
+        private val VALUES = values()
 
         fun getByOrdinal(value: Int) = VALUES.first { it.ordinal == value }
 
