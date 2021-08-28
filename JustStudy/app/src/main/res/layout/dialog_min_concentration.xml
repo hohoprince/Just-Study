@@ -21,7 +21,7 @@
                 android:id="@+id/radio_min_concentration1"/>
 
         <RadioButton
-                android:text="중간"
+                android:text="보통"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/radio_min_concentration2"/>

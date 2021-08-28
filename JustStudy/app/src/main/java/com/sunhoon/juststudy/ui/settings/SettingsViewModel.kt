@@ -31,11 +31,17 @@ class SettingsViewModel(application: Application): AndroidViewModel(application)
         value = 0
     }
 
+    // 최소 집중도 설정 값
+    var minConcentration = MutableLiveData<Int>().apply {
+        value = 0
+    }
+
 
     fun setStringConTime(time: String) {
         _stringConcentrationTime.value = time
     }
 
+    // FIXME: 테스트가 종료되면 삭제
     /**
      * 테스트용 데이터 생성
      */
