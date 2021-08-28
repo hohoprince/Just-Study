@@ -15,11 +15,11 @@ enum class ConcentrationLevel(val description: String) {
 
         fun getByValue(concentrationLevel: Int): ConcentrationLevel {
             return when (concentrationLevel) {
-                in 0..60 -> VERY_LOW
-                in 61..70 -> LOW
-                in 71..80 -> NORMAL
-                in 81..90 -> HIGH
-                in 91..100 -> VERY_HIGH
+                in 0..40 -> VERY_LOW
+                in 40..54 -> LOW
+                in 55..69 -> NORMAL
+                in 70..85 -> HIGH
+                in 86..100 -> VERY_HIGH
                 else -> VERY_LOW
             }
         }
