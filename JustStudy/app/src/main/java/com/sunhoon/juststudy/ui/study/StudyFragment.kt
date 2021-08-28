@@ -198,6 +198,19 @@ class StudyFragment : Fragment() {
         heightLayout.setOnClickListener {
             val dlg = Dialog(requireContext())
             dlg.setContentView(R.layout.dialog_height_up_down)
+            val upButton = dlg.findViewById<ImageButton>(R.id.up_button)
+            val downButton = dlg.findViewById<ImageButton>(R.id.down_button)
+            val stopButton = dlg.findViewById<ImageButton>(R.id.stop_button)
+
+            upButton.setOnClickListener {
+                studyViewModel.sendChangeHeightMessage(Height.UP)
+            }
+            downButton.setOnClickListener {
+                studyViewModel.sendChangeHeightMessage(Height.DOWN)
+            }
+            stopButton.setOnClickListener {
+                studyViewModel.sendChangeHeightMessage(Height.STOP)
+            }
 
             dlg.show()
         }
@@ -207,6 +220,20 @@ class StudyFragment : Fragment() {
         angleLayout.setOnClickListener {
             val dlg = Dialog(requireContext())
             dlg.setContentView(R.layout.dialog_angle_up_down)
+
+            val upButton = dlg.findViewById<ImageButton>(R.id.up_button)
+            val downButton = dlg.findViewById<ImageButton>(R.id.down_button)
+            val stopButton = dlg.findViewById<ImageButton>(R.id.stop_button)
+
+            upButton.setOnClickListener {
+                studyViewModel.sendChangeAngleMessage(Angle.UP)
+            }
+            downButton.setOnClickListener {
+                studyViewModel.sendChangeAngleMessage(Angle.DOWN)
+            }
+            stopButton.setOnClickListener {
+                studyViewModel.sendChangeAngleMessage(Angle.STOP)
+            }
 
             dlg.show()
         }

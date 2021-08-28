@@ -157,6 +157,17 @@ class StudyViewModel(application: Application): AndroidViewModel(application) {
     }
 
     /**
+     * 책받침 각도 변경 메시지를 보낸다
+     */
+    fun sendChangeAngleMessage(angle: Angle) {
+        when (angle) {
+            Angle.UP -> studyManager.writeMessage(BluetoothMessage.ANGLE_UP)
+            Angle.DOWN -> studyManager.writeMessage(BluetoothMessage.ANGLE_DOWN)
+            Angle.STOP -> studyManager.writeMessage(BluetoothMessage.ANGLE_STOP)
+        }
+    }
+
+    /**
      * 백색 소음 변경 메시지를 보낸다
      */
     fun sendChangeWhiteNoiseMessage(whiteNoise: WhiteNoise) {
