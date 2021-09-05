@@ -52,7 +52,7 @@
             app:layout_constraintBottom_toTopOf="@+id/clean_ok_button"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            android:textStyle="bold"
+            android:textStyle="normal"
             android:textColor="@color/black"
             android:textSize="18sp"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

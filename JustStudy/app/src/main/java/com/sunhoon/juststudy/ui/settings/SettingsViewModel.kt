@@ -4,9 +4,10 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
+import com.sunhoon.juststudy.bluetooth.StudyManager
 import com.sunhoon.juststudy.database.AppDatabase
 import com.sunhoon.juststudy.database.entity.StudyDetail
+import com.sunhoon.juststudy.myEnum.ConcentrationLevel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -36,9 +37,15 @@ class SettingsViewModel(application: Application): AndroidViewModel(application)
         value = 0
     }
 
+    private val studyManager = StudyManager.getInstance()
+
 
     fun setStringConTime(time: String) {
         _stringConcentrationTime.value = time
+    }
+
+    fun setMinConcentration(minConcentration: ConcentrationLevel) {
+        studyManager.minConcentration = minConcentration
     }
 
     // FIXME: 테스트가 종료되면 삭제

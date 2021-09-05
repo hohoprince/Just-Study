@@ -3,6 +3,7 @@ package com.sunhoon.juststudy.bluetooth
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import app.akexorcist.bluetotohspp.library.BluetoothSPP
+import com.sunhoon.juststudy.data.SharedPref
 import com.sunhoon.juststudy.data.StatusManager
 import com.sunhoon.juststudy.database.AppDatabase
 import com.sunhoon.juststudy.database.entity.BestEnvironment
@@ -12,6 +13,7 @@ import com.sunhoon.juststudy.myEnum.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import java.lang.Exception
 import java.util.*
 import kotlin.math.max
 
@@ -24,6 +26,7 @@ class StudyManager {
     var bestEnvironment: BestEnvironment? = null
     var lampRankingList: List<Lamp> = mutableListOf()
     var whiteNoiseRankingList: List<WhiteNoise> = mutableListOf()
+    var minConcentration = ConcentrationLevel.VERY_LOW
 
 
     /* 현재 책상 높이 */
@@ -45,6 +48,12 @@ class StudyManager {
     val currentConcentration = MutableLiveData<Int>().apply {
         value = 0
     }
+
+    /* 집중도 오차를 맞추기 위한 기회 횟수 */
+    private var lowConcentrationCount = 0
+
+    /* 환경 변경 횟수 */
+    var environmentChangeCount = 0
 
 
     companion object {
@@ -81,12 +90,31 @@ class StudyManager {
      */
     fun process(msg: String) {
         if (statusManager.progressStatus == ProgressStatus.STUDYING) {
-            val changed: Int = msg.toInt()
-            val score: Int = max(0, 100 - 3 * changed) // 집중도 점수
-            Log.i("MyTag", "현재 집중도: $score")
-            currentConcentration.value = score
+            try {
+                val changed: Int = msg.toInt()
+                val score: Int = max(0, 100 - 3 * changed) // 집중도 점수
+                Log.i("MyTag", "현재 집중도: $score")
+                currentConcentration.value = score
+                insertStudyDetail(score) // 집중도를 받은 시각의 데이터 삽입
+                ConcentrationLevel.getByValue(score).ordinal
+                Log.d("MyTag", "현재: ${ConcentrationLevel.getByValue(score).ordinal}")
+                Log.d("MyTag", "min: ${minConcentration.ordinal}")
+                if (ConcentrationLevel.getByValue(score).ordinal < minConcentration.ordinal) { // 현재 집중도 < 최소 집중도
+                    lowConcentrationCount += 1
+                    Log.i("MyTag", "lowConcentrationCount increase: $lowConcentrationCount")
+                    if (lowConcentrationCount >= 10) { // 연속 10번 집중도가 좋지 않을 때
+                        // 환경 변경
+                        environmentChangeCount += 1
+                        Log.i("MyTag", "environmentChangeCount increase: $environmentChangeCount")
 
-            insertStudyDetail(score) // 집중도를 받은 시각의 데이터 삽입
+                    } else { // 한 번이라도 조건에 만족하지 못 하면 초기화
+                        Log.i("MyTag", "lowConcentrationCount Reset")
+                        lowConcentrationCount = 0
+                    }
+                }
+            } catch (e: Exception) {
+                Log.e("MyTag", "메시지를 처리할 수 없음")
+            }
         }
     }
 
@@ -113,7 +141,6 @@ class StudyManager {
                 whiteNoiseId = whiteNoiseId,
                 studyId = groupId)
             appDatabase.studyDetailDao().insert(studyDetail)
-            Log.i("MyTag", "studyDetail 삽입: $studyDetail")
         }
     }
 

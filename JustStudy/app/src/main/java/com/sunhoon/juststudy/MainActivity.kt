@@ -103,9 +103,6 @@ class MainActivity : AppCompatActivity() {
                 studyManager.lampRankingList = lampScoreRankList
                 studyManager.whiteNoiseRankingList = whiteNoiseScoreRankList
 
-                Log.d("MyTag", "lamp scoreList: $lampScoreRankList")
-                Log.d("MyTag", "whiteNoise scoreList: $whiteNoiseScoreRankList")
-
                 val bestEnvironment = BestEnvironment(
                     bestLamp = lampScoreRankList[0].ordinal,
                     bestWhiteNoise = whiteNoiseScoreRankList[0].ordinal)
@@ -114,10 +111,8 @@ class MainActivity : AppCompatActivity() {
                     val be: BestEnvironment? = appDatabase.bestEnvironmentDao().read()
                     if (be == null) {
                         appDatabase.bestEnvironmentDao().insert(bestEnvironment)
-                        Log.i("MyTag", "insert bestEnvironment: $bestEnvironment")
                     } else {
                         appDatabase.bestEnvironmentDao().update(bestEnvironment)
-                        Log.i("MyTag", "update bestEnvironment: $bestEnvironment")
                     }
                     studyManager.bestEnvironment = be
                 }

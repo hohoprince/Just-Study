@@ -127,7 +127,6 @@ class SettingsFragment : Fragment() {
         minConcentrationLayout.setOnClickListener {
             val dlg = Dialog(requireContext())
             dlg.setContentView(R.layout.dialog_min_concentration)
-
             // 라디오 그룹
             val radioGroup = dlg.findViewById<RadioGroup>(R.id.radioGroup)
             var buttonId = 0
@@ -168,6 +167,7 @@ class SettingsFragment : Fragment() {
             }
             minConcentrationTextView.text = text
             sharedPref.edit().putInt("minConcentration", it).apply()
+            settingsViewModel.setMinConcentration(ConcentrationLevel.getByOrdinal(it));
         })
 
         // 시작 화면 설정
