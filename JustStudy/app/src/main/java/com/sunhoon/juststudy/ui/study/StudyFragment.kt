@@ -183,8 +183,6 @@ class StudyFragment : Fragment() {
             } else if (currentConcentration < 100) { // 70 ~ 100
                 concentrationImageView.setImageResource(ConcentrationSource.highConcentrationImageSource)
                 concentrationTextView.text = ConcentrationSource.highConcentrationText
-            } else {
-                // TODO: error 처리
             }
 
             // 확인 버튼
