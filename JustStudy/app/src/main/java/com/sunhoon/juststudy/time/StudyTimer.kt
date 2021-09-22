@@ -5,6 +5,7 @@ import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.sunhoon.juststudy.bluetooth.StudyManager
 import com.sunhoon.juststudy.data.StatusManager
+import com.sunhoon.juststudy.myEnum.BluetoothMessage
 import com.sunhoon.juststudy.myEnum.ProgressStatus
 import com.sunhoon.juststudy.ui.study.StudyViewModel
 

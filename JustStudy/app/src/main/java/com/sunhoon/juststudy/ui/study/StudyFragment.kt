@@ -293,6 +293,7 @@ class StudyFragment : Fragment() {
                 studyViewModel.stopTimer()
                 studyViewModel.isPlaying.value = false
                 studyViewModel.updateStudy()
+                studyViewModel.resetDesk()
                 val dlg = Dialog(requireContext()) // 지우개 가루 청소
                 dlg.setContentView(R.layout.dialog_clean)
                 val okButton = dlg.findViewById<Button>(R.id.clean_ok_button)
@@ -309,6 +310,7 @@ class StudyFragment : Fragment() {
             } else { // 공부 시작
                 studyViewModel.startStudyTimer()
                 studyViewModel.createStudy()
+                studyManager.writeMessage(BluetoothMessage.DESK_RESTORATION)
             }
         }
 

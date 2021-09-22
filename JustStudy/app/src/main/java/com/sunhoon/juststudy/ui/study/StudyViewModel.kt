@@ -84,16 +84,13 @@ class StudyViewModel(application: Application): AndroidViewModel(application) {
                         _time, this@StudyViewModel)
                     studyTimer.start()
                 }
-
-                if (studyManager.environmentChangeCount > 3) { // 환경 변경 3회 초과시 휴식 권유
-
-                }
             }
         })
         studyTimer.start()
         isPlaying.value = true
         statusManager.progressStatus = ProgressStatus.STUDYING
         toastingMessage.value = "공부 시작"
+        studyManager.writeMessage(BluetoothMessage.STUDY_START)
         Log.i("MyTag", "공부 시작")
     }
 
@@ -117,7 +114,12 @@ class StudyViewModel(application: Application): AndroidViewModel(application) {
         statusManager.progressStatus = ProgressStatus.WAITING
         setUserTime(statusManager.studyTime)
         toastingMessage.value = "공부 종료"
+        studyManager.writeMessage(BluetoothMessage.STUDY_END)
         Log.i("MyTag", "공부 종료, 타이머 종료")
+    }
+
+    fun resetDesk() {
+        studyManager.writeMessage(BluetoothMessage.DESK_RESET);
     }
 
     // 사용자 설정 시간
