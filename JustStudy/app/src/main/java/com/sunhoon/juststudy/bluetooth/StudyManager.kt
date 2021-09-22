@@ -26,7 +26,9 @@ class StudyManager {
     var bestEnvironment: BestEnvironment? = null
     var lampRankingList: List<Lamp> = mutableListOf()
     var whiteNoiseRankingList: List<WhiteNoise> = mutableListOf()
-    var minConcentration = ConcentrationLevel.VERY_LOW
+    var minConcentration: MutableLiveData<ConcentrationLevel> = MutableLiveData<ConcentrationLevel>().apply {
+        value = ConcentrationLevel.VERY_LOW
+    }
 
 
     /* 현재 책상 높이 */
@@ -96,8 +98,8 @@ class StudyManager {
                 insertStudyDetail(score) // 집중도를 받은 시각의 데이터 삽입
                 ConcentrationLevel.getByValue(score).ordinal
                 Log.d("MyTag", "현재: ${ConcentrationLevel.getByValue(score).ordinal}")
-                Log.d("MyTag", "min: ${minConcentration.ordinal}")
-                if (ConcentrationLevel.getByValue(score).ordinal < minConcentration.ordinal) { // 현재 집중도 < 최소 집중도
+                Log.d("MyTag", "min: ${minConcentration.value?.ordinal}")
+                if (ConcentrationLevel.getByValue(score).ordinal < minConcentration.value?.ordinal!!) { // 현재 집중도 < 최소 집중도
                     lowConcentrationCount += 1
                     Log.i("MyTag", "lowConcentrationCount increase: $lowConcentrationCount")
                     if (lowConcentrationCount >= 10) { // 연속 10번 집중도가 좋지 않을 때

@@ -39,13 +39,12 @@ class SettingsViewModel(application: Application): AndroidViewModel(application)
 
     private val studyManager = StudyManager.getInstance()
 
-
     fun setStringConTime(time: String) {
         _stringConcentrationTime.value = time
     }
 
     fun setMinConcentration(minConcentration: ConcentrationLevel) {
-        studyManager.minConcentration = minConcentration
+        studyManager.minConcentration.value = minConcentration
     }
 
     // FIXME: 테스트가 종료되면 삭제

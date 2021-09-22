@@ -14,6 +14,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import app.akexorcist.bluetotohspp.library.BluetoothState
 import com.sunhoon.juststudy.R
+import com.sunhoon.juststudy.bluetooth.StudyManager
 import com.sunhoon.juststudy.data.ConcentrationSource
 import com.sunhoon.juststudy.data.SharedPref
 import com.sunhoon.juststudy.data.StatusManager
@@ -24,6 +25,7 @@ class StudyFragment : Fragment() {
 
     private lateinit var studyViewModel: StudyViewModel
     private val statusManager = StatusManager.getInstance()
+    private val studyManager = StudyManager.getInstance()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -196,6 +198,11 @@ class StudyFragment : Fragment() {
 
         // 최소 집중도 텍스트뷰
         val minConcentrationTextView = root.findViewById<TextView>(R.id.min_concentration_textview)
+        val minConcentrationLevel = sharedPref.getInt("minConcentration", 0)
+        studyManager.minConcentration.value = ConcentrationLevel.getByOrdinal(minConcentrationLevel)
+        studyManager.minConcentration.observe(viewLifecycleOwner, Observer {
+            minConcentrationTextView.text = it.description;
+        })
 
 
         // 책상 높이 다이얼로그
