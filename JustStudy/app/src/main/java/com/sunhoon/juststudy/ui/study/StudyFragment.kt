@@ -2,12 +2,15 @@ package com.sunhoon.juststudy.ui.study
 
 import android.app.Dialog
 import android.app.TimePickerDialog
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.media.MediaPlayer
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.WindowManager
 import android.widget.*
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -59,6 +62,8 @@ class StudyFragment : Fragment() {
             override fun onRest() {
                 mediaPlayer?.start()
                 val dlg = Dialog(requireContext())
+                dlg.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+                dlg.setCancelable(false)
                 dlg.setContentView(R.layout.dialog_rest)
 
                 val okButton = dlg.findViewById<Button>(R.id.rest_ok_button)
@@ -124,6 +129,8 @@ class StudyFragment : Fragment() {
         val lightLayout = root.findViewById<LinearLayout>(R.id.light_layout)
         lightLayout.setOnClickListener {
             val dlg = Dialog(requireContext())
+            dlg.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT));
+            dlg.setCancelable(false);
             dlg.setContentView(R.layout.dialog_lamp)
 
             // 라디오 그룹
@@ -160,6 +167,8 @@ class StudyFragment : Fragment() {
         val noiseLayout = root.findViewById<LinearLayout>(R.id.noise_layout)
         noiseLayout.setOnClickListener {
             val dlg = Dialog(requireContext())
+            dlg.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT));
+            dlg.setCancelable(false);
             dlg.setContentView(R.layout.dialog_white_noise)
 
             // 라디오 그룹
@@ -200,6 +209,8 @@ class StudyFragment : Fragment() {
         val concentrationLayout = root.findViewById<LinearLayout>(R.id.concentration_layout)
         concentrationLayout.setOnClickListener {
             val dlg = Dialog(requireContext())
+            dlg.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT));
+            dlg.setCancelable(false);
             dlg.setContentView(R.layout.dialog_concentration)
 
             val concentrationImageView = dlg.findViewById<ImageView>(R.id.concentration_image_view)
@@ -239,6 +250,7 @@ class StudyFragment : Fragment() {
         val heightLayout = root.findViewById<LinearLayout>(R.id.height_layout)
         heightLayout.setOnClickListener {
             val dlg = Dialog(requireContext())
+            dlg.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT));
             dlg.setContentView(R.layout.dialog_height_up_down)
             val upButton = dlg.findViewById<ImageButton>(R.id.up_button)
             val downButton = dlg.findViewById<ImageButton>(R.id.down_button)
@@ -261,6 +273,7 @@ class StudyFragment : Fragment() {
         val angleLayout = root.findViewById<LinearLayout>(R.id.angle_layout)
         angleLayout.setOnClickListener {
             val dlg = Dialog(requireContext())
+            dlg.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT));
             dlg.setContentView(R.layout.dialog_angle_up_down)
 
             val upButton = dlg.findViewById<ImageButton>(R.id.up_button)
@@ -304,6 +317,8 @@ class StudyFragment : Fragment() {
                 studyViewModel.updateStudy()
                 studyViewModel.resetDesk()
                 val dlg = Dialog(requireContext()) // 지우개 가루 청소
+                dlg.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT));
+                dlg.setCancelable(false);
                 dlg.setContentView(R.layout.dialog_clean)
                 val okButton = dlg.findViewById<Button>(R.id.clean_ok_button)
                 okButton.setOnClickListener {
@@ -336,6 +351,7 @@ class StudyFragment : Fragment() {
         val testSendMessageButton = root.findViewById<Button>(R.id.test_send_message_button)
         testSendMessageButton.setOnClickListener {
             val dlg = Dialog(requireContext())
+            dlg.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT));
             dlg.setContentView(R.layout.dialog_message)
 
             val test1 = dlg.findViewById<Button>(R.id.test_1)

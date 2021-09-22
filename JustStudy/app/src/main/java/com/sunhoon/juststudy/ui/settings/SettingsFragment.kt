@@ -2,10 +2,13 @@ package com.sunhoon.juststudy.ui.settings
 
 import android.app.Dialog
 import android.app.TimePickerDialog
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.WindowManager
 import android.widget.Button
 import android.widget.RadioGroup
 import android.widget.TextView
@@ -88,6 +91,8 @@ class SettingsFragment : Fragment() {
         val breakTimeLayout = root.findViewById<ConstraintLayout>(R.id.breaktimeLayout)
         breakTimeLayout.setOnClickListener {
             val dlg = Dialog(requireContext())
+            dlg.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT));
+            dlg.setCancelable(false);
             dlg.setContentView(R.layout.dialog_breaktime)
 
             // 라디오 그룹
@@ -126,6 +131,8 @@ class SettingsFragment : Fragment() {
         val minConcentrationLayout = root.findViewById<ConstraintLayout>(R.id.min_concentration_layout)
         minConcentrationLayout.setOnClickListener {
             val dlg = Dialog(requireContext())
+            dlg.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT));
+            dlg.setCancelable(false);
             dlg.setContentView(R.layout.dialog_min_concentration)
             // 라디오 그룹
             val radioGroup = dlg.findViewById<RadioGroup>(R.id.radioGroup)
@@ -174,6 +181,8 @@ class SettingsFragment : Fragment() {
         val startScreenLayout = root.findViewById<ConstraintLayout>(R.id.startScreenLayout)
         startScreenLayout.setOnClickListener {
             val dlg = Dialog(requireContext())
+            dlg.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT));
+            dlg.setCancelable(false);
             dlg.setContentView(R.layout.dialog_start_screen)
 
             // 라디오 그룹

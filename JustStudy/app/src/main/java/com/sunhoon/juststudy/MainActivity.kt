@@ -1,9 +1,16 @@
 package com.sunhoon.juststudy
 
+import android.app.Dialog
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.util.Log
+import android.view.WindowManager
+import android.widget.Button
+import android.widget.RadioGroup
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.lifecycle.Observer
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
@@ -20,6 +27,7 @@ import com.sunhoon.juststudy.myEnum.WhiteNoise
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 
 class MainActivity : AppCompatActivity() {
@@ -32,6 +40,8 @@ class MainActivity : AppCompatActivity() {
     private var bluetoothSPP2: BluetoothSPP = BluetoothSPP(this)
 
     private val studyManager: StudyManager = StudyManager.getInstance()
+
+    private var deviceCount = 0;
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -72,11 +82,29 @@ class MainActivity : AppCompatActivity() {
                 Toast.makeText(this@MainActivity,
                     "블루투스 연결: name = $name address = $address", Toast.LENGTH_SHORT).show()
                 Log.i("MyTag", "bluetooth 연결: name = $name")
+                deviceCount += 1;
+
+                // FIXME: 2개 연결시 2로 변경
+                if (deviceCount == 1) {
+                    val dlg = Dialog(this@MainActivity)
+                    dlg.setContentView(R.layout.dialog_connected)
+                    dlg.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT));
+                    dlg.window?.clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
+                    dlg.setCancelable(false);
+                    dlg.show()
+                    GlobalScope.launch {
+                        Thread.sleep(2000)
+                        withContext(Dispatchers.Main) {
+                            dlg.dismiss()
+                        }
+                    }
+                }
             }
 
             override fun onDeviceDisconnected() {
                 Toast.makeText(this@MainActivity, "블루투스 연결 해제", Toast.LENGTH_SHORT).show()
                 Log.i("MyTag", "bluetooth 연결 해제")
+                deviceCount -= 1;
             }
 
             override fun onDeviceConnectionFailed() {
