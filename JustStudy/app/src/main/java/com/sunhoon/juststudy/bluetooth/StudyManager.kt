@@ -30,6 +30,8 @@ class StudyManager {
         value = ConcentrationLevel.VERY_LOW
     }
 
+    private var onRestListener: OnRestListener? = null
+
     private var selectionIndex = 1
 
 
@@ -71,6 +73,10 @@ class StudyManager {
                 instance
             }
         }
+    }
+
+    fun setOnRestListener(listener: OnRestListener) {
+        this.onRestListener = listener
     }
 
     fun resetCount() {
@@ -115,6 +121,14 @@ class StudyManager {
                         environmentChangeCount += 1
                         lowConcentrationCount = 0;
                         Log.i("MyTag", "environmentChangeCount increase: $environmentChangeCount")
+
+                        // 환경 변경이 3회 일어나면 휴식을 권유
+                        if (environmentChangeCount >= 3) {
+                            Log.i("MyTag", "휴식 권유")
+                            environmentChangeCount = 0
+                            onRestListener?.onRest()
+                            return
+                        }
 
                         val lamp: Lamp = lampRankingList[selectionIndex % lampRankingList.size]
                         val whiteNoise: WhiteNoise = whiteNoiseRankingList[selectionIndex % whiteNoiseRankingList.size]
@@ -180,5 +194,9 @@ class StudyManager {
         bluetoothSPP.send(msg.value, false)
         Log.i("MyTag", "Send Message: ${msg.value}(${msg.description})")
     }
-    
+
+    interface OnRestListener {
+        fun onRest()
+    }
+
 }

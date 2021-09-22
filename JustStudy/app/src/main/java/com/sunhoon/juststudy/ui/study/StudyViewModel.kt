@@ -70,7 +70,7 @@ class StudyViewModel(application: Application): AndroidViewModel(application) {
     fun startStudyTimer() {
         // studyTimer = StudyTimer(remainTime, 1000, _time, this)
         // TODO: 테스트용 공부시간
-        studyTimer = StudyTimer((10 * 1000).toLong(), 100,
+        studyTimer = StudyTimer((60 * 1000).toLong(), 100,
             (10 * 1000).toLong(), _time, this)
         studyTimer.setOnExtendTimeListener(object: StudyTimer.OnExtendTimeListener {
             override fun onTime() { // 학습 80% 이상 진행
@@ -113,7 +113,6 @@ class StudyViewModel(application: Application): AndroidViewModel(application) {
 
     // 타이머 종료
     fun stopTimer() {
-        isPlaying.value = false
         studyTimer.cancel()
         statusManager.progressStatus = ProgressStatus.WAITING
         setUserTime(statusManager.studyTime)
@@ -125,6 +124,10 @@ class StudyViewModel(application: Application): AndroidViewModel(application) {
     fun setUserTime(userTime: Long) {
         statusManager.remainTime = userTime
         _time.value = TimeConverter.longToStringTime(userTime)
+    }
+
+    fun rest() {
+        studyTimer.finish()
     }
 
     /**

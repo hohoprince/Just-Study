@@ -38,11 +38,15 @@ class StudyTimer(millisInFuture: Long,
     }
 
     override fun onFinish() {
+        finish()
+    }
 
+    fun finish() {
         when (statusManager.progressStatus) {
             ProgressStatus.STUDYING -> {
                 Log.i("MyTag", "학습 끝")
                 statusManager.progressStatus = ProgressStatus.RESTING
+                viewModel.stopTimer()
                 viewModel.startBreakTimer()
                 studyManager.resetCount()
             }

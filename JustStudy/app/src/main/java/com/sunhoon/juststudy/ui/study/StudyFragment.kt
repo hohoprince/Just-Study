@@ -44,6 +44,30 @@ class StudyFragment : Fragment() {
         statusManager.breakTime = sharedPref.getInt("breakTime", 0)
         studyViewModel.setUserTime(statusManager.studyTime)
 
+        // 효과음 플레이어
+        val mediaPlayer: MediaPlayer? = MediaPlayer.create(context, R.raw.pling)
+
+        studyManager.setOnRestListener(object: StudyManager.OnRestListener {
+            override fun onRest() {
+                mediaPlayer?.start()
+                val dlg = Dialog(requireContext())
+                dlg.setContentView(R.layout.dialog_rest)
+
+                val okButton = dlg.findViewById<Button>(R.id.rest_ok_button)
+                okButton.setOnClickListener {
+                    studyViewModel.rest()
+                    dlg.dismiss()
+                }
+
+                val noButton = dlg.findViewById<Button>(R.id.rest_no_button)
+                noButton.setOnClickListener {
+                    dlg.dismiss()
+                }
+
+                dlg.show()
+            }
+        })
+
         // 스톱워치 / 타이머 텍스트뷰
         val timeTextView = root.findViewById<TextView>(R.id.time)
         studyViewModel.time.observe(viewLifecycleOwner, Observer {
@@ -267,6 +291,7 @@ class StudyFragment : Fragment() {
 //            }
             if (studyViewModel.isPlaying.value == true) { // 공부 종료
                 studyViewModel.stopTimer()
+                studyViewModel.isPlaying.value = false
                 studyViewModel.updateStudy()
                 val dlg = Dialog(requireContext()) // 지우개 가루 청소
                 dlg.setContentView(R.layout.dialog_clean)
@@ -286,9 +311,6 @@ class StudyFragment : Fragment() {
                 studyViewModel.createStudy()
             }
         }
-
-        // 효과음 플레이어
-        val mediaPlayer: MediaPlayer? = MediaPlayer.create(context, R.raw.pling)
 
         // 토스트 메시지, 효과음 출력
         studyViewModel.toastingMessage.observe(viewLifecycleOwner, Observer {
