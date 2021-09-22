@@ -131,26 +131,28 @@ class StudyManager {
                             return
                         }
 
-                        val lamp: Lamp = lampRankingList[selectionIndex % lampRankingList.size]
-                        val whiteNoise: WhiteNoise = whiteNoiseRankingList[selectionIndex % whiteNoiseRankingList.size]
-                        selectionIndex += 1
-                        when (lamp) {
-                            Lamp.NONE -> writeMessage(BluetoothMessage.LAMP_NONE)
-                            Lamp.LAMP_2700K -> writeMessage(BluetoothMessage.LAMP_2700K)
-                            Lamp.LAMP_4000K -> writeMessage(BluetoothMessage.LAMP_4000K)
-                            Lamp.LAMP_6500K -> writeMessage(BluetoothMessage.LAMP_6500K)
-                            else -> Log.w("MyTag", "잘못된 램프 밝기")
-                        }
-                        when (whiteNoise) {
-                            WhiteNoise.NONE -> writeMessage(BluetoothMessage.WHITE_NOISE_NONE)
-                            WhiteNoise.RAIN -> writeMessage(BluetoothMessage.WHITE_NOISE_RAIN)
-                            WhiteNoise.FIREWOOD -> writeMessage(BluetoothMessage.WHITE_NOISE_FIREWOOD)
-                            WhiteNoise.MUSIC_1 -> writeMessage(BluetoothMessage.WHITE_NOISE_MUSIC_1)
-                            WhiteNoise.MUSIC_2 -> writeMessage(BluetoothMessage.WHITE_NOISE_MUSIC_2)
-                            WhiteNoise.MUSIC_3 -> writeMessage(BluetoothMessage.WHITE_NOISE_MUSIC_3)
-                            else -> Log.w("MyTag", "잘못된 백색 소음")
+                        if (currentLamp.value == Lamp.AUTO) {
+                            when (lampRankingList[selectionIndex % lampRankingList.size]) {
+                                Lamp.NONE -> writeMessage(BluetoothMessage.LAMP_NONE)
+                                Lamp.LAMP_2700K -> writeMessage(BluetoothMessage.LAMP_2700K)
+                                Lamp.LAMP_4000K -> writeMessage(BluetoothMessage.LAMP_4000K)
+                                Lamp.LAMP_6500K -> writeMessage(BluetoothMessage.LAMP_6500K)
+                                else -> Log.w("MyTag", "잘못된 램프 밝기")
+                            }
                         }
 
+                        if (currentWhiteNoise.value == WhiteNoise.AUTO) {
+                            when (whiteNoiseRankingList[selectionIndex % whiteNoiseRankingList.size]) {
+                                WhiteNoise.NONE -> writeMessage(BluetoothMessage.WHITE_NOISE_NONE)
+                                WhiteNoise.RAIN -> writeMessage(BluetoothMessage.WHITE_NOISE_RAIN)
+                                WhiteNoise.FIREWOOD -> writeMessage(BluetoothMessage.WHITE_NOISE_FIREWOOD)
+                                WhiteNoise.MUSIC_1 -> writeMessage(BluetoothMessage.WHITE_NOISE_MUSIC_1)
+                                WhiteNoise.MUSIC_2 -> writeMessage(BluetoothMessage.WHITE_NOISE_MUSIC_2)
+                                WhiteNoise.MUSIC_3 -> writeMessage(BluetoothMessage.WHITE_NOISE_MUSIC_3)
+                                else -> Log.w("MyTag", "잘못된 백색 소음")
+                            }
+                        }
+                        selectionIndex += 1
                     }
                 } else { // 한 번이라도 조건에 만족하지 못 하면 초기화
                     Log.i("MyTag", "lowConcentrationCount Reset")
