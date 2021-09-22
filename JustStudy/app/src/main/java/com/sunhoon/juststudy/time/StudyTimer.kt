@@ -3,6 +3,7 @@ package com.sunhoon.juststudy.time
 import android.os.CountDownTimer
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
+import com.sunhoon.juststudy.bluetooth.StudyManager
 import com.sunhoon.juststudy.data.StatusManager
 import com.sunhoon.juststudy.myEnum.ProgressStatus
 import com.sunhoon.juststudy.ui.study.StudyViewModel
@@ -15,6 +16,7 @@ class StudyTimer(millisInFuture: Long,
 ) : CountDownTimer(millisInFuture, countDownInterval) {
 
     private val statusManager = StatusManager.getInstance()
+    private val studyManager = StudyManager.getInstance()
 
     private var mOnExtendTimeListener: OnExtendTimeListener? = null
 
@@ -42,6 +44,7 @@ class StudyTimer(millisInFuture: Long,
                 Log.i("MyTag", "학습 끝")
                 statusManager.progressStatus = ProgressStatus.RESTING
                 viewModel.startBreakTimer()
+                studyManager.resetCount()
             }
             ProgressStatus.RESTING -> {
                 Log.i("MyTag", "휴식 끝")

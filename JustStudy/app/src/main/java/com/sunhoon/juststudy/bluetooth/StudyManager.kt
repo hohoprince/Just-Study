@@ -71,6 +71,11 @@ class StudyManager {
         }
     }
 
+    fun resetCount() {
+        lowConcentrationCount = 0
+        environmentChangeCount = 0
+    }
+
     fun createStudy() {
         GlobalScope.launch(Dispatchers.IO) {
             groupId = appDatabase.studyDao().insert(Study(startTime = Date()))
@@ -105,12 +110,13 @@ class StudyManager {
                     if (lowConcentrationCount >= 10) { // 연속 10번 집중도가 좋지 않을 때
                         // 환경 변경
                         environmentChangeCount += 1
+                        lowConcentrationCount = 0;
                         Log.i("MyTag", "environmentChangeCount increase: $environmentChangeCount")
 
-                    } else { // 한 번이라도 조건에 만족하지 못 하면 초기화
-                        Log.i("MyTag", "lowConcentrationCount Reset")
-                        lowConcentrationCount = 0
                     }
+                } else { // 한 번이라도 조건에 만족하지 못 하면 초기화
+                    Log.i("MyTag", "lowConcentrationCount Reset")
+                    lowConcentrationCount = 0
                 }
             } catch (e: Exception) {
                 Log.e("MyTag", "메시지를 처리할 수 없음")
