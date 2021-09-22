@@ -104,7 +104,7 @@ class StudyManager {
      * 전달받은 메시지를 처리한다
      */
     fun process(msg: String) {
-        if (statusManager.progressStatus == ProgressStatus.STUDYING) {
+        if (statusManager.progressStatus.value == ProgressStatus.STUDYING) {
             try {
                 val changed: Int = msg.toInt()
                 val score: Int = max(0, 100 - 3 * changed) // 집중도 점수

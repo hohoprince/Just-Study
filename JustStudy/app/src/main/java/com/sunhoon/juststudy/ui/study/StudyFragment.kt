@@ -20,6 +20,7 @@ import com.sunhoon.juststudy.data.SharedPref
 import com.sunhoon.juststudy.data.StatusManager
 import com.sunhoon.juststudy.myEnum.*
 import com.sunhoon.juststudy.time.TimeConverter
+import org.w3c.dom.Text
 
 class StudyFragment : Fragment() {
 
@@ -47,6 +48,13 @@ class StudyFragment : Fragment() {
         // 효과음 플레이어
         val mediaPlayer: MediaPlayer? = MediaPlayer.create(context, R.raw.pling)
 
+        val progressStatusTextView = root.findViewById<TextView>(R.id.progressStatusTextView)
+        statusManager.progressStatus.observe(viewLifecycleOwner, Observer {
+            progressStatusTextView.text = it.description
+        })
+
+
+        // 휴식 권유에 동의
         studyManager.setOnRestListener(object: StudyManager.OnRestListener {
             override fun onRest() {
                 mediaPlayer?.start()
@@ -93,7 +101,7 @@ class StudyFragment : Fragment() {
         // 집중도 텍스트 뷰
         val concentrationTextView = root.findViewById<TextView>(R.id.concentration_textview)
         studyViewModel.currentConcentration.observe(viewLifecycleOwner, Observer {
-            if (statusManager.progressStatus == ProgressStatus.WAITING && it == 0) {
+            if (statusManager.progressStatus.value == ProgressStatus.WAITING && it == 0) {
                 concentrationTextView.text = "측정 전"
             } else {
                 concentrationTextView.text = ConcentrationLevel.getByValue(it).description

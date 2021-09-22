@@ -307,4 +307,15 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"/>
 
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/progressStatusTextView"
+            app:layout_constraintEnd_toStartOf="@+id/segmented_group"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/segmented_group"
+            tools:text="진행상태"
+            android:textColor="@color/black"
+            android:textSize="16sp"/>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

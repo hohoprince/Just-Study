@@ -1,6 +1,6 @@
 package com.sunhoon.juststudy.myEnum
 
-enum class ProgressStatus(description: String) {
+enum class ProgressStatus(val description: String) {
 
     WAITING("대기"),
     STUDYING("학습 중"),

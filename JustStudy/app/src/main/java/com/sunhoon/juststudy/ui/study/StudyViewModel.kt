@@ -88,7 +88,7 @@ class StudyViewModel(application: Application): AndroidViewModel(application) {
         })
         studyTimer.start()
         isPlaying.value = true
-        statusManager.progressStatus = ProgressStatus.STUDYING
+        statusManager.progressStatus.value = ProgressStatus.STUDYING
         toastingMessage.value = "공부 시작"
         studyManager.writeMessage(BluetoothMessage.STUDY_START)
         Log.i("MyTag", "공부 시작")
@@ -103,7 +103,7 @@ class StudyViewModel(application: Application): AndroidViewModel(application) {
         studyTimer = StudyTimer((10 * 1000).toLong(),100, (10 * 1000).toLong()
             , _time, this)
         studyTimer.start()
-        statusManager.progressStatus = ProgressStatus.RESTING
+        statusManager.progressStatus.value = ProgressStatus.RESTING
         toastingMessage.value = "휴식 시작"
         Log.i("MyTag", "휴식 시작")
     }
@@ -111,7 +111,7 @@ class StudyViewModel(application: Application): AndroidViewModel(application) {
     // 타이머 종료
     fun stopTimer() {
         studyTimer.cancel()
-        statusManager.progressStatus = ProgressStatus.WAITING
+        statusManager.progressStatus.value = ProgressStatus.WAITING
         setUserTime(statusManager.studyTime)
         toastingMessage.value = "공부 종료"
         studyManager.writeMessage(BluetoothMessage.STUDY_END)

@@ -43,17 +43,17 @@ class StudyTimer(millisInFuture: Long,
     }
 
     fun finish() {
-        when (statusManager.progressStatus) {
+        when (statusManager.progressStatus.value) {
             ProgressStatus.STUDYING -> {
                 Log.i("MyTag", "학습 끝")
-                statusManager.progressStatus = ProgressStatus.RESTING
+                statusManager.progressStatus.value = ProgressStatus.RESTING
                 viewModel.stopTimer()
                 viewModel.startBreakTimer()
                 studyManager.resetCount()
             }
             ProgressStatus.RESTING -> {
                 Log.i("MyTag", "휴식 끝")
-                statusManager.progressStatus = ProgressStatus.STUDYING
+                statusManager.progressStatus.value = ProgressStatus.STUDYING
                 viewModel.startStudyTimer()
             }
             else -> timeText.value = "Finish"
