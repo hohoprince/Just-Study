@@ -285,7 +285,8 @@ class StudyFragment : Fragment() {
 
         playButton.setOnClickListener {
             // TODO: 블루투스를 연결 할 수 없을 때 주석 처리
-//            if (studyViewModel.studyManager.bluetoothSPP.serviceState != BluetoothState.STATE_CONNECTED) {
+//            if (studyViewModel.studyManager.bluetoothSPP.serviceState != BluetoothState.STATE_CONNECTED ||
+//                studyViewModel.studyManager.bluetoothSPP2.serviceState != BluetoothState.STATE_CONNECTED) {
 //                Toast.makeText(requireActivity().applicationContext, "블루투스 기기를 연결 해주세요", Toast.LENGTH_SHORT).show()
 //                return@setOnClickListener
 //            }

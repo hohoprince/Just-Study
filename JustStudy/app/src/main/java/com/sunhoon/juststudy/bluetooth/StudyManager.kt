@@ -21,6 +21,7 @@ class StudyManager {
 
     lateinit var appDatabase: AppDatabase
     lateinit var bluetoothSPP: BluetoothSPP
+    lateinit var bluetoothSPP2: BluetoothSPP
     private val statusManager: StatusManager = StatusManager.getInstance()
     private var groupId: Long = 0L
     var bestEnvironment: BestEnvironment? = null
@@ -191,8 +192,14 @@ class StudyManager {
      * 책상에 메시지를 전송한다
      */
     fun writeMessage(msg: BluetoothMessage) {
-        bluetoothSPP.send(msg.value, false)
-        Log.i("MyTag", "Send Message: ${msg.value}(${msg.description})")
+        if (msg == BluetoothMessage.STUDY_END || msg == BluetoothMessage.STUDY_START) {
+            bluetoothSPP2.send(msg.value, false)
+            Log.i("MyTag", "spp2: Send Message: ${msg.value}(${msg.description})")
+        } else {
+            bluetoothSPP.send(msg.value, false)
+            Log.i("MyTag", "spp1: Send Message: ${msg.value}(${msg.description})")
+        }
+
     }
 
     interface OnRestListener {

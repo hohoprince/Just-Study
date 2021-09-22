@@ -28,7 +28,8 @@ class MainActivity : AppCompatActivity() {
         AppDatabase.getDatabase(this)
     }
 
-    private var bluetoothSPP: BluetoothSPP = BluetoothSPP(this)
+    private var bluetoothSPP1: BluetoothSPP = BluetoothSPP(this)
+    private var bluetoothSPP2: BluetoothSPP = BluetoothSPP(this)
 
     private val studyManager: StudyManager = StudyManager.getInstance()
 
@@ -52,16 +53,24 @@ class MainActivity : AppCompatActivity() {
         startBluetoothService() // 블루투스 서비스 시작
 
         studyManager.appDatabase = appDatabase
-        studyManager.bluetoothSPP = bluetoothSPP
+        studyManager.bluetoothSPP = bluetoothSPP1
+        studyManager.bluetoothSPP2 = bluetoothSPP2
 
-        bluetoothSPP.setOnDataReceivedListener { _, message ->
+
+
+        bluetoothSPP1.setOnDataReceivedListener { _, message ->
+            Log.i("MyTag", "Received Message: $message")
+            studyManager.process(message)
+        }
+        bluetoothSPP2.setOnDataReceivedListener { _, message ->
             Log.i("MyTag", "Received Message: $message")
             studyManager.process(message)
         }
 
-        bluetoothSPP.setBluetoothConnectionListener(object: BluetoothSPP.BluetoothConnectionListener {
+        val bluetoothConnectionListener = object: BluetoothSPP.BluetoothConnectionListener {
             override fun onDeviceConnected(name: String?, address: String?) {
-                Toast.makeText(this@MainActivity, "블루투스 연결: name = $name", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this@MainActivity,
+                    "블루투스 연결: name = $name address = $address", Toast.LENGTH_SHORT).show()
                 Log.i("MyTag", "bluetooth 연결: name = $name")
             }
 
@@ -75,7 +84,10 @@ class MainActivity : AppCompatActivity() {
                 Log.w("MyTag", "bluetooth 연결 실패")
             }
 
-        })
+        }
+
+        bluetoothSPP1.setBluetoothConnectionListener(bluetoothConnectionListener)
+        bluetoothSPP2.setBluetoothConnectionListener(bluetoothConnectionListener)
 
         appDatabase.studyDetailDao().getAllOrderByDate().observe(this, Observer { studyDetails ->
             if (studyDetails.isNotEmpty()) {
@@ -132,12 +144,22 @@ class MainActivity : AppCompatActivity() {
      * 블루투스 서비스
      */
     private fun startBluetoothService() {
-        if (bluetoothSPP.isBluetoothEnabled) {
-            bluetoothSPP.setupService()
-            bluetoothSPP.startService(BluetoothState.DEVICE_OTHER)
-            bluetoothSPP.pairedDeviceAddress.forEach { address ->
-                Log.i("MyTag", "블루투스 기기 연결 시도")
-                bluetoothSPP.connect(address)
+        if (bluetoothSPP1.isBluetoothEnabled && bluetoothSPP2.isBluetoothEnabled) {
+            bluetoothSPP1.setupService()
+            bluetoothSPP2.setupService()
+            bluetoothSPP1.startService(BluetoothState.DEVICE_OTHER)
+            bluetoothSPP2.startService(BluetoothState.DEVICE_OTHER)
+            bluetoothSPP1.pairedDeviceAddress.forEach { address ->
+                if (address == "98:D3:91:FD:B9:81") {
+                    Log.i("MyTag", "spp1: 블루투스 기기 연결 시도 $address")
+                    bluetoothSPP1.connect(address)
+                }
+            }
+            bluetoothSPP2.pairedDeviceAddress.forEach { address ->
+                if (address == "98:D3:91:FD:B9:84") {
+                    Log.i("MyTag", "spp2: 블루투스 기기 연결 시도 $address")
+                    bluetoothSPP2.connect(address)
+                }
             }
         } else {
             Toast.makeText(this, "블루투스를 지원하지 않는 기기", Toast.LENGTH_LONG).show()
@@ -147,7 +169,8 @@ class MainActivity : AppCompatActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
-        bluetoothSPP.disconnect()
+        bluetoothSPP1.disconnect()
+        bluetoothSPP2.disconnect()
     }
 
 }
