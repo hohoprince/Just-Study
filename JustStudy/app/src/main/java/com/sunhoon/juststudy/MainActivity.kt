@@ -93,7 +93,7 @@ class MainActivity : AppCompatActivity() {
                     dlg.setCancelable(false);
                     dlg.show()
                     GlobalScope.launch {
-                        Thread.sleep(2000)
+                        Thread.sleep(1500)
                         withContext(Dispatchers.Main) {
                             dlg.dismiss()
                         }

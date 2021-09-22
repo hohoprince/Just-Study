@@ -7,14 +7,12 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.sunhoon.juststudy.bluetooth.StudyManager
 import com.sunhoon.juststudy.data.StatusManager
-import com.sunhoon.juststudy.database.AppDatabase
 import com.sunhoon.juststudy.myEnum.*
+import com.sunhoon.juststudy.time.StudyStopWatch
 import com.sunhoon.juststudy.time.StudyTimer
 import com.sunhoon.juststudy.time.TimeConverter
 
 class StudyViewModel(application: Application): AndroidViewModel(application) {
-
-    private val appDatabase: AppDatabase = AppDatabase.getDatabase(application)
 
     private val statusManager = StatusManager.getInstance()
 
@@ -25,9 +23,6 @@ class StudyViewModel(application: Application): AndroidViewModel(application) {
         value = "00:00:00"
     }
     val time: LiveData<String> = _time
-
-    /* 현재 책상 높이 */
-    var currentHeight: LiveData<Int> = studyManager.currentHeight
 
     /* 현재 램프 밝기 */
     var currentLamp: LiveData<Lamp> = studyManager.currentLamp
@@ -50,6 +45,9 @@ class StudyViewModel(application: Application): AndroidViewModel(application) {
 
     /* 타이머 */
     private lateinit var studyTimer : StudyTimer
+
+    /* 스톱 워치 */
+    private lateinit var studyStopWatch: StudyStopWatch
 
 
     /**
@@ -94,6 +92,17 @@ class StudyViewModel(application: Application): AndroidViewModel(application) {
         Log.i("MyTag", "공부 시작")
     }
 
+    // 스탑워치 시작
+    fun startStopWatch() {
+        studyStopWatch = StudyStopWatch(_time)
+        studyStopWatch.start()
+        isPlaying.value = true
+        statusManager.progressStatus.value = ProgressStatus.STUDYING
+        toastingMessage.value = "공부 시작"
+        studyManager.writeMessage(BluetoothMessage.STUDY_START)
+        Log.i("MyTag", "공부 시작")
+    }
+
     // 휴식 타이머 시작
     fun startBreakTimer() {
 //        setUserTime((statusManager.breakTime * 60 * 1000).toLong())
@@ -115,6 +124,16 @@ class StudyViewModel(application: Application): AndroidViewModel(application) {
         setUserTime(statusManager.studyTime)
         toastingMessage.value = "공부 종료"
         studyManager.writeMessage(BluetoothMessage.STUDY_END)
+        Log.i("MyTag", "공부 종료, 타이머 종료")
+    }
+
+    fun stopStopWatch() {
+        studyStopWatch.stop()
+        statusManager.progressStatus.value = ProgressStatus.WAITING
+        setUserTime(0)
+        toastingMessage.value = "공부 종료"
+        studyManager.writeMessage(BluetoothMessage.STUDY_END)
+        studyManager.resetCount()
         Log.i("MyTag", "공부 종료, 타이머 종료")
     }
 

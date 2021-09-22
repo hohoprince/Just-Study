@@ -18,12 +18,12 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:sc_tint_color="@color/navy_primary"
             app:sc_checked_text_color="@color/white"
-            android:checkedButton="@id/button21"
+            android:checkedButton="@id/button_timer"
             app:layout_constraintTop_toTopOf="parent"
             android:layout_marginTop="24dp">
 
         <RadioButton
-                android:id="@+id/button21"
+                android:id="@+id/button_timer"
                 android:layout_width="100dp"
                 android:layout_height="wrap_content"
                 android:text="타이머"
@@ -34,7 +34,7 @@
                 android:paddingRight="16dp"/>
 
         <RadioButton
-                android:id="@+id/button22"
+                android:id="@+id/button_stop_watch"
                 android:layout_width="100dp"
                 android:layout_height="wrap_content"
                 android:text="스톱워치"
@@ -315,7 +315,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/segmented_group"
             tools:text="진행상태"
-            android:textColor="@color/black"
+            android:textColor="@color/navy_light"
             android:textSize="16sp"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

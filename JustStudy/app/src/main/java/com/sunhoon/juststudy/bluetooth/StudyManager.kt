@@ -124,7 +124,7 @@ class StudyManager {
                         Log.i("MyTag", "environmentChangeCount increase: $environmentChangeCount")
 
                         // 환경 변경이 3회 일어나면 휴식을 권유
-                        if (environmentChangeCount >= 3) {
+                        if (environmentChangeCount >= 3 && statusManager.timeCountType == TimeCountType.TIMER) {
                             Log.i("MyTag", "휴식 권유")
                             environmentChangeCount = 0
                             onRestListener?.onRest()

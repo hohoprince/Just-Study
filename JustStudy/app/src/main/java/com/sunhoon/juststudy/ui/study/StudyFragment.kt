@@ -23,6 +23,7 @@ import com.sunhoon.juststudy.data.SharedPref
 import com.sunhoon.juststudy.data.StatusManager
 import com.sunhoon.juststudy.myEnum.*
 import com.sunhoon.juststudy.time.TimeConverter
+import info.hoang8f.android.segmented.SegmentedGroup
 import org.w3c.dom.Text
 
 class StudyFragment : Fragment() {
@@ -44,8 +45,8 @@ class StudyFragment : Fragment() {
         val sharedPref = SharedPref.getSharedPref(requireActivity())
         studyViewModel.setCurrentLamp(Lamp.getByValue(sharedPref.getInt("light", 0)))
         studyViewModel.setCurrentWhiteNoise(WhiteNoise.getByValue(sharedPref.getInt("whiteNoise", 0)))
-        statusManager.studyTime = sharedPref.getLong("conTime", 0L)
         statusManager.breakTime = sharedPref.getInt("breakTime", 0)
+        statusManager.studyTime = sharedPref.getLong("conTime", 0L)
         studyViewModel.setUserTime(statusManager.studyTime)
 
         // 효과음 플레이어
@@ -112,6 +113,25 @@ class StudyFragment : Fragment() {
                 concentrationTextView.text = ConcentrationLevel.getByValue(it).description
             }
         })
+
+        // 타이머 / 스톱워치 선택 라디오 그룹
+        val segmentedGroup = root.findViewById<SegmentedGroup>(R.id.segmented_group)
+
+        segmentedGroup?.setOnCheckedChangeListener { _, checkedId ->
+            when (checkedId) {
+                R.id.button_timer -> {
+                    statusManager.studyTime = sharedPref.getLong("conTime", 0L)
+                    statusManager.timeCountType = TimeCountType.TIMER
+                    studyViewModel.setUserTime(statusManager.studyTime)
+                }
+                R.id.button_stop_watch -> {
+                    studyViewModel.setUserTime(0L)
+                    statusManager.timeCountType = TimeCountType.STOP_WATCH
+                }
+                else -> TimeCountType.TIMER
+            }
+
+        }
 
 
         // 시간 텍스트뷰 클릭시 시간 세팅
@@ -312,7 +332,6 @@ class StudyFragment : Fragment() {
 //                return@setOnClickListener
 //            }
             if (studyViewModel.isPlaying.value == true) { // 공부 종료
-                studyViewModel.stopTimer()
                 studyViewModel.isPlaying.value = false
                 studyViewModel.updateStudy()
                 studyViewModel.resetDesk()
@@ -331,10 +350,21 @@ class StudyFragment : Fragment() {
                     dlg.dismiss()
                 }
                 dlg.show()
+
+                if (statusManager.timeCountType == TimeCountType.TIMER) {
+                    studyViewModel.stopTimer()
+                } else if (statusManager.timeCountType == TimeCountType.STOP_WATCH) {
+                    studyViewModel.stopStopWatch()
+                }
             } else { // 공부 시작
-                studyViewModel.startStudyTimer()
                 studyViewModel.createStudy()
                 studyManager.writeMessage(BluetoothMessage.DESK_RESTORATION)
+
+                if (statusManager.timeCountType == TimeCountType.TIMER) {
+                    studyViewModel.startStudyTimer()
+                } else if (statusManager.timeCountType == TimeCountType.STOP_WATCH) {
+                    studyViewModel.startStopWatch()
+                }
             }
         }
 
