@@ -51,7 +51,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:gravity="center">
+                        android:gravity="center"
+                        android:visibility="gone">
 
                     <TextView
                             android:layout_width="match_parent"
@@ -172,7 +173,7 @@
                     android:layout_gravity="center"
                     app:sc_tint_color="@color/navy_primary"
                     app:sc_checked_text_color="@color/white"
-                    android:checkedButton="@id/button21"
+                    android:checkedButton="@id/button_day"
                     android:layout_marginTop="32dp"
                     android:layout_marginLeft="16dp"
                     android:layout_marginBottom="16dp"

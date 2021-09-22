@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                                                   xmlns:app="http://schemas.android.com/apk/res-auto"
+                                                   xmlns:tools="http://schemas.android.com/tools"
+                                                   android:layout_width="300dp"
+                                                   android:layout_height="250dp"
+                                                   android:background="@drawable/dialog_background">
+
+    <TextView
+            android:text="지우개 가루 청소"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/textView11"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginTop="16dp"
+            android:layout_marginStart="16dp"
+            android:textSize="18sp"
+            android:textColor="@color/black"/>
+
+    <Button
+            android:text="청소"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/clean_ok_button"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:cornerRadius="8dp"
+            android:backgroundTint="@color/navy_light"
+            android:layout_marginBottom="16dp"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintEnd_toStartOf="@+id/clean_no_button"/>
+
+    <Button
+            android:text="안하기"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/clean_no_button"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:cornerRadius="8dp"
+            android:backgroundTint="@color/red_light"
+            android:layout_marginBottom="16dp"
+            app:layout_constraintStart_toEndOf="@+id/clean_ok_button"
+            app:layout_constraintHorizontal_bias="0.5"/>
+
+    <TextView
+            android:text="지우개 가루를 청소하시겠습니까?"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/textView"
+            app:layout_constraintTop_toBottomOf="@+id/textView11"
+            app:layout_constraintBottom_toTopOf="@+id/clean_ok_button"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:textStyle="normal"
+            android:textColor="@color/black"
+            android:textSize="18sp"/>
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -5,17 +5,14 @@ import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import com.sunhoon.juststudy.bluetooth.StudyManager
 import com.sunhoon.juststudy.data.StatusManager
-import com.sunhoon.juststudy.database.AppDatabase
 import com.sunhoon.juststudy.myEnum.*
+import com.sunhoon.juststudy.time.StudyStopWatch
 import com.sunhoon.juststudy.time.StudyTimer
 import com.sunhoon.juststudy.time.TimeConverter
 
 class StudyViewModel(application: Application): AndroidViewModel(application) {
-
-    private val appDatabase: AppDatabase = AppDatabase.getDatabase(application)
 
     private val statusManager = StatusManager.getInstance()
 
@@ -27,12 +24,6 @@ class StudyViewModel(application: Application): AndroidViewModel(application) {
     }
     val time: LiveData<String> = _time
 
-    /* 현재 책상 각도 */
-    var currentAngle: LiveData<Angle> = studyManager.currentAngle
-
-    /* 현재 책상 높이 */
-    var currentHeight: LiveData<Int> = studyManager.currentHeight
-
     /* 현재 램프 밝기 */
     var currentLamp: LiveData<Lamp> = studyManager.currentLamp
 
@@ -40,7 +31,7 @@ class StudyViewModel(application: Application): AndroidViewModel(application) {
     var currentWhiteNoise: LiveData<WhiteNoise> = studyManager.currentWhiteNoise
 
     /* 현재 집중도 */
-    var currentConcentration: LiveData<Int> = studyManager.currentConcentration
+    var currentConcentration: LiveData<Int> = studyManager.currentConcentration.apply { value = 0 }
 
     /* 학습 진행 여부 */
     var isPlaying: MutableLiveData<Boolean> = MutableLiveData<Boolean>().apply {
@@ -52,12 +43,12 @@ class StudyViewModel(application: Application): AndroidViewModel(application) {
         value = null
     }
 
-
-    // 타이머
+    /* 타이머 */
     private lateinit var studyTimer : StudyTimer
 
-    // 타이머의 남은 시간
-    private var remainTime: Long = 0L
+    /* 스톱 워치 */
+    private lateinit var studyStopWatch: StudyStopWatch
+
 
     /**
      * 새로운 Study 생성
@@ -77,11 +68,38 @@ class StudyViewModel(application: Application): AndroidViewModel(application) {
     fun startStudyTimer() {
         // studyTimer = StudyTimer(remainTime, 1000, _time, this)
         // TODO: 테스트용 공부시간
-        studyTimer = StudyTimer((10 * 1000).toLong(), 1000, _time, this)
+        studyTimer = StudyTimer((60 * 1000).toLong(), 100,
+            (10 * 1000).toLong(), _time, this)
+        studyTimer.setOnExtendTimeListener(object: StudyTimer.OnExtendTimeListener {
+            override fun onTime() { // 학습 80% 이상 진행
+                // 집중도가 80 이상일 때 학습 시간을 연장
+                if (currentConcentration.value!! >= 80) {
+                    // FIXME: 5초(5000)에서 10분(600_000)으로 변경
+                    val newTime = statusManager.remainTime + 5000
+                    // val newTime = statusManager.remainTime + 600_000
+                    studyTimer.cancel()
+                    studyTimer = StudyTimer(newTime, 100, newTime,
+                        _time, this@StudyViewModel)
+                    studyTimer.start()
+                }
+            }
+        })
         studyTimer.start()
         isPlaying.value = true
-        statusManager.progressStatus = ProgressStatus.STUDYING
+        statusManager.progressStatus.value = ProgressStatus.STUDYING
         toastingMessage.value = "공부 시작"
+        studyManager.writeMessage(BluetoothMessage.STUDY_START)
+        Log.i("MyTag", "공부 시작")
+    }
+
+    // 스탑워치 시작
+    fun startStopWatch() {
+        studyStopWatch = StudyStopWatch(_time)
+        studyStopWatch.start()
+        isPlaying.value = true
+        statusManager.progressStatus.value = ProgressStatus.STUDYING
+        toastingMessage.value = "공부 시작"
+        studyManager.writeMessage(BluetoothMessage.STUDY_START)
         Log.i("MyTag", "공부 시작")
     }
 
@@ -91,27 +109,46 @@ class StudyViewModel(application: Application): AndroidViewModel(application) {
 //        studyTimer = StudyTimer(remainTime, 1000, _time, this)
         // TODO: 테스트용 휴식시간
         setUserTime((10 * 1000).toLong())
-        studyTimer = StudyTimer((10 * 1000).toLong(), 1000, _time, this)
+        studyTimer = StudyTimer((10 * 1000).toLong(),100, (10 * 1000).toLong()
+            , _time, this)
         studyTimer.start()
-        statusManager.progressStatus = ProgressStatus.RESTING
+        statusManager.progressStatus.value = ProgressStatus.RESTING
         toastingMessage.value = "휴식 시작"
         Log.i("MyTag", "휴식 시작")
     }
 
     // 타이머 종료
     fun stopTimer() {
-        isPlaying.value = false
         studyTimer.cancel()
-        statusManager.progressStatus = ProgressStatus.WAITING
+        statusManager.progressStatus.value = ProgressStatus.WAITING
         setUserTime(statusManager.studyTime)
         toastingMessage.value = "공부 종료"
+        studyManager.writeMessage(BluetoothMessage.STUDY_END)
         Log.i("MyTag", "공부 종료, 타이머 종료")
+    }
+
+    fun stopStopWatch() {
+        studyStopWatch.stop()
+        statusManager.progressStatus.value = ProgressStatus.WAITING
+        setUserTime(0)
+        toastingMessage.value = "공부 종료"
+        studyManager.writeMessage(BluetoothMessage.STUDY_END)
+        studyManager.resetCount()
+        Log.i("MyTag", "공부 종료, 타이머 종료")
+    }
+
+    fun resetDesk() {
+        studyManager.writeMessage(BluetoothMessage.DESK_RESET);
     }
 
     // 사용자 설정 시간
     fun setUserTime(userTime: Long) {
-        remainTime = userTime
+        statusManager.remainTime = userTime
         _time.value = TimeConverter.longToStringTime(userTime)
+    }
+
+    fun rest() {
+        studyTimer.finish()
     }
 
     /**
@@ -129,30 +166,6 @@ class StudyViewModel(application: Application): AndroidViewModel(application) {
     }
 
     /**
-     * 현재 책상 각도 정보를 세팅
-     */
-    fun setCurrentAngle(value: Angle) {
-        studyManager.currentAngle.value = value
-    }
-
-    /**
-     * 책상 각도 변경 메시지를 보낸다
-     */
-    fun sendChangeAngleMessage(angle: Angle) {
-        when (angle) {
-            Angle.AUTO -> {
-                studyManager.bestEnvironment?.bestAngle?.let {
-                    sendChangeAngleMessage(Angle.getByValue(it))
-                }
-            }
-            Angle.DEGREE_0 -> studyManager.writeMessage(BluetoothMessage.ANGLE_0)
-            Angle.DEGREE_15 -> studyManager.writeMessage(BluetoothMessage.ANGLE_15)
-            Angle.DEGREE_30 -> studyManager.writeMessage(BluetoothMessage.ANGLE_30)
-            Angle.DEGREE_45 -> studyManager.writeMessage(BluetoothMessage.ANGLE_45)
-        }
-    }
-
-    /**
      * 책상 높이 변경 메시지를 보낸다
      */
     fun sendChangeHeightMessage(height: Height) {
@@ -160,6 +173,17 @@ class StudyViewModel(application: Application): AndroidViewModel(application) {
             Height.UP -> studyManager.writeMessage(BluetoothMessage.HEIGHT_UP)
             Height.DOWN -> studyManager.writeMessage(BluetoothMessage.HEIGHT_DOWN)
             Height.STOP -> studyManager.writeMessage(BluetoothMessage.HEIGHT_STOP)
+        }
+    }
+
+    /**
+     * 책받침 각도 변경 메시지를 보낸다
+     */
+    fun sendChangeAngleMessage(angle: Angle) {
+        when (angle) {
+            Angle.UP -> studyManager.writeMessage(BluetoothMessage.ANGLE_UP)
+            Angle.DOWN -> studyManager.writeMessage(BluetoothMessage.ANGLE_DOWN)
+            Angle.STOP -> studyManager.writeMessage(BluetoothMessage.ANGLE_STOP)
         }
     }
 
@@ -174,10 +198,11 @@ class StudyViewModel(application: Application): AndroidViewModel(application) {
                 }
             }
             WhiteNoise.NONE -> studyManager.writeMessage(BluetoothMessage.WHITE_NOISE_NONE)
-            WhiteNoise.WAVE -> studyManager.writeMessage(BluetoothMessage.WHITE_NOISE_WAVE)
-            WhiteNoise.WIND -> studyManager.writeMessage(BluetoothMessage.WHITE_NOISE_WIND)
-            WhiteNoise.LEAF -> studyManager.writeMessage(BluetoothMessage.WHITE_NOISE_LEAF)
+            WhiteNoise.FIREWOOD -> studyManager.writeMessage(BluetoothMessage.WHITE_NOISE_FIREWOOD)
+            WhiteNoise.MUSIC_1 -> studyManager.writeMessage(BluetoothMessage.WHITE_NOISE_MUSIC_1)
+            WhiteNoise.MUSIC_2 -> studyManager.writeMessage(BluetoothMessage.WHITE_NOISE_MUSIC_2)
             WhiteNoise.RAIN -> studyManager.writeMessage(BluetoothMessage.WHITE_NOISE_RAIN)
+            WhiteNoise.MUSIC_3 -> studyManager.writeMessage(BluetoothMessage.WHITE_NOISE_MUSIC_3)
         }
     }
 
@@ -192,10 +217,24 @@ class StudyViewModel(application: Application): AndroidViewModel(application) {
                 }
             }
             Lamp.NONE -> studyManager.writeMessage(BluetoothMessage.LAMP_NONE)
-            Lamp.LAMP_3500K -> studyManager.writeMessage(BluetoothMessage.LAMP_3500K)
-            Lamp.LAMP_5000K -> studyManager.writeMessage(BluetoothMessage.LAMP_5000K)
+            Lamp.LAMP_2700K -> studyManager.writeMessage(BluetoothMessage.LAMP_2700K)
+            Lamp.LAMP_4000K -> studyManager.writeMessage(BluetoothMessage.LAMP_4000K)
             Lamp.LAMP_6500K -> studyManager.writeMessage(BluetoothMessage.LAMP_6500K)
         }
+    }
+
+    /**
+     * 지우개 가루 청소 메시지를 보낸다
+     */
+    fun sendCleanMessage() {
+        studyManager.writeMessage(BluetoothMessage.CLEAN)
+    }
+
+    /**
+     * 블루투스 메시지 전송 테스트용
+     */
+    fun sendMessageForTest(message: BluetoothMessage) {
+        studyManager.writeMessage(message)
     }
 
 }

@@ -27,35 +27,6 @@ class CrudInstrumentedTest {
 
         val db = AppDatabase.getDatabase(appContext)
 
-//        val tempMap: MutableMap<String, MutableList<Int>> = mutableMapOf()
-//        val statisticsMap: MutableMap<String, Int> = mutableMapOf()
-//
-//        val studyDetails: List<StudyDetail> = db.studyDetailDao().getAllOrderByDate()
-//        studyDetails.forEach {
-//            val date = Calendar.getInstance()
-//            date.time = it.time
-//            // val strDate = String.format("%d.%d.%d", date[Calendar.YEAR], date[Calendar.MONTH] + 1, date[Calendar.DAY_OF_MONTH]) // 일
-//            val strDate = String.format("%d.%d", date[Calendar.YEAR], date[Calendar.MONTH] + 1) // 월
-////            val strDate = String.format("%d.%d.%d주", date[Calendar.YEAR], date[Calendar.MONTH] + 1, date[Calendar.WEEK_OF_MONTH]) // 주
-//            if (tempMap.contains(strDate)) {
-//                tempMap[strDate]?.add(it.conLevel)
-//            } else {
-//                tempMap[strDate] = mutableListOf()
-//            }
-//        }
-//        tempMap.forEach { (strDate, conLevelList) ->
-//            val conLevelOfAvg = conLevelList.average().roundToInt()
-//            statisticsMap[strDate] = conLevelOfAvg
-//        }
-//        println(tempMap)
-//        println(statisticsMap)
-//        val keyList = statisticsMap.keys.sorted().reversed()
-//            .subList(0, min(7, statisticsMap.keys.size)).reversed()
-//        keyList.forEach {
-//            println("$it: ${statisticsMap[it]}")
-//        }
-//        println()
-
     }
 
     @Test

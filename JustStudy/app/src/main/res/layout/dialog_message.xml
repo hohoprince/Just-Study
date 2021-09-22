@@ -1,0 +1,277 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                                                   xmlns:app="http://schemas.android.com/apk/res-auto"
+                                                   xmlns:tools="http://schemas.android.com/tools"
+                                                   android:layout_width="match_parent"
+                                                   android:layout_height="match_parent"
+                                                   android:padding="8dp"
+                                                   android:background="@drawable/dialog_background">
+
+    <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginTop="8dp"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginBottom="8dp">
+
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+            <TextView
+                    android:text="램프"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:textSize="20sp"/>
+
+            <Button
+                    android:text="램프 사용 안함"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/test_1"
+                    android:layout_weight="1"
+                    android:layout_margin="4dp"
+                    android:textSize="16sp"
+                    android:backgroundTint="#4CAF50"/>
+
+            <Button
+                    android:text="2700k"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/test_2"
+                    android:layout_weight="1"
+                    android:layout_margin="4dp"
+                    android:textSize="16sp"
+                    android:backgroundTint="#4CAF50"/>
+
+            <Button
+                    android:text="4000k"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/test_3"
+                    android:layout_weight="1"
+                    android:layout_margin="4dp"
+                    android:textSize="16sp"
+                    android:backgroundTint="#4CAF50"/>
+
+            <Button
+                    android:text="6500k"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/test_4"
+                    android:layout_weight="1"
+                    android:layout_margin="4dp"
+                    android:textSize="16sp"
+                    android:backgroundTint="#4CAF50"/>
+
+            <TextView
+                    android:text="백색 소음"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginTop="32dp"
+                    android:textSize="20sp"/>
+
+            <Button
+                    android:text="백색 소음 없음"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/test_5"
+                    android:layout_weight="1"
+                    android:layout_margin="4dp"
+                    android:textSize="16sp"
+                    android:backgroundTint="#F44336"/>
+
+            <Button
+                    android:text="장작 소리"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/test_6"
+                    android:layout_weight="1"
+                    android:layout_margin="4dp"
+                    android:textSize="16sp"
+                    android:backgroundTint="#F44336"/>
+
+            <Button
+                    android:text="음악 1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/test_7"
+                    android:layout_weight="1"
+                    android:layout_margin="4dp"
+                    android:textSize="16sp"
+                    android:backgroundTint="#F44336"/>
+
+            <Button
+                    android:text="음악 2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/test_8"
+                    android:layout_weight="1"
+                    android:layout_margin="4dp"
+                    android:textSize="16sp"
+                    android:backgroundTint="#F44336"/>
+
+            <Button
+                    android:text="빗 소리"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/test_9"
+                    android:layout_weight="1"
+                    android:layout_margin="4dp"
+                    android:textSize="16sp"
+                    android:backgroundTint="#F44336"/>
+
+            <Button
+                    android:text="음악 3"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/test_10"
+                    android:layout_weight="1"
+                    android:layout_margin="4dp"
+                    android:textSize="16sp"
+                    android:backgroundTint="#F44336"/>
+
+            <TextView
+                    android:text="책상 높이"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginTop="32dp"
+                    android:textSize="20sp"/>
+
+            <Button
+                    android:text="UP"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/test_11"
+                    android:layout_weight="1"
+                    android:layout_margin="4dp"
+                    android:textSize="16sp"
+                    android:backgroundTint="#8BC34A"/>
+
+            <Button
+                    android:text="DOWN"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/test_12"
+                    android:layout_weight="1"
+                    android:layout_margin="4dp"
+                    android:textSize="16sp"
+                    android:backgroundTint="#8BC34A"/>
+
+            <Button
+                    android:text="STOP"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/test_13"
+                    android:layout_weight="1"
+                    android:layout_margin="4dp"
+                    android:textSize="16sp"
+                    android:backgroundTint="#8BC34A"/>
+
+            <TextView
+                    android:text="책받침 각도"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginTop="32dp"
+                    android:textSize="20sp"/>
+
+            <Button
+                    android:text="UP"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/test_14"
+                    android:layout_weight="1"
+                    android:layout_margin="4dp"
+                    android:textSize="16sp"
+                    android:backgroundTint="#03A9F4"/>
+
+            <Button
+                    android:text="DOWN"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/test_15"
+                    android:layout_weight="1"
+                    android:layout_margin="4dp"
+                    android:textSize="16sp"
+                    android:backgroundTint="#03A9F4"/>
+
+            <Button
+                    android:text="STOP"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/test_16"
+                    android:layout_weight="1"
+                    android:layout_margin="4dp"
+                    android:textSize="16sp"
+                    android:backgroundTint="#03A9F4"/>
+
+            <TextView
+                    android:text="책상 상태"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginTop="32dp"
+                    android:textSize="20sp"/>
+
+            <Button
+                    android:text="책상 초기화"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/test_17"
+                    android:layout_weight="1"
+                    android:layout_margin="4dp"
+                    android:textSize="16sp"
+                    android:backgroundTint="#3F51B5"/>
+
+            <Button
+                    android:text="책상 복구"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/test_18"
+                    android:layout_weight="1"
+                    android:layout_margin="4dp"
+                    android:textSize="16sp"
+                    android:backgroundTint="#3F51B5"/>
+
+            <TextView
+                    android:text="공부"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginTop="32dp"
+                    android:textSize="20sp"/>
+
+            <Button
+                    android:text="공부 시작"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/test_19"
+                    android:layout_weight="1"
+                    android:layout_margin="4dp"
+                    android:textSize="16sp"
+                    android:backgroundTint="@color/black"/>
+
+            <Button
+                    android:text="공부 종료"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/test_20"
+                    android:layout_weight="1"
+                    android:layout_margin="4dp"
+                    android:textSize="16sp"
+                    android:backgroundTint="@color/black"/>
+
+        </LinearLayout>
+    </ScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

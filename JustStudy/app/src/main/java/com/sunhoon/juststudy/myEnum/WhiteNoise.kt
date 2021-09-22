@@ -3,10 +3,11 @@ package com.sunhoon.juststudy.myEnum
 enum class WhiteNoise(val description: String) : StudyEnvironment<WhiteNoise> {
     AUTO("자동"),
     NONE("사용 안함"),
-    WAVE("파도 소리"),
-    WIND("바람 소리"),
-    LEAF("나뭇잎 소리"),
-    RAIN("빗소리")
+    FIREWOOD("장작 타는 소리"),
+    MUSIC_1("음악1"),
+    MUSIC_2("음악2"),
+    RAIN("빗소리"),
+    MUSIC_3("음악3")
     ;
 
     companion object {

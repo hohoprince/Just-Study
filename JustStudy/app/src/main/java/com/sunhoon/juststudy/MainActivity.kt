@@ -1,10 +1,16 @@
 package com.sunhoon.juststudy
 
+import android.app.Dialog
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.util.Log
+import android.view.WindowManager
+import android.widget.Button
+import android.widget.RadioGroup
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.LiveData
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.lifecycle.Observer
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
@@ -15,15 +21,13 @@ import app.akexorcist.bluetotohspp.library.BluetoothState
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.sunhoon.juststudy.bluetooth.StudyManager
 import com.sunhoon.juststudy.database.AppDatabase
-import com.sunhoon.juststudy.database.dao.BestEnvironmentDao
 import com.sunhoon.juststudy.database.entity.BestEnvironment
-import com.sunhoon.juststudy.myEnum.Angle
 import com.sunhoon.juststudy.myEnum.Lamp
-import com.sunhoon.juststudy.myEnum.StudyEnvironment
 import com.sunhoon.juststudy.myEnum.WhiteNoise
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 
 class MainActivity : AppCompatActivity() {
@@ -32,9 +36,12 @@ class MainActivity : AppCompatActivity() {
         AppDatabase.getDatabase(this)
     }
 
-    private var bluetoothSPP: BluetoothSPP = BluetoothSPP(this)
+    private var bluetoothSPP1: BluetoothSPP = BluetoothSPP(this)
+    private var bluetoothSPP2: BluetoothSPP = BluetoothSPP(this)
 
     private val studyManager: StudyManager = StudyManager.getInstance()
+
+    private var deviceCount = 0;
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -56,22 +63,48 @@ class MainActivity : AppCompatActivity() {
         startBluetoothService() // 블루투스 서비스 시작
 
         studyManager.appDatabase = appDatabase
-        studyManager.bluetoothSPP = bluetoothSPP
+        studyManager.bluetoothSPP = bluetoothSPP1
+        studyManager.bluetoothSPP2 = bluetoothSPP2
 
-        bluetoothSPP.setOnDataReceivedListener { _, message ->
+
+
+        bluetoothSPP1.setOnDataReceivedListener { _, message ->
+            Log.i("MyTag", "Received Message: $message")
+            studyManager.process(message)
+        }
+        bluetoothSPP2.setOnDataReceivedListener { _, message ->
             Log.i("MyTag", "Received Message: $message")
             studyManager.process(message)
         }
 
-        bluetoothSPP.setBluetoothConnectionListener(object: BluetoothSPP.BluetoothConnectionListener {
+        val bluetoothConnectionListener = object: BluetoothSPP.BluetoothConnectionListener {
             override fun onDeviceConnected(name: String?, address: String?) {
-                Toast.makeText(this@MainActivity, "블루투스 연결: name = $name", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this@MainActivity,
+                    "블루투스 연결: name = $name address = $address", Toast.LENGTH_SHORT).show()
                 Log.i("MyTag", "bluetooth 연결: name = $name")
+                deviceCount += 1;
+
+                // FIXME: 2개 연결시 2로 변경
+                if (deviceCount == 1) {
+                    val dlg = Dialog(this@MainActivity)
+                    dlg.setContentView(R.layout.dialog_connected)
+                    dlg.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT));
+                    dlg.window?.clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
+                    dlg.setCancelable(false);
+                    dlg.show()
+                    GlobalScope.launch {
+                        Thread.sleep(1500)
+                        withContext(Dispatchers.Main) {
+                            dlg.dismiss()
+                        }
+                    }
+                }
             }
 
             override fun onDeviceDisconnected() {
                 Toast.makeText(this@MainActivity, "블루투스 연결 해제", Toast.LENGTH_SHORT).show()
                 Log.i("MyTag", "bluetooth 연결 해제")
+                deviceCount -= 1;
             }
 
             override fun onDeviceConnectionFailed() {
@@ -79,58 +112,47 @@ class MainActivity : AppCompatActivity() {
                 Log.w("MyTag", "bluetooth 연결 실패")
             }
 
-        })
+        }
+
+        bluetoothSPP1.setBluetoothConnectionListener(bluetoothConnectionListener)
+        bluetoothSPP2.setBluetoothConnectionListener(bluetoothConnectionListener)
 
         appDatabase.studyDetailDao().getAllOrderByDate().observe(this, Observer { studyDetails ->
             if (studyDetails.isNotEmpty()) {
-                val lampScoreMap: MutableMap<Lamp, Int> = mutableMapOf()
-                lampScoreMap[Lamp.LAMP_3500K] = 0
-                lampScoreMap[Lamp.LAMP_5000K] = 0
-                lampScoreMap[Lamp.LAMP_6500K] = 0
-                lampScoreMap[Lamp.AUTO] = 0
-                lampScoreMap[Lamp.NONE] = 0
-                val whiteNoiseScoreMap: MutableMap<WhiteNoise, Int> = mutableMapOf()
-                whiteNoiseScoreMap[WhiteNoise.RAIN] = 0
-                whiteNoiseScoreMap[WhiteNoise.LEAF] = 0
-                whiteNoiseScoreMap[WhiteNoise.WIND] = 0
-                whiteNoiseScoreMap[WhiteNoise.WAVE] = 0
-                whiteNoiseScoreMap[WhiteNoise.NONE] = 0
-                whiteNoiseScoreMap[WhiteNoise.AUTO] = 0
-                val angleScoreMap: MutableMap<Angle, Int> = mutableMapOf()
-                angleScoreMap[Angle.DEGREE_0] = 0
-                angleScoreMap[Angle.DEGREE_15] = 0
-                angleScoreMap[Angle.DEGREE_30] = 0
-                angleScoreMap[Angle.DEGREE_45] = 0
-                angleScoreMap[Angle.AUTO] = 0
+                val lampScoreListMap: MutableMap<Lamp, MutableList<Int>> = mutableMapOf()
+                lampScoreListMap[Lamp.LAMP_2700K] = mutableListOf()
+                lampScoreListMap[Lamp.LAMP_4000K] = mutableListOf()
+                lampScoreListMap[Lamp.LAMP_6500K] = mutableListOf()
+                lampScoreListMap[Lamp.NONE] = mutableListOf()
+                val whiteNoiseScoreListMap: MutableMap<WhiteNoise, MutableList<Int>> = mutableMapOf()
+                whiteNoiseScoreListMap[WhiteNoise.RAIN] = mutableListOf()
+                whiteNoiseScoreListMap[WhiteNoise.MUSIC_2] = mutableListOf()
+                whiteNoiseScoreListMap[WhiteNoise.MUSIC_1] = mutableListOf()
+                whiteNoiseScoreListMap[WhiteNoise.FIREWOOD] = mutableListOf()
+                whiteNoiseScoreListMap[WhiteNoise.MUSIC_3] = mutableListOf()
+                whiteNoiseScoreListMap[WhiteNoise.NONE] = mutableListOf()
 
                 studyDetails.forEach { studyDetail ->
                     val score = studyDetail.conLevel
-                    lampScoreMap[Lamp.getByValue(studyDetail.lampId)] =
-                        lampScoreMap[Lamp.getByValue(studyDetail.lampId)]!!.plus(score)
-                    whiteNoiseScoreMap[WhiteNoise.getByValue(studyDetail.whiteNoiseId)] =
-                        whiteNoiseScoreMap[WhiteNoise.getByValue(studyDetail.whiteNoiseId)]!!.plus(score)
-                    angleScoreMap[Angle.getByValue(studyDetail.angleId)] =
-                        angleScoreMap[Angle.getByValue(studyDetail.angleId)]!!.plus(score)
+                    lampScoreListMap[Lamp.getByValue(studyDetail.lampId)]!!.add(score)
+                    whiteNoiseScoreListMap[WhiteNoise.getByValue(studyDetail.whiteNoiseId)]!!.add(score)
                 }
 
-                val bestLamp = getBestEnvironment(lampScoreMap, studyDetails.size)
-                val bestAngle = getBestEnvironment(angleScoreMap, studyDetails.size)
-                val bestWhiteNoise = getBestEnvironment(whiteNoiseScoreMap, studyDetails.size)
-                Log.i("MyTag", "bestLamp: ${bestLamp.toString()}")
-                Log.i("MyTag", "bestAngle: ${bestAngle.toString()}")
-                Log.i("MyTag", "bestWhiteNoise: ${bestWhiteNoise.toString()}")
+                val lampScoreRankList = convertToScoreRankList(lampScoreListMap)
+                val whiteNoiseScoreRankList = convertToScoreRankList(whiteNoiseScoreListMap)
+                studyManager.lampRankingList = lampScoreRankList
+                studyManager.whiteNoiseRankingList = whiteNoiseScoreRankList
+
                 val bestEnvironment = BestEnvironment(
-                    bestAngle = bestAngle?.ordinal ?: Angle.DEGREE_0.ordinal,
-                    bestLamp = bestLamp?.ordinal ?: Lamp.NONE.ordinal,
-                    bestWhiteNoise = bestWhiteNoise?.ordinal ?: WhiteNoise.NONE.ordinal)
+                    bestLamp = lampScoreRankList[0].ordinal,
+                    bestWhiteNoise = whiteNoiseScoreRankList[0].ordinal)
+
                 GlobalScope.launch(Dispatchers.IO) {
                     val be: BestEnvironment? = appDatabase.bestEnvironmentDao().read()
                     if (be == null) {
                         appDatabase.bestEnvironmentDao().insert(bestEnvironment)
-                        Log.i("MyTag", "insert bestEnvironment: $bestEnvironment")
                     } else {
                         appDatabase.bestEnvironmentDao().update(bestEnvironment)
-                        Log.i("MyTag", "update bestEnvironment: $bestEnvironment")
                     }
                     studyManager.bestEnvironment = be
                 }
@@ -138,41 +160,45 @@ class MainActivity : AppCompatActivity() {
         })
     }
 
-    private fun <T : StudyEnvironment<T>> getBestEnvironment(scoreMap: MutableMap<T, Int>, size: Int): T? {
-        scoreMap.keys.forEach { key ->
-            scoreMap[key] = scoreMap[key]!! / size
-        }
-        val maxScore = scoreMap.values.maxOrNull()
-        maxScore?.let { maxScore ->
-            scoreMap.keys.forEach { key ->
-                if (scoreMap[key] == maxScore) {
-                    return key
-                }
-            }
-        }
-        return null
+    /**
+     * scoreListMap 을 ScoreRankList 로 변환
+     */
+    private fun <T> convertToScoreRankList(scoreListMap: MutableMap<T, MutableList<Int>>): List<T> {
+        return scoreListMap.keys.map { Pair(it, scoreListMap[it]?.average()?.toInt()!!)
+        }.sortedByDescending { it.second }.map { it.first }
     }
 
     /**
      * 블루투스 서비스
      */
     private fun startBluetoothService() {
-        if (bluetoothSPP.isBluetoothEnabled) {
-            bluetoothSPP.setupService()
-            bluetoothSPP.startService(BluetoothState.DEVICE_OTHER)
-            bluetoothSPP.pairedDeviceAddress.forEach { address ->
-                Log.i("MyTag", "블루투스 기기 연결 시도")
-                bluetoothSPP.connect(address)
+        if (bluetoothSPP1.isBluetoothEnabled && bluetoothSPP2.isBluetoothEnabled) {
+            bluetoothSPP1.setupService()
+            bluetoothSPP2.setupService()
+            bluetoothSPP1.startService(BluetoothState.DEVICE_OTHER)
+            bluetoothSPP2.startService(BluetoothState.DEVICE_OTHER)
+            bluetoothSPP1.pairedDeviceAddress.forEach { address ->
+                if (address == "98:D3:91:FD:B9:81") {
+                    Log.i("MyTag", "spp1: 블루투스 기기 연결 시도 $address")
+                    bluetoothSPP1.connect(address)
+                }
+            }
+            bluetoothSPP2.pairedDeviceAddress.forEach { address ->
+                if (address == "98:D3:91:FD:B9:84") {
+                    Log.i("MyTag", "spp2: 블루투스 기기 연결 시도 $address")
+                    bluetoothSPP2.connect(address)
+                }
             }
         } else {
             Toast.makeText(this, "블루투스를 지원하지 않는 기기", Toast.LENGTH_LONG).show()
-            Log.w("MyTag", "Bluetooth를 지원하지 않는 기기")
+            Log.w("MyTag", "Bluetooth 지원하지 않는 기기")
         }
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        bluetoothSPP.disconnect()
+        bluetoothSPP1.disconnect()
+        bluetoothSPP2.disconnect()
     }
 
 }
