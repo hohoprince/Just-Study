@@ -72,7 +72,6 @@ class StudyManager {
     fun createStudy() {
         GlobalScope.launch(Dispatchers.IO) {
             groupId = appDatabase.studyDao().insert(Study(startTime = Date()))
-            Log.i("MyTag", "Study 생성")
         }
     }
 
@@ -81,7 +80,6 @@ class StudyManager {
             val study = appDatabase.studyDao().readById(groupId)
             study.endTime = Date()
             appDatabase.studyDao().update(study)
-            Log.i("MyTag", "Study 업데이트")
         }
     }
 

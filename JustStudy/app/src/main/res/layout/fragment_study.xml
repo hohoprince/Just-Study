@@ -250,7 +250,8 @@
                         android:textSize="18sp"
                         android:textColor="@color/navy_light"
                         android:gravity="center"
-                        android:text="매우 낮음"/>
+                        tools:text="높음"/>
+                        />
             </LinearLayout>
 
             <View

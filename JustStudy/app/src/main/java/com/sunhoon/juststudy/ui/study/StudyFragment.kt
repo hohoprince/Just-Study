@@ -194,6 +194,10 @@ class StudyFragment : Fragment() {
             dlg.show()
         }
 
+        // 최소 집중도 텍스트뷰
+        val minConcentrationTextView = root.findViewById<TextView>(R.id.min_concentration_textview)
+
+
         // 책상 높이 다이얼로그
         val heightLayout = root.findViewById<LinearLayout>(R.id.height_layout)
         heightLayout.setOnClickListener {
