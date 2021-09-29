@@ -471,4 +471,23 @@ class StudyFragment : Fragment() {
         return root
     }
 
+    private fun stopStudy() {
+        if (studyViewModel.isPlaying.value == true) { // 공부 종료
+            studyViewModel.isPlaying.value = false
+            studyViewModel.updateStudy()
+            studyViewModel.resetDesk()
+
+            if (statusManager.timeCountType == TimeCountType.TIMER) {
+                studyViewModel.stopTimer()
+            } else if (statusManager.timeCountType == TimeCountType.STOP_WATCH) {
+                studyViewModel.stopStopWatch()
+            }
+        }
+    }
+
+    override fun onDestroy() {
+        stopStudy()
+        super.onDestroy()
+    }
+
 }

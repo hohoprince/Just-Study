@@ -19,6 +19,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import com.sunhoon.juststudy.R
 import com.sunhoon.juststudy.data.SharedPref
+import com.sunhoon.juststudy.myEnum.BreakTime
 import com.sunhoon.juststudy.myEnum.ConcentrationLevel
 import com.sunhoon.juststudy.time.TimeConverter
 import com.sunhoon.juststudy.ui.study.StudyViewModel
@@ -53,12 +54,12 @@ class SettingsFragment : Fragment() {
         settingsViewModel.breakTime.observe(viewLifecycleOwner, Observer {
             var text = ""
             when (it) {
-                0 -> text = "5분"
-                1 -> text = "10분"
-                2 -> text = "15분"
-                3 -> text = "20분"
-                4 -> text = "25분"
-                5 -> text = "30분"
+                0 -> text = BreakTime.MINUTE_5.description
+                1 -> text = BreakTime.MINUTE_10.description
+                2 -> text = BreakTime.MINUTE_15.description
+                3 -> text = BreakTime.MINUTE_20.description
+                4 -> text = BreakTime.MINUTE_25.description
+                5 -> text = BreakTime.MINUTE_30.description
             }
             breakTimeTextView.text = text
             sharedPref.edit().putInt("breakTime", it).apply()
