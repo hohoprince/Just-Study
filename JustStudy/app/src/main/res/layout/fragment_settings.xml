@@ -221,14 +221,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/test_insert_button"
-                android:visibility="visible"/>
+                android:visibility="gone"/>
 
         <Button
                 android:text="delete_test_data"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/test_delete_button"
-                android:visibility="visible"/>
+                android:visibility="gone"/>
 
         <!-- /테스트 후 삭제 -->
 

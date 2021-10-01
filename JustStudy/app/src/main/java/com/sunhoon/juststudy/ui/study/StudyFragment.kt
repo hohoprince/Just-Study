@@ -10,12 +10,10 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.WindowManager
 import android.widget.*
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
-import app.akexorcist.bluetotohspp.library.BluetoothState
 import com.sunhoon.juststudy.R
 import com.sunhoon.juststudy.bluetooth.StudyManager
 import com.sunhoon.juststudy.data.ConcentrationSource
@@ -24,7 +22,6 @@ import com.sunhoon.juststudy.data.StatusManager
 import com.sunhoon.juststudy.myEnum.*
 import com.sunhoon.juststudy.time.TimeConverter
 import info.hoang8f.android.segmented.SegmentedGroup
-import org.w3c.dom.Text
 
 class StudyFragment : Fragment() {
 
@@ -47,7 +44,7 @@ class StudyFragment : Fragment() {
         studyViewModel.setCurrentWhiteNoise(WhiteNoise.getByValue(sharedPref.getInt("whiteNoise", 0)))
         statusManager.breakTime = sharedPref.getInt("breakTime", 0)
         statusManager.studyTime = sharedPref.getLong("conTime", 0L)
-        studyViewModel.setUserTime(statusManager.studyTime)
+        studyViewModel.setRemainTime(statusManager.studyTime)
 
         // 효과음 플레이어
         val mediaPlayer: MediaPlayer? = MediaPlayer.create(context, R.raw.pling)
@@ -122,10 +119,10 @@ class StudyFragment : Fragment() {
                 R.id.button_timer -> {
                     statusManager.studyTime = sharedPref.getLong("conTime", 0L)
                     statusManager.timeCountType = TimeCountType.TIMER
-                    studyViewModel.setUserTime(statusManager.studyTime)
+                    studyViewModel.setRemainTime(statusManager.studyTime)
                 }
                 R.id.button_stop_watch -> {
-                    studyViewModel.setUserTime(0L)
+                    studyViewModel.setRemainTime(0L)
                     statusManager.timeCountType = TimeCountType.STOP_WATCH
                 }
                 else -> TimeCountType.TIMER
@@ -139,7 +136,7 @@ class StudyFragment : Fragment() {
             val timePickerDialog = TimePickerDialog(it.context,
                 android.R.style.Theme_Holo_Light_Dialog_NoActionBar,
                 TimePickerDialog.OnTimeSetListener { _, hourOfDay, minute ->
-                    studyViewModel.setUserTime(TimeConverter.hourMinuteToLong(hourOfDay, minute))
+                    studyViewModel.setRemainTime(TimeConverter.hourMinuteToLong(hourOfDay, minute))
             }, 0, 0, true)
             timePickerDialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
             timePickerDialog.show()
