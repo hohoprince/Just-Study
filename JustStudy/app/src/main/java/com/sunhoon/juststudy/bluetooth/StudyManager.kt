@@ -112,8 +112,6 @@ class StudyManager {
                 currentConcentration.value = score
                 insertStudyDetail(score) // 집중도를 받은 시각의 데이터 삽입
                 ConcentrationLevel.getByValue(score).ordinal
-                Log.d("MyTag", "현재: ${ConcentrationLevel.getByValue(score).ordinal}")
-                Log.d("MyTag", "min: ${minConcentration.value?.ordinal}")
                 if (ConcentrationLevel.getByValue(score).ordinal < minConcentration.value?.ordinal!!) { // 현재 집중도 < 최소 집중도
                     lowConcentrationCount += 1
                     Log.i("MyTag", "lowConcentrationCount increase: $lowConcentrationCount")

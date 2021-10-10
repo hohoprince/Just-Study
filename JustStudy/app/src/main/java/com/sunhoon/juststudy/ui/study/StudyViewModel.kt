@@ -79,8 +79,8 @@ class StudyViewModel(application: Application) : AndroidViewModel(application) {
                 // 집중도가 80 이상일 때 학습 시간을 연장
                 if (currentConcentration.value!! >= 80) {
                     // FIXME: 10초(10_000)에서 10분(600_000)으로 변경
-                    val newTime = statusManager.remainTime + 10_000
-                    // val newTime = statusManager.remainTime + 600_000
+                    // val newTime = statusManager.remainTime + 10_000
+                    val newTime = statusManager.remainTime + 600_000
                     studyTimer.cancel()
                     studyTimer = StudyTimer(
                         newTime, 100, newTime,
