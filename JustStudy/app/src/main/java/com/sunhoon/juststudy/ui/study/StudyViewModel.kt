@@ -16,7 +16,7 @@ class StudyViewModel(application: Application) : AndroidViewModel(application) {
 
     private val statusManager = StatusManager.getInstance()
 
-    val studyManager = StudyManager.getInstance()
+    private val studyManager = StudyManager.getInstance()
 
     /* 시간 */
     private val _time = MutableLiveData<String>().apply {
@@ -78,9 +78,9 @@ class StudyViewModel(application: Application) : AndroidViewModel(application) {
             override fun onTime() { // 학습 80% 이상 진행
                 // 집중도가 80 이상일 때 학습 시간을 연장
                 if (currentConcentration.value!! >= 80) {
-                    // FIXME: 10초(10_000)에서 10분(600_000)으로 변경
-                    // val newTime = statusManager.remainTime + 10_000
-                    val newTime = statusManager.remainTime + 600_000
+                    // FIXME: 20초(20_000)에서 10분(600_000)으로 변경
+                     val newTime = statusManager.remainTime + 20_000
+//                    val newTime = statusManager.remainTime + 600_000
                     studyTimer.cancel()
                     studyTimer = StudyTimer(
                         newTime, 100, newTime,
@@ -101,15 +101,18 @@ class StudyViewModel(application: Application) : AndroidViewModel(application) {
     // 휴식 타이머 시작
     fun startBreakTimer() {
         studyTimer.cancel()
-        setRemainTime(BreakTime.getTimeByOrdinal(statusManager.breakTime))
-        studyTimer = StudyTimer(
-            BreakTime.getTimeByOrdinal(statusManager.breakTime), 100,
-            BreakTime.getTimeByOrdinal(statusManager.breakTime), _time, this
-        )
-        // TODO: 테스트용 휴식시간
-//        setUserTime((10 * 1000).toLong())
-//        studyTimer = StudyTimer((10 * 1000).toLong(),100, (10 * 1000).toLong()
-//            , _time, this)
+
+        // FIXME: 휴식시간
+//        setRemainTime(BreakTime.getTimeByOrdinal(statusManager.breakTime))
+//        studyTimer = StudyTimer(
+//            BreakTime.getTimeByOrdinal(statusManager.breakTime), 100,
+//            BreakTime.getTimeByOrdinal(statusManager.breakTime), _time, this
+//        )
+        // FIXME: 테스트용 휴식시간
+        setRemainTime((20 * 1000).toLong())
+        studyTimer = StudyTimer((20 * 1000).toLong(),100, (20 * 1000).toLong()
+            , _time, this)
+
         studyTimer.start()
         statusManager.progressStatus.value = ProgressStatus.RESTING
         toastingMessage.value = "휴식 시작"

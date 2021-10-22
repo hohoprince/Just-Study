@@ -306,7 +306,7 @@
             android:id="@+id/test_send_message_button"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
-            android:visibility="gone"/>
+            android:visibility="visible"/>
 
     <TextView
             android:layout_width="wrap_content"
