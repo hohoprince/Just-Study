@@ -117,7 +117,7 @@ class StudyManager {
                     if (lowConcentrationCount >= 10) { // 연속 10번 집중도가 좋지 않을 때
                         // 환경 변경
                         environmentChangeCount += 1
-                        lowConcentrationCount = 0;
+                        lowConcentrationCount = 0
                         Log.i("MyTag", "environmentChangeCount increase: $environmentChangeCount")
 
                         // 환경 변경이 3회 일어나면 휴식을 권유

@@ -13,7 +13,6 @@ import android.widget.RadioGroup
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.sunhoon.juststudy.R
 import com.sunhoon.juststudy.data.SharedPref
@@ -42,13 +41,13 @@ class SettingsFragment : Fragment() {
 
         // 집중 시간 텍스트 뷰
         val textConTime = root.findViewById<TextView>(R.id.text_con_time)
-        settingsViewModel.stringConcentrationTime.observe(viewLifecycleOwner, Observer {
+        settingsViewModel.stringConcentrationTime.observe(viewLifecycleOwner) {
             textConTime.text = it
-        })
+        }
 
         // 휴식 시간 텍스트 뷰
         val breakTimeTextView = root.findViewById<TextView>(R.id.break_time_textview)
-        settingsViewModel.breakTime.observe(viewLifecycleOwner, Observer {
+        settingsViewModel.breakTime.observe(viewLifecycleOwner) {
             var text = ""
             when (it) {
                 0 -> text = BreakTime.MINUTE_5.description
@@ -60,24 +59,24 @@ class SettingsFragment : Fragment() {
             }
             breakTimeTextView.text = text
             sharedPref.edit().putInt("breakTime", it).apply()
-        })
+        }
 
         val startScreenTextView = root.findViewById<TextView>(R.id.start_screen_textview)
-        settingsViewModel.startScreen.observe(viewLifecycleOwner, Observer {
+        settingsViewModel.startScreen.observe(viewLifecycleOwner) {
             when (it) {
                 0 -> startScreenTextView.text = "홈"
                 1 -> startScreenTextView.text = "공부"
                 2 -> startScreenTextView.text = "설정"
             }
             sharedPref.edit().putInt("startScreen", it).apply()
-        })
+        }
 
         // 집중 시간 설정
         val constraintLayout = root.findViewById<ConstraintLayout>(R.id.concentrationTimeLayout)
         constraintLayout.setOnClickListener {
             val timePickerDialog = TimePickerDialog(it.context,
                 android.R.style.Theme_Holo_Light_Dialog_NoActionBar,
-                TimePickerDialog.OnTimeSetListener { _, hourOfDay, minute ->
+                { _, hourOfDay, minute ->
                     settingsViewModel.setStringConTime(TimeConverter.hourMinuteToStringMinute(hourOfDay, minute))
                     sharedPref.edit().putLong("conTime", TimeConverter.hourMinuteToLong(hourOfDay, minute)).apply()
                 }, 0, 0, true)
@@ -89,8 +88,8 @@ class SettingsFragment : Fragment() {
         val breakTimeLayout = root.findViewById<ConstraintLayout>(R.id.breaktimeLayout)
         breakTimeLayout.setOnClickListener {
             val dlg = Dialog(requireContext())
-            dlg.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT));
-            dlg.setCancelable(false);
+            dlg.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+            dlg.setCancelable(false)
             dlg.setContentView(R.layout.dialog_breaktime)
 
             // 라디오 그룹
@@ -129,8 +128,8 @@ class SettingsFragment : Fragment() {
         val minConcentrationLayout = root.findViewById<ConstraintLayout>(R.id.min_concentration_layout)
         minConcentrationLayout.setOnClickListener {
             val dlg = Dialog(requireContext())
-            dlg.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT));
-            dlg.setCancelable(false);
+            dlg.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+            dlg.setCancelable(false)
             dlg.setContentView(R.layout.dialog_min_concentration)
             // 라디오 그룹
             val radioGroup = dlg.findViewById<RadioGroup>(R.id.radioGroup)
@@ -162,7 +161,7 @@ class SettingsFragment : Fragment() {
 
         // 최소 집중도 텍스트 뷰
         val minConcentrationTextView = root.findViewById<TextView>(R.id.min_concentration_textview)
-        settingsViewModel.minConcentration.observe(viewLifecycleOwner, Observer {
+        settingsViewModel.minConcentration.observe(viewLifecycleOwner) {
             var text = ""
             when (it) {
                 0 -> text = ConcentrationLevel.VERY_LOW.description
@@ -172,15 +171,15 @@ class SettingsFragment : Fragment() {
             }
             minConcentrationTextView.text = text
             sharedPref.edit().putInt("minConcentration", it).apply()
-            settingsViewModel.setMinConcentration(ConcentrationLevel.getByOrdinal(it));
-        })
+            settingsViewModel.setMinConcentration(ConcentrationLevel.getByOrdinal(it))
+        }
 
         // 시작 화면 설정
         val startScreenLayout = root.findViewById<ConstraintLayout>(R.id.startScreenLayout)
         startScreenLayout.setOnClickListener {
             val dlg = Dialog(requireContext())
-            dlg.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT));
-            dlg.setCancelable(false);
+            dlg.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+            dlg.setCancelable(false)
             dlg.setContentView(R.layout.dialog_start_screen)
 
             // 라디오 그룹

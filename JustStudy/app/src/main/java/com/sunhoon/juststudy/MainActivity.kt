@@ -6,11 +6,8 @@ import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.util.Log
 import android.view.WindowManager
-import android.widget.Button
-import android.widget.RadioGroup
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.lifecycle.Observer
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
@@ -24,10 +21,7 @@ import com.sunhoon.juststudy.database.AppDatabase
 import com.sunhoon.juststudy.database.entity.BestEnvironment
 import com.sunhoon.juststudy.myEnum.Lamp
 import com.sunhoon.juststudy.myEnum.WhiteNoise
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.*
 
 
 class MainActivity : AppCompatActivity() {
@@ -82,18 +76,18 @@ class MainActivity : AppCompatActivity() {
                 Toast.makeText(this@MainActivity,
                     "블루투스 연결: name = $name address = $address", Toast.LENGTH_SHORT).show()
                 Log.i("MyTag", "bluetooth 연결: name = $name")
-                deviceCount += 1;
+                deviceCount += 1
 
                 // FIXME: 연결할 블루투스 장치 개수만큼 수정
                 if (deviceCount == 1) {
                     val dlg = Dialog(this@MainActivity)
                     dlg.setContentView(R.layout.dialog_connected)
-                    dlg.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT));
-                    dlg.window?.clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
-                    dlg.setCancelable(false);
+                    dlg.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+                    dlg.window?.clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND)
+                    dlg.setCancelable(false)
                     dlg.show()
                     GlobalScope.launch {
-                        Thread.sleep(1500)
+                        delay(1500)
                         withContext(Dispatchers.Main) {
                             dlg.dismiss()
                         }
@@ -104,7 +98,7 @@ class MainActivity : AppCompatActivity() {
             override fun onDeviceDisconnected() {
                 Toast.makeText(this@MainActivity, "블루투스 연결 해제", Toast.LENGTH_SHORT).show()
                 Log.i("MyTag", "bluetooth 연결 해제")
-                deviceCount -= 1;
+                deviceCount -= 1
             }
 
             override fun onDeviceConnectionFailed() {
@@ -117,7 +111,7 @@ class MainActivity : AppCompatActivity() {
         bluetoothSPP1.setBluetoothConnectionListener(bluetoothConnectionListener)
         bluetoothSPP2.setBluetoothConnectionListener(bluetoothConnectionListener)
 
-        appDatabase.studyDetailDao().getAllOrderByDate().observe(this, Observer { studyDetails ->
+        appDatabase.studyDetailDao().getAllOrderByDate().observe(this) { studyDetails ->
             if (studyDetails.isNotEmpty()) {
                 val lampScoreListMap: MutableMap<Lamp, MutableList<Int>> = mutableMapOf()
                 lampScoreListMap[Lamp.LAMP_2700K] = mutableListOf()
@@ -145,7 +139,8 @@ class MainActivity : AppCompatActivity() {
 
                 val bestEnvironment = BestEnvironment(
                     bestLamp = lampScoreRankList[0].ordinal,
-                    bestWhiteNoise = whiteNoiseScoreRankList[0].ordinal)
+                    bestWhiteNoise = whiteNoiseScoreRankList[0].ordinal
+                )
 
                 GlobalScope.launch(Dispatchers.IO) {
                     val be: BestEnvironment? = appDatabase.bestEnvironmentDao().read()
@@ -157,7 +152,7 @@ class MainActivity : AppCompatActivity() {
                     studyManager.bestEnvironment = be
                 }
             }
-        })
+        }
     }
 
     /**

@@ -65,7 +65,7 @@ class StudyViewModel(application: Application) : AndroidViewModel(application) {
     /**
      * 책상의 백색 소음, 램프, 책받침 각도, 책상 높이 초기화 메시지를 보낸다.
      */
-    fun sendDeskResetMessage() {
+    private fun sendDeskResetMessage() {
         GlobalScope.launch {
             studyManager.sendMessageWithNoCondition(BluetoothMessage.LAMP_NONE)
             delay(1000)
@@ -239,7 +239,7 @@ class StudyViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
-    fun sendWhiteNoiseMessageWithNoCondition(whiteNoise: WhiteNoise) {
+    private fun sendWhiteNoiseMessageWithNoCondition(whiteNoise: WhiteNoise) {
         when (whiteNoise) {
             WhiteNoise.AUTO -> {
                 studyManager.bestEnvironment?.bestWhiteNoise?.let {
@@ -273,7 +273,7 @@ class StudyViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
-    fun sendLampMessageWithNoCondition(lamp: Lamp) {
+    private fun sendLampMessageWithNoCondition(lamp: Lamp) {
         when (lamp) {
             Lamp.AUTO -> {
                 studyManager.bestEnvironment?.bestLamp?.let {
