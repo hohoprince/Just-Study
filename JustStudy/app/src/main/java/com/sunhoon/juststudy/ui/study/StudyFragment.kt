@@ -14,7 +14,6 @@ import android.widget.*
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
-import app.akexorcist.bluetotohspp.library.BluetoothState
 import com.sunhoon.juststudy.R
 import com.sunhoon.juststudy.bluetooth.StudyManager
 import com.sunhoon.juststudy.data.ConcentrationSource
@@ -23,9 +22,6 @@ import com.sunhoon.juststudy.data.StatusManager
 import com.sunhoon.juststudy.myEnum.*
 import com.sunhoon.juststudy.time.TimeConverter
 import info.hoang8f.android.segmented.SegmentedGroup
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
-import java.lang.Thread.sleep
 
 class StudyFragment : Fragment() {
 
@@ -94,7 +90,7 @@ class StudyFragment : Fragment() {
         studyViewModel.currentLamp.observe(viewLifecycleOwner, Observer {
             lightTextView.text = it.description
             sharedPref.edit().putInt("light", it.ordinal).apply()
-            studyViewModel.sendChangeLampMessage(it)
+            studyViewModel.sendLampMessage(it)
         })
 
         // 백색 소음 텍스트 뷰
@@ -102,7 +98,7 @@ class StudyFragment : Fragment() {
         studyViewModel.currentWhiteNoise.observe(viewLifecycleOwner, Observer {
             noiseTextView.text = it.description
             sharedPref.edit().putInt("whiteNoise", it.ordinal).apply()
-            studyViewModel.sendChangeWhiteNoiseMessage(it)
+            studyViewModel.sendWhiteNoiseMessage(it)
         })
 
         // 집중도 텍스트 뷰
@@ -317,7 +313,7 @@ class StudyFragment : Fragment() {
         // 시작 버튼
         val playButton = root.findViewById<ImageButton>(R.id.play_button)
 
-        studyViewModel.isPlaying.observe(viewLifecycleOwner, Observer {
+        statusManager.isPlaying.observe(viewLifecycleOwner, Observer {
             if (it) {
                 playButton.setImageResource(R.drawable.ic_baseline_stop_36)
             } else {
@@ -333,8 +329,9 @@ class StudyFragment : Fragment() {
 //                return@setOnClickListener
 //            }
 
-            if (studyViewModel.isPlaying.value == true) { // 공부 종료
-                studyViewModel.isPlaying.value = false
+            if (statusManager.isPlaying.value == true) { // 공부 종료
+                statusManager.isSendMessage = false
+                statusManager.isPlaying.value = false
                 studyViewModel.updateStudy()
                 val dlg = Dialog(requireContext()) // 지우개 가루 청소
                 dlg.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
@@ -359,8 +356,8 @@ class StudyFragment : Fragment() {
                     studyViewModel.stopStopWatch()
                 }
             } else { // 공부 시작
+                statusManager.isSendMessage = true
                 studyViewModel.createStudy()
-
                 if (statusManager.timeCountType == TimeCountType.TIMER) {
                     studyViewModel.startStudyTimer()
                 } else if (statusManager.timeCountType == TimeCountType.STOP_WATCH) {
@@ -477,8 +474,8 @@ class StudyFragment : Fragment() {
     }
 
     private fun stopStudy() {
-        if (studyViewModel.isPlaying.value == true) { // 공부 종료
-            studyViewModel.isPlaying.value = false
+        if (statusManager.isPlaying.value == true) { // 공부 종료
+            statusManager.isPlaying.value = false
             studyViewModel.updateStudy()
 
             if (statusManager.timeCountType == TimeCountType.TIMER) {

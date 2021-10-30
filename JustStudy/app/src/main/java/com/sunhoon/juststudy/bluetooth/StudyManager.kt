@@ -3,7 +3,6 @@ package com.sunhoon.juststudy.bluetooth
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import app.akexorcist.bluetotohspp.library.BluetoothSPP
-import com.sunhoon.juststudy.data.SharedPref
 import com.sunhoon.juststudy.data.StatusManager
 import com.sunhoon.juststudy.database.AppDatabase
 import com.sunhoon.juststudy.database.entity.BestEnvironment
@@ -131,22 +130,22 @@ class StudyManager {
 
                         if (currentLamp.value == Lamp.AUTO) {
                             when (lampRankingList[selectionIndex % lampRankingList.size]) {
-                                Lamp.NONE -> writeMessage(BluetoothMessage.LAMP_NONE)
-                                Lamp.LAMP_2700K -> writeMessage(BluetoothMessage.LAMP_2700K)
-                                Lamp.LAMP_4000K -> writeMessage(BluetoothMessage.LAMP_4000K)
-                                Lamp.LAMP_6500K -> writeMessage(BluetoothMessage.LAMP_6500K)
+                                Lamp.NONE -> sendMessage(BluetoothMessage.LAMP_NONE)
+                                Lamp.LAMP_2700K -> sendMessage(BluetoothMessage.LAMP_2700K)
+                                Lamp.LAMP_4000K -> sendMessage(BluetoothMessage.LAMP_4000K)
+                                Lamp.LAMP_6500K -> sendMessage(BluetoothMessage.LAMP_6500K)
                                 else -> Log.w("MyTag", "잘못된 램프 밝기")
                             }
                         }
 
                         if (currentWhiteNoise.value == WhiteNoise.AUTO) {
                             when (whiteNoiseRankingList[selectionIndex % whiteNoiseRankingList.size]) {
-                                WhiteNoise.NONE -> writeMessage(BluetoothMessage.WHITE_NOISE_NONE)
-                                WhiteNoise.RAIN -> writeMessage(BluetoothMessage.WHITE_NOISE_RAIN)
-                                WhiteNoise.FIREWOOD -> writeMessage(BluetoothMessage.WHITE_NOISE_FIREWOOD)
-                                WhiteNoise.MUSIC_1 -> writeMessage(BluetoothMessage.WHITE_NOISE_MUSIC_1)
-                                WhiteNoise.MUSIC_2 -> writeMessage(BluetoothMessage.WHITE_NOISE_MUSIC_2)
-                                WhiteNoise.MUSIC_3 -> writeMessage(BluetoothMessage.WHITE_NOISE_MUSIC_3)
+                                WhiteNoise.NONE -> sendMessage(BluetoothMessage.WHITE_NOISE_NONE)
+                                WhiteNoise.RAIN -> sendMessage(BluetoothMessage.WHITE_NOISE_RAIN)
+                                WhiteNoise.FIREWOOD -> sendMessage(BluetoothMessage.WHITE_NOISE_FIREWOOD)
+                                WhiteNoise.MUSIC_1 -> sendMessage(BluetoothMessage.WHITE_NOISE_MUSIC_1)
+                                WhiteNoise.MUSIC_2 -> sendMessage(BluetoothMessage.WHITE_NOISE_MUSIC_2)
+                                WhiteNoise.MUSIC_3 -> sendMessage(BluetoothMessage.WHITE_NOISE_MUSIC_3)
                                 else -> Log.w("MyTag", "잘못된 백색 소음")
                             }
                         }
@@ -191,15 +190,22 @@ class StudyManager {
     /**
      * 책상에 메시지를 전송한다
      */
-    fun writeMessage(msg: BluetoothMessage) {
-            if (msg == BluetoothMessage.STUDY_END_PULSE || msg == BluetoothMessage.STUDY_START) {
-                bluetoothSPP2.send(msg.value, false)
-                Log.i("MyTag", "spp2: Send Message: ${msg.value}(${msg.description})")
-            } else {
-                bluetoothSPP.send(msg.value, false)
-                Log.i("MyTag", "spp1: Send Message: ${msg.value}(${msg.description})")
-            }
+    fun sendMessage(msg: BluetoothMessage) {
+        if (statusManager.isSendMessage) {
+            sendMessageWithNoCondition(msg)
+        }
     }
+
+    fun sendMessageWithNoCondition(msg: BluetoothMessage) {
+        if (msg == BluetoothMessage.STUDY_END_PULSE || msg == BluetoothMessage.STUDY_START) {
+            bluetoothSPP2.send(msg.value, false)
+            Log.i("MyTag", "spp2: Send Message: ${msg.value}(${msg.description})")
+        } else {
+            bluetoothSPP.send(msg.value, false)
+            Log.i("MyTag", "spp1: Send Message: ${msg.value}(${msg.description})")
+        }
+    }
+
 
     interface OnRestListener {
         fun onRest()

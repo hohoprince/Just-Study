@@ -36,11 +36,6 @@ class StudyViewModel(application: Application) : AndroidViewModel(application) {
     /* 현재 집중도 */
     var currentConcentration: LiveData<Int> = studyManager.currentConcentration.apply { value = 0 }
 
-    /* 학습 진행 여부 */
-    var isPlaying: MutableLiveData<Boolean> = MutableLiveData<Boolean>().apply {
-        value = false
-    }
-
     /* 토스트 메시지를 전달 */
     var toastingMessage: MutableLiveData<String> = MutableLiveData<String>().apply {
         value = null
@@ -67,10 +62,36 @@ class StudyViewModel(application: Application) : AndroidViewModel(application) {
         studyManager.updateStudy()
     }
 
+    /**
+     * 책상의 백색 소음, 램프, 책받침 각도, 책상 높이 초기화 메시지를 보낸다.
+     */
+    fun sendDeskResetMessage() {
+        GlobalScope.launch {
+            studyManager.sendMessageWithNoCondition(BluetoothMessage.LAMP_NONE)
+            delay(1000)
+            studyManager.sendMessageWithNoCondition(BluetoothMessage.WHITE_NOISE_NONE)
+            delay(1000)
+            studyManager.sendMessageWithNoCondition(BluetoothMessage.DESK_RESET)
+        }
+    }
+
+    /**
+     * 백색 소음, 램프 메시지와 공부 시작 메시지를 전송한다.
+     */
+    private fun sendStudyStartMessage() {
+        GlobalScope.launch {
+            studyManager.sendMessageWithNoCondition(BluetoothMessage.STUDY_START)
+            delay(1000)
+            currentLamp.value?.let { sendLampMessageWithNoCondition(it) }
+            delay(1000)
+            currentWhiteNoise.value?.let { sendWhiteNoiseMessageWithNoCondition(it) }
+            delay(1000)
+            studyManager.sendMessageWithNoCondition(BluetoothMessage.DESK_RESTORATION)
+        }
+    }
+
     // 공부 타이머 시작
     fun startStudyTimer() {
-
-        studyManager.writeMessage(BluetoothMessage.DESK_RESTORATION)
         setRemainTime(statusManager.studyTime)
         studyTimer = StudyTimer(
             statusManager.remainTime, 1000,
@@ -96,17 +117,17 @@ class StudyViewModel(application: Application) : AndroidViewModel(application) {
             }
         })
         studyTimer.start()
-        isPlaying.value = true
+        statusManager.isPlaying.value = true
         statusManager.progressStatus.value = ProgressStatus.STUDYING
         toastingMessage.value = "공부 시작"
-        studyManager.writeMessage(BluetoothMessage.STUDY_START)
         Log.i("MyTag", "공부 시작")
+        sendStudyStartMessage()
     }
 
     // 휴식 타이머 시작
     fun startBreakTimer() {
         studyTimer.cancel()
-
+        statusManager.progressStatus.value = ProgressStatus.RESTING
         // FIXME: 휴식 시간
 //        setRemainTime(BreakTime.getTimeByOrdinal(statusManager.breakTime))
 //        studyTimer = StudyTimer(
@@ -118,9 +139,7 @@ class StudyViewModel(application: Application) : AndroidViewModel(application) {
         setRemainTime(time)
         studyTimer = StudyTimer(time,100, time
             , _time, this)
-
         studyTimer.start()
-        statusManager.progressStatus.value = ProgressStatus.RESTING
         toastingMessage.value = "휴식 시작"
         Log.i("MyTag", "휴식 시작")
     }
@@ -129,10 +148,10 @@ class StudyViewModel(application: Application) : AndroidViewModel(application) {
     fun startStopWatch() {
         studyStopWatch = StudyStopWatch(_time)
         studyStopWatch.start()
-        isPlaying.value = true
+        statusManager.isPlaying.value = true
         statusManager.progressStatus.value = ProgressStatus.STUDYING
         toastingMessage.value = "공부 시작"
-        studyManager.writeMessage(BluetoothMessage.STUDY_START)
+        studyManager.sendMessage(BluetoothMessage.STUDY_START)
         Log.i("MyTag", "공부 시작")
     }
 
@@ -144,19 +163,6 @@ class StudyViewModel(application: Application) : AndroidViewModel(application) {
         toastingMessage.value = "공부 종료"
         Log.i("MyTag", "공부 종료, 타이머 종료")
         sendDeskResetMessage()
-    }
-
-    /**
-     * 책상의 백색 소음, 램프, 책받침 각도, 책상 높이 초기화 메시지를 보낸다.
-     */
-    private fun sendDeskResetMessage() {
-        GlobalScope.launch {
-            studyManager.writeMessage(BluetoothMessage.LAMP_NONE)
-            delay(1000)
-            studyManager.writeMessage(BluetoothMessage.WHITE_NOISE_NONE)
-            delay(1000)
-            studyManager.writeMessage(BluetoothMessage.DESK_RESET)
-        }
     }
 
     fun stopStopWatch() {
@@ -197,9 +203,9 @@ class StudyViewModel(application: Application) : AndroidViewModel(application) {
      */
     fun sendChangeHeightMessage(height: Height) {
         when (height) {
-            Height.UP -> studyManager.writeMessage(BluetoothMessage.HEIGHT_UP)
-            Height.DOWN -> studyManager.writeMessage(BluetoothMessage.HEIGHT_DOWN)
-            Height.STOP -> studyManager.writeMessage(BluetoothMessage.HEIGHT_STOP)
+            Height.UP -> studyManager.sendMessage(BluetoothMessage.HEIGHT_UP)
+            Height.DOWN -> studyManager.sendMessage(BluetoothMessage.HEIGHT_DOWN)
+            Height.STOP -> studyManager.sendMessage(BluetoothMessage.HEIGHT_STOP)
         }
     }
 
@@ -208,45 +214,76 @@ class StudyViewModel(application: Application) : AndroidViewModel(application) {
      */
     fun sendChangeAngleMessage(angle: Angle) {
         when (angle) {
-            Angle.UP -> studyManager.writeMessage(BluetoothMessage.ANGLE_UP)
-            Angle.DOWN -> studyManager.writeMessage(BluetoothMessage.ANGLE_DOWN)
-            Angle.STOP -> studyManager.writeMessage(BluetoothMessage.ANGLE_STOP)
+            Angle.UP -> studyManager.sendMessage(BluetoothMessage.ANGLE_UP)
+            Angle.DOWN -> studyManager.sendMessage(BluetoothMessage.ANGLE_DOWN)
+            Angle.STOP -> studyManager.sendMessage(BluetoothMessage.ANGLE_STOP)
         }
     }
 
     /**
      * 백색 소음 변경 메시지를 보낸다
      */
-    fun sendChangeWhiteNoiseMessage(whiteNoise: WhiteNoise) {
+    fun sendWhiteNoiseMessage(whiteNoise: WhiteNoise) {
         when (whiteNoise) {
             WhiteNoise.AUTO -> {
                 studyManager.bestEnvironment?.bestWhiteNoise?.let {
-                    sendChangeWhiteNoiseMessage(WhiteNoise.getByValue(it))
+                    sendWhiteNoiseMessage(WhiteNoise.getByValue(it))
                 }
             }
-            WhiteNoise.NONE -> studyManager.writeMessage(BluetoothMessage.WHITE_NOISE_NONE)
-            WhiteNoise.FIREWOOD -> studyManager.writeMessage(BluetoothMessage.WHITE_NOISE_FIREWOOD)
-            WhiteNoise.MUSIC_1 -> studyManager.writeMessage(BluetoothMessage.WHITE_NOISE_MUSIC_1)
-            WhiteNoise.MUSIC_2 -> studyManager.writeMessage(BluetoothMessage.WHITE_NOISE_MUSIC_2)
-            WhiteNoise.RAIN -> studyManager.writeMessage(BluetoothMessage.WHITE_NOISE_RAIN)
-            WhiteNoise.MUSIC_3 -> studyManager.writeMessage(BluetoothMessage.WHITE_NOISE_MUSIC_3)
+            WhiteNoise.NONE -> studyManager.sendMessage(BluetoothMessage.WHITE_NOISE_NONE)
+            WhiteNoise.FIREWOOD -> studyManager.sendMessage(BluetoothMessage.WHITE_NOISE_FIREWOOD)
+            WhiteNoise.MUSIC_1 -> studyManager.sendMessage(BluetoothMessage.WHITE_NOISE_MUSIC_1)
+            WhiteNoise.MUSIC_2 -> studyManager.sendMessage(BluetoothMessage.WHITE_NOISE_MUSIC_2)
+            WhiteNoise.RAIN -> studyManager.sendMessage(BluetoothMessage.WHITE_NOISE_RAIN)
+            WhiteNoise.MUSIC_3 -> studyManager.sendMessage(BluetoothMessage.WHITE_NOISE_MUSIC_3)
         }
     }
+
+    fun sendWhiteNoiseMessageWithNoCondition(whiteNoise: WhiteNoise) {
+        when (whiteNoise) {
+            WhiteNoise.AUTO -> {
+                studyManager.bestEnvironment?.bestWhiteNoise?.let {
+                    sendWhiteNoiseMessageWithNoCondition(WhiteNoise.getByValue(it))
+                }
+            }
+            WhiteNoise.NONE -> studyManager.sendMessageWithNoCondition(BluetoothMessage.WHITE_NOISE_NONE)
+            WhiteNoise.FIREWOOD -> studyManager.sendMessageWithNoCondition(BluetoothMessage.WHITE_NOISE_FIREWOOD)
+            WhiteNoise.MUSIC_1 -> studyManager.sendMessageWithNoCondition(BluetoothMessage.WHITE_NOISE_MUSIC_1)
+            WhiteNoise.MUSIC_2 -> studyManager.sendMessageWithNoCondition(BluetoothMessage.WHITE_NOISE_MUSIC_2)
+            WhiteNoise.RAIN -> studyManager.sendMessageWithNoCondition(BluetoothMessage.WHITE_NOISE_RAIN)
+            WhiteNoise.MUSIC_3 -> studyManager.sendMessageWithNoCondition(BluetoothMessage.WHITE_NOISE_MUSIC_3)
+        }
+    }
+
 
     /**
      * 램프 밝기 변경 메시지를 보낸다
      */
-    fun sendChangeLampMessage(lamp: Lamp) {
+    fun sendLampMessage(lamp: Lamp) {
         when (lamp) {
             Lamp.AUTO -> {
                 studyManager.bestEnvironment?.bestLamp?.let {
-                    sendChangeLampMessage(Lamp.getByValue(it))
+                    sendLampMessage(Lamp.getByValue(it))
                 }
             }
-            Lamp.NONE -> studyManager.writeMessage(BluetoothMessage.LAMP_NONE)
-            Lamp.LAMP_2700K -> studyManager.writeMessage(BluetoothMessage.LAMP_2700K)
-            Lamp.LAMP_4000K -> studyManager.writeMessage(BluetoothMessage.LAMP_4000K)
-            Lamp.LAMP_6500K -> studyManager.writeMessage(BluetoothMessage.LAMP_6500K)
+            Lamp.NONE -> studyManager.sendMessage(BluetoothMessage.LAMP_NONE)
+            Lamp.LAMP_2700K -> studyManager.sendMessage(BluetoothMessage.LAMP_2700K)
+            Lamp.LAMP_4000K -> studyManager.sendMessage(BluetoothMessage.LAMP_4000K)
+            Lamp.LAMP_6500K -> studyManager.sendMessage(BluetoothMessage.LAMP_6500K)
+        }
+    }
+
+    fun sendLampMessageWithNoCondition(lamp: Lamp) {
+        when (lamp) {
+            Lamp.AUTO -> {
+                studyManager.bestEnvironment?.bestLamp?.let {
+                    sendLampMessageWithNoCondition(Lamp.getByValue(it))
+                }
+            }
+            Lamp.NONE -> studyManager.sendMessageWithNoCondition(BluetoothMessage.LAMP_NONE)
+            Lamp.LAMP_2700K -> studyManager.sendMessageWithNoCondition(BluetoothMessage.LAMP_2700K)
+            Lamp.LAMP_4000K -> studyManager.sendMessageWithNoCondition(BluetoothMessage.LAMP_4000K)
+            Lamp.LAMP_6500K -> studyManager.sendMessageWithNoCondition(BluetoothMessage.LAMP_6500K)
         }
     }
 
@@ -254,14 +291,14 @@ class StudyViewModel(application: Application) : AndroidViewModel(application) {
      * 지우개 가루 청소 메시지를 보낸다
      */
     fun sendCleanMessage() {
-        studyManager.writeMessage(BluetoothMessage.CLEAN)
+        studyManager.sendMessageWithNoCondition(BluetoothMessage.CLEAN)
     }
 
     /**
      * 블루투스 메시지 전송 테스트용
      */
     fun sendMessageForTest(message: BluetoothMessage) {
-        studyManager.writeMessage(message)
+        studyManager.sendMessage(message)
     }
 
 }

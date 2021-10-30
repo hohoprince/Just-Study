@@ -2,12 +2,12 @@ package com.sunhoon.juststudy.myEnum
 
 enum class BluetoothMessage(val value: String, val description: String) {
 
-    LAMP_NONE("a","사용 안함"),
+    LAMP_NONE("a","램프 Off"),
     LAMP_2700K("b", "2700k"),
     LAMP_4000K("c", "4000k"),
     LAMP_6500K("d", "6500k"),
 
-    WHITE_NOISE_NONE("j", "사용 안함"),
+    WHITE_NOISE_NONE("j", "백색 소음 Off"),
     WHITE_NOISE_FIREWOOD("e", "장작"), // 장작
     WHITE_NOISE_MUSIC_1("f", "음악 1"), // 음악 1
     WHITE_NOISE_MUSIC_2("g", "음악 2"), // 음악 2
