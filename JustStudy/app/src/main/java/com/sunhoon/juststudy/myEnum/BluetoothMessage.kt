@@ -26,7 +26,8 @@ enum class BluetoothMessage(val value: String, val description: String) {
     DESK_RESTORATION("B", "책상 복구"),
 
     STUDY_START("p", "공부 시작"), // 공부를 시작할때
-    STUDY_END("s", "공부 종료"), // 휴식이나 공부 끝날 때
+    STUDY_END_PULSE("n", "공부 종료"), // 휴식이나 공부 끝날 때 pulse
+    STUDY_END_DESK("s", "공부 종료"), // 휴식이나 공부 끝날 때 desk
 
     CLEAN("E", "지우개 가루 청소")
 

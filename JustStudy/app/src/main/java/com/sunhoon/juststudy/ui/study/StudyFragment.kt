@@ -23,6 +23,9 @@ import com.sunhoon.juststudy.data.StatusManager
 import com.sunhoon.juststudy.myEnum.*
 import com.sunhoon.juststudy.time.TimeConverter
 import info.hoang8f.android.segmented.SegmentedGroup
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import java.lang.Thread.sleep
 
 class StudyFragment : Fragment() {
 
@@ -332,11 +335,11 @@ class StudyFragment : Fragment() {
 
             if (studyViewModel.isPlaying.value == true) { // 공부 종료
                 studyViewModel.isPlaying.value = false
+                sendResetDeskMessage()
                 studyViewModel.updateStudy()
-                studyViewModel.resetDesk()
                 val dlg = Dialog(requireContext()) // 지우개 가루 청소
-                dlg.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT));
-                dlg.setCancelable(false);
+                dlg.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+                dlg.setCancelable(false)
                 dlg.setContentView(R.layout.dialog_clean)
 
                 val okButton = dlg.findViewById<Button>(R.id.clean_ok_button)
@@ -358,7 +361,6 @@ class StudyFragment : Fragment() {
                 }
             } else { // 공부 시작
                 studyViewModel.createStudy()
-                studyManager.writeMessage(BluetoothMessage.DESK_RESTORATION)
 
                 if (statusManager.timeCountType == TimeCountType.TIMER) {
                     studyViewModel.startStudyTimer()
@@ -462,7 +464,11 @@ class StudyFragment : Fragment() {
             }
             val test20 = dlg.findViewById<Button>(R.id.test_20)
             test20.setOnClickListener {
-                studyViewModel.sendMessageForTest(BluetoothMessage.STUDY_END)
+                studyViewModel.sendMessageForTest(BluetoothMessage.STUDY_END_PULSE)
+            }
+            val test21 = dlg.findViewById<Button>(R.id.test_21)
+            test21.setOnClickListener {
+                studyViewModel.sendMessageForTest(BluetoothMessage.CLEAN)
             }
 
             dlg.show()
@@ -475,13 +481,24 @@ class StudyFragment : Fragment() {
         if (studyViewModel.isPlaying.value == true) { // 공부 종료
             studyViewModel.isPlaying.value = false
             studyViewModel.updateStudy()
-            studyViewModel.resetDesk()
 
             if (statusManager.timeCountType == TimeCountType.TIMER) {
                 studyViewModel.stopTimer()
             } else if (statusManager.timeCountType == TimeCountType.STOP_WATCH) {
                 studyViewModel.stopStopWatch()
             }
+        }
+    }
+
+    private fun sendResetDeskMessage() {
+        GlobalScope.launch {
+            studyManager.writeMessage(BluetoothMessage.HEIGHT_DOWN)
+            sleep(1000L)
+            studyManager.writeMessage(BluetoothMessage.ANGLE_DOWN)
+            sleep(1000L)
+            studyManager.writeMessage(BluetoothMessage.WHITE_NOISE_NONE)
+            sleep(1000L)
+            studyManager.writeMessage(BluetoothMessage.LAMP_NONE)
         }
     }
 

@@ -66,20 +66,22 @@ class StudyViewModel(application: Application) : AndroidViewModel(application) {
 
     // 공부 타이머 시작
     fun startStudyTimer() {
+
+        studyManager.writeMessage(BluetoothMessage.DESK_RESTORATION)
         setRemainTime(statusManager.studyTime)
         studyTimer = StudyTimer(
             statusManager.remainTime, 1000,
             statusManager.remainTime, _time, this
         )
-        // TODO: 테스트용 공부시간
+        // FIXME: 테스트용 공부시간
 //        studyTimer = StudyTimer((10 * 1000).toLong(), 100,
 //            (10 * 1000).toLong(), _time, this)
         studyTimer.setOnExtendTimeListener(object : StudyTimer.OnExtendTimeListener {
             override fun onTime() { // 학습 80% 이상 진행
                 // 집중도가 80 이상일 때 학습 시간을 연장
                 if (currentConcentration.value!! >= 80) {
-                    // FIXME: 20초(20_000)에서 10분(600_000)으로 변경
-                     val newTime = statusManager.remainTime + 20_000
+                    // FIXME: 추가 공부 시간 15초(15_000)에서 10분(600_000)으로 변경
+                     val newTime = statusManager.remainTime + 15_000
 //                    val newTime = statusManager.remainTime + 600_000
                     studyTimer.cancel()
                     studyTimer = StudyTimer(
@@ -102,15 +104,16 @@ class StudyViewModel(application: Application) : AndroidViewModel(application) {
     fun startBreakTimer() {
         studyTimer.cancel()
 
-        // FIXME: 휴식시간
+        // FIXME: 휴식 시간
 //        setRemainTime(BreakTime.getTimeByOrdinal(statusManager.breakTime))
 //        studyTimer = StudyTimer(
 //            BreakTime.getTimeByOrdinal(statusManager.breakTime), 100,
 //            BreakTime.getTimeByOrdinal(statusManager.breakTime), _time, this
 //        )
         // FIXME: 테스트용 휴식시간
-        setRemainTime((20 * 1000).toLong())
-        studyTimer = StudyTimer((20 * 1000).toLong(),100, (20 * 1000).toLong()
+        val time = (40 * 1000).toLong()
+        setRemainTime(time)
+        studyTimer = StudyTimer(time,100, time
             , _time, this)
 
         studyTimer.start()
@@ -136,7 +139,6 @@ class StudyViewModel(application: Application) : AndroidViewModel(application) {
         statusManager.progressStatus.value = ProgressStatus.WAITING
         setRemainTime(statusManager.studyTime)
         toastingMessage.value = "공부 종료"
-        studyManager.writeMessage(BluetoothMessage.STUDY_END)
         Log.i("MyTag", "공부 종료, 타이머 종료")
     }
 
@@ -145,13 +147,8 @@ class StudyViewModel(application: Application) : AndroidViewModel(application) {
         statusManager.progressStatus.value = ProgressStatus.WAITING
         setRemainTime(0)
         toastingMessage.value = "공부 종료"
-        studyManager.writeMessage(BluetoothMessage.STUDY_END)
         studyManager.resetCount()
         Log.i("MyTag", "공부 종료, 타이머 종료")
-    }
-
-    fun resetDesk() {
-        studyManager.writeMessage(BluetoothMessage.DESK_RESET);
     }
 
     // 사용자 설정 시간
