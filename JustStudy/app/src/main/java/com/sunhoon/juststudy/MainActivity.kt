@@ -84,8 +84,8 @@ class MainActivity : AppCompatActivity() {
                 Log.i("MyTag", "bluetooth 연결: name = $name")
                 deviceCount += 1;
 
-                // FIXME: 2개 연결시 2로 변경
-                if (deviceCount == 2) {
+                // FIXME: 연결할 블루투스 장치 개수만큼 수정
+                if (deviceCount == 1) {
                     val dlg = Dialog(this@MainActivity)
                     dlg.setContentView(R.layout.dialog_connected)
                     dlg.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT));
@@ -178,13 +178,16 @@ class MainActivity : AppCompatActivity() {
             bluetoothSPP1.startService(BluetoothState.DEVICE_OTHER)
             bluetoothSPP2.startService(BluetoothState.DEVICE_OTHER)
             bluetoothSPP1.pairedDeviceAddress.forEach { address ->
-                if (address == "98:D3:41:FD:5A:01") { // FIXME: 책상 MAC 주소 변경
+                if (address == "98:D3:41:FD:5A:01") {
                     Log.i("MyTag", "spp1: 블루투스 기기 연결 시도 $address")
                     bluetoothSPP1.connect(address)
                 }
             }
             bluetoothSPP2.pairedDeviceAddress.forEach { address ->
-                if (address == "98:D3:31:FD:80:02") { // FIXME: 심박수 센서 MAC 주소 변경
+                // FIXME: 심박수 센서 MAC 주소 변경
+                val btMacAddress = "98:D3:91:FD:B9:84" // BT1
+//                val btMacAddress = "98:D3:31:FD:80:02"
+                if (address == btMacAddress) {
                     Log.i("MyTag", "spp2: 블루투스 기기 연결 시도 $address")
                     bluetoothSPP2.connect(address)
                 }

@@ -192,14 +192,13 @@ class StudyManager {
      * 책상에 메시지를 전송한다
      */
     fun writeMessage(msg: BluetoothMessage) {
-        if (msg == BluetoothMessage.STUDY_END_PULSE || msg == BluetoothMessage.STUDY_START) {
-            bluetoothSPP2.send(msg.value, false)
-            Log.i("MyTag", "spp2: Send Message: ${msg.value}(${msg.description})")
-        } else {
-            bluetoothSPP.send(msg.value, false)
-            Log.i("MyTag", "spp1: Send Message: ${msg.value}(${msg.description})")
-        }
-
+            if (msg == BluetoothMessage.STUDY_END_PULSE || msg == BluetoothMessage.STUDY_START) {
+                bluetoothSPP2.send(msg.value, false)
+                Log.i("MyTag", "spp2: Send Message: ${msg.value}(${msg.description})")
+            } else {
+                bluetoothSPP.send(msg.value, false)
+                Log.i("MyTag", "spp1: Send Message: ${msg.value}(${msg.description})")
+            }
     }
 
     interface OnRestListener {

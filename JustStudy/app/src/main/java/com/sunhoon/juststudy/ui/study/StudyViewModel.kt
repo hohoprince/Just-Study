@@ -11,6 +11,9 @@ import com.sunhoon.juststudy.myEnum.*
 import com.sunhoon.juststudy.time.StudyStopWatch
 import com.sunhoon.juststudy.time.StudyTimer
 import com.sunhoon.juststudy.time.TimeConverter
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 class StudyViewModel(application: Application) : AndroidViewModel(application) {
 
@@ -140,6 +143,20 @@ class StudyViewModel(application: Application) : AndroidViewModel(application) {
         setRemainTime(statusManager.studyTime)
         toastingMessage.value = "공부 종료"
         Log.i("MyTag", "공부 종료, 타이머 종료")
+        sendDeskResetMessage()
+    }
+
+    /**
+     * 책상의 백색 소음, 램프, 책받침 각도, 책상 높이 초기화 메시지를 보낸다.
+     */
+    private fun sendDeskResetMessage() {
+        GlobalScope.launch {
+            studyManager.writeMessage(BluetoothMessage.LAMP_NONE)
+            delay(1000)
+            studyManager.writeMessage(BluetoothMessage.WHITE_NOISE_NONE)
+            delay(1000)
+            studyManager.writeMessage(BluetoothMessage.DESK_RESET)
+        }
     }
 
     fun stopStopWatch() {

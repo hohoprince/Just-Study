@@ -327,15 +327,14 @@ class StudyFragment : Fragment() {
 
         playButton.setOnClickListener {
             // TODO: 블루투스를 연결 할 수 없을 때 주석 처리
-            if (studyManager.bluetoothSPP.serviceState != BluetoothState.STATE_CONNECTED ||
-                studyManager.bluetoothSPP2.serviceState != BluetoothState.STATE_CONNECTED) {
-                Toast.makeText(requireActivity().applicationContext, "블루투스 기기를 연결 해주세요", Toast.LENGTH_SHORT).show()
-                return@setOnClickListener
-            }
+//            if (studyManager.bluetoothSPP.serviceState != BluetoothState.STATE_CONNECTED ||
+//                studyManager.bluetoothSPP2.serviceState != BluetoothState.STATE_CONNECTED) {
+//                Toast.makeText(requireActivity().applicationContext, "블루투스 기기를 연결 해주세요", Toast.LENGTH_SHORT).show()
+//                return@setOnClickListener
+//            }
 
             if (studyViewModel.isPlaying.value == true) { // 공부 종료
                 studyViewModel.isPlaying.value = false
-                sendResetDeskMessage()
                 studyViewModel.updateStudy()
                 val dlg = Dialog(requireContext()) // 지우개 가루 청소
                 dlg.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
@@ -487,18 +486,6 @@ class StudyFragment : Fragment() {
             } else if (statusManager.timeCountType == TimeCountType.STOP_WATCH) {
                 studyViewModel.stopStopWatch()
             }
-        }
-    }
-
-    private fun sendResetDeskMessage() {
-        GlobalScope.launch {
-            studyManager.writeMessage(BluetoothMessage.HEIGHT_DOWN)
-            sleep(1000L)
-            studyManager.writeMessage(BluetoothMessage.ANGLE_DOWN)
-            sleep(1000L)
-            studyManager.writeMessage(BluetoothMessage.WHITE_NOISE_NONE)
-            sleep(1000L)
-            studyManager.writeMessage(BluetoothMessage.LAMP_NONE)
         }
     }
 
