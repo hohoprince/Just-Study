@@ -11,6 +11,7 @@ import com.sunhoon.juststudy.database.entity.StudyDetail
 import com.sunhoon.juststudy.myEnum.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.lang.Exception
 import java.util.*
@@ -19,13 +20,21 @@ import kotlin.math.max
 class StudyManager {
 
     lateinit var appDatabase: AppDatabase
+
     lateinit var bluetoothSPP: BluetoothSPP
+
     lateinit var bluetoothSPP2: BluetoothSPP
+
     private val statusManager: StatusManager = StatusManager.getInstance()
+
     private var groupId: Long = 0L
+
     var bestEnvironment: BestEnvironment? = null
+
     var lampRankingList: List<Lamp> = mutableListOf()
+
     var whiteNoiseRankingList: List<WhiteNoise> = mutableListOf()
+
     var minConcentration: MutableLiveData<ConcentrationLevel> = MutableLiveData<ConcentrationLevel>().apply {
         value = ConcentrationLevel.VERY_LOW
     }
@@ -114,8 +123,7 @@ class StudyManager {
                 if (ConcentrationLevel.getByValue(score).ordinal < minConcentration.value?.ordinal!!) { // 현재 집중도 < 최소 집중도
                     lowConcentrationCount += 1
                     Log.i("MyTag", "lowConcentrationCount increase: $lowConcentrationCount")
-                    if (lowConcentrationCount >= 10) { // 연속 10번 집중도가 좋지 않을 때
-                        // 환경 변경
+                    if (lowConcentrationCount >= 10) { // 연속 10번 집중도가 좋지 않을 때 환경 변경
                         environmentChangeCount += 1
                         lowConcentrationCount = 0
                         Log.i("MyTag", "environmentChangeCount increase: $environmentChangeCount")
@@ -128,27 +136,32 @@ class StudyManager {
                             return
                         }
 
-                        if (currentLamp.value == Lamp.AUTO) {
-                            when (lampRankingList[selectionIndex % lampRankingList.size]) {
-                                Lamp.NONE -> sendMessage(BluetoothMessage.LAMP_NONE)
-                                Lamp.LAMP_2700K -> sendMessage(BluetoothMessage.LAMP_2700K)
-                                Lamp.LAMP_4000K -> sendMessage(BluetoothMessage.LAMP_4000K)
-                                Lamp.LAMP_6500K -> sendMessage(BluetoothMessage.LAMP_6500K)
-                                else -> Log.w("MyTag", "잘못된 램프 밝기")
+                        GlobalScope.launch {
+                            val index = selectionIndex
+                            if (currentLamp.value == Lamp.AUTO) {
+                                when (lampRankingList[index % lampRankingList.size]) {
+                                    Lamp.NONE -> sendMessage(BluetoothMessage.LAMP_NONE)
+                                    Lamp.LAMP_2700K -> sendMessage(BluetoothMessage.LAMP_2700K)
+                                    Lamp.LAMP_4000K -> sendMessage(BluetoothMessage.LAMP_4000K)
+                                    Lamp.LAMP_6500K -> sendMessage(BluetoothMessage.LAMP_6500K)
+                                    else -> Log.w("MyTag", "잘못된 램프 밝기")
+                                }
+                                delay(1000)
+                            }
+
+                            if (currentWhiteNoise.value == WhiteNoise.AUTO) {
+                                when (whiteNoiseRankingList[index % whiteNoiseRankingList.size]) {
+                                    WhiteNoise.NONE -> sendMessage(BluetoothMessage.WHITE_NOISE_NONE)
+                                    WhiteNoise.RAIN -> sendMessage(BluetoothMessage.WHITE_NOISE_RAIN)
+                                    WhiteNoise.FIREWOOD -> sendMessage(BluetoothMessage.WHITE_NOISE_FIREWOOD)
+                                    WhiteNoise.MUSIC_1 -> sendMessage(BluetoothMessage.WHITE_NOISE_MUSIC_1)
+                                    WhiteNoise.MUSIC_2 -> sendMessage(BluetoothMessage.WHITE_NOISE_MUSIC_2)
+                                    WhiteNoise.MUSIC_3 -> sendMessage(BluetoothMessage.WHITE_NOISE_MUSIC_3)
+                                    else -> Log.w("MyTag", "잘못된 백색 소음")
+                                }
                             }
                         }
 
-                        if (currentWhiteNoise.value == WhiteNoise.AUTO) {
-                            when (whiteNoiseRankingList[selectionIndex % whiteNoiseRankingList.size]) {
-                                WhiteNoise.NONE -> sendMessage(BluetoothMessage.WHITE_NOISE_NONE)
-                                WhiteNoise.RAIN -> sendMessage(BluetoothMessage.WHITE_NOISE_RAIN)
-                                WhiteNoise.FIREWOOD -> sendMessage(BluetoothMessage.WHITE_NOISE_FIREWOOD)
-                                WhiteNoise.MUSIC_1 -> sendMessage(BluetoothMessage.WHITE_NOISE_MUSIC_1)
-                                WhiteNoise.MUSIC_2 -> sendMessage(BluetoothMessage.WHITE_NOISE_MUSIC_2)
-                                WhiteNoise.MUSIC_3 -> sendMessage(BluetoothMessage.WHITE_NOISE_MUSIC_3)
-                                else -> Log.w("MyTag", "잘못된 백색 소음")
-                            }
-                        }
                         selectionIndex += 1
                     }
                 } else { // 한 번이라도 조건에 만족하지 못 하면 초기화
