@@ -10,12 +10,9 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.WindowManager
 import android.widget.*
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
-import app.akexorcist.bluetotohspp.library.BluetoothState
 import com.sunhoon.juststudy.R
 import com.sunhoon.juststudy.bluetooth.StudyManager
 import com.sunhoon.juststudy.data.ConcentrationSource
@@ -24,7 +21,6 @@ import com.sunhoon.juststudy.data.StatusManager
 import com.sunhoon.juststudy.myEnum.*
 import com.sunhoon.juststudy.time.TimeConverter
 import info.hoang8f.android.segmented.SegmentedGroup
-import org.w3c.dom.Text
 
 class StudyFragment : Fragment() {
 
@@ -47,15 +43,15 @@ class StudyFragment : Fragment() {
         studyViewModel.setCurrentWhiteNoise(WhiteNoise.getByValue(sharedPref.getInt("whiteNoise", 0)))
         statusManager.breakTime = sharedPref.getInt("breakTime", 0)
         statusManager.studyTime = sharedPref.getLong("conTime", 0L)
-        studyViewModel.setUserTime(statusManager.studyTime)
+        studyViewModel.setRemainTime(statusManager.studyTime)
 
         // 효과음 플레이어
         val mediaPlayer: MediaPlayer? = MediaPlayer.create(context, R.raw.pling)
 
         val progressStatusTextView = root.findViewById<TextView>(R.id.progressStatusTextView)
-        statusManager.progressStatus.observe(viewLifecycleOwner, Observer {
+        statusManager.progressStatus.observe(viewLifecycleOwner) {
             progressStatusTextView.text = it.description
-        })
+        }
 
 
         // 휴식 권유에 동의
@@ -84,35 +80,35 @@ class StudyFragment : Fragment() {
 
         // 스톱워치 / 타이머 텍스트뷰
         val timeTextView = root.findViewById<TextView>(R.id.time)
-        studyViewModel.time.observe(viewLifecycleOwner, Observer {
+        studyViewModel.time.observe(viewLifecycleOwner) {
             timeTextView.text = it
-        })
+        }
 
         // 램프 밝기 텍스트 뷰
         val lightTextView = root.findViewById<TextView>(R.id.light_textview)
-        studyViewModel.currentLamp.observe(viewLifecycleOwner, Observer {
+        studyViewModel.currentLamp.observe(viewLifecycleOwner) {
             lightTextView.text = it.description
             sharedPref.edit().putInt("light", it.ordinal).apply()
-            studyViewModel.sendChangeLampMessage(it)
-        })
+            studyViewModel.sendLampMessage(it)
+        }
 
         // 백색 소음 텍스트 뷰
         val noiseTextView = root.findViewById<TextView>(R.id.noise_textview)
-        studyViewModel.currentWhiteNoise.observe(viewLifecycleOwner, Observer {
+        studyViewModel.currentWhiteNoise.observe(viewLifecycleOwner) {
             noiseTextView.text = it.description
             sharedPref.edit().putInt("whiteNoise", it.ordinal).apply()
-            studyViewModel.sendChangeWhiteNoiseMessage(it)
-        })
+            studyViewModel.sendWhiteNoiseMessage(it)
+        }
 
         // 집중도 텍스트 뷰
         val concentrationTextView = root.findViewById<TextView>(R.id.concentration_textview)
-        studyViewModel.currentConcentration.observe(viewLifecycleOwner, Observer {
+        studyViewModel.currentConcentration.observe(viewLifecycleOwner) {
             if (statusManager.progressStatus.value == ProgressStatus.WAITING && it == 0) {
                 concentrationTextView.text = "측정 전"
             } else {
                 concentrationTextView.text = ConcentrationLevel.getByValue(it).description
             }
-        })
+        }
 
         // 타이머 / 스톱워치 선택 라디오 그룹
         val segmentedGroup = root.findViewById<SegmentedGroup>(R.id.segmented_group)
@@ -122,10 +118,10 @@ class StudyFragment : Fragment() {
                 R.id.button_timer -> {
                     statusManager.studyTime = sharedPref.getLong("conTime", 0L)
                     statusManager.timeCountType = TimeCountType.TIMER
-                    studyViewModel.setUserTime(statusManager.studyTime)
+                    studyViewModel.setRemainTime(statusManager.studyTime)
                 }
                 R.id.button_stop_watch -> {
-                    studyViewModel.setUserTime(0L)
+                    studyViewModel.setRemainTime(0L)
                     statusManager.timeCountType = TimeCountType.STOP_WATCH
                 }
                 else -> TimeCountType.TIMER
@@ -138,8 +134,8 @@ class StudyFragment : Fragment() {
         timeTextView.setOnClickListener {
             val timePickerDialog = TimePickerDialog(it.context,
                 android.R.style.Theme_Holo_Light_Dialog_NoActionBar,
-                TimePickerDialog.OnTimeSetListener { _, hourOfDay, minute ->
-                    studyViewModel.setUserTime(TimeConverter.hourMinuteToLong(hourOfDay, minute))
+                { _, hourOfDay, minute ->
+                    studyViewModel.setRemainTime(TimeConverter.hourMinuteToLong(hourOfDay, minute))
             }, 0, 0, true)
             timePickerDialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
             timePickerDialog.show()
@@ -149,8 +145,8 @@ class StudyFragment : Fragment() {
         val lightLayout = root.findViewById<LinearLayout>(R.id.light_layout)
         lightLayout.setOnClickListener {
             val dlg = Dialog(requireContext())
-            dlg.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT));
-            dlg.setCancelable(false);
+            dlg.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+            dlg.setCancelable(false)
             dlg.setContentView(R.layout.dialog_lamp)
 
             // 라디오 그룹
@@ -187,8 +183,8 @@ class StudyFragment : Fragment() {
         val noiseLayout = root.findViewById<LinearLayout>(R.id.noise_layout)
         noiseLayout.setOnClickListener {
             val dlg = Dialog(requireContext())
-            dlg.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT));
-            dlg.setCancelable(false);
+            dlg.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+            dlg.setCancelable(false)
             dlg.setContentView(R.layout.dialog_white_noise)
 
             // 라디오 그룹
@@ -229,8 +225,8 @@ class StudyFragment : Fragment() {
         val concentrationLayout = root.findViewById<LinearLayout>(R.id.concentration_layout)
         concentrationLayout.setOnClickListener {
             val dlg = Dialog(requireContext())
-            dlg.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT));
-            dlg.setCancelable(false);
+            dlg.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+            dlg.setCancelable(false)
             dlg.setContentView(R.layout.dialog_concentration)
 
             val concentrationImageView = dlg.findViewById<ImageView>(R.id.concentration_image_view)
@@ -261,16 +257,16 @@ class StudyFragment : Fragment() {
         val minConcentrationTextView = root.findViewById<TextView>(R.id.min_concentration_textview)
         val minConcentrationLevel = sharedPref.getInt("minConcentration", 0)
         studyManager.minConcentration.value = ConcentrationLevel.getByOrdinal(minConcentrationLevel)
-        studyManager.minConcentration.observe(viewLifecycleOwner, Observer {
-            minConcentrationTextView.text = it.description;
-        })
+        studyManager.minConcentration.observe(viewLifecycleOwner) {
+            minConcentrationTextView.text = it.description
+        }
 
 
         // 책상 높이 다이얼로그
         val heightLayout = root.findViewById<LinearLayout>(R.id.height_layout)
         heightLayout.setOnClickListener {
             val dlg = Dialog(requireContext())
-            dlg.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT));
+            dlg.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
             dlg.setContentView(R.layout.dialog_height_up_down)
             val upButton = dlg.findViewById<ImageButton>(R.id.up_button)
             val downButton = dlg.findViewById<ImageButton>(R.id.down_button)
@@ -293,7 +289,7 @@ class StudyFragment : Fragment() {
         val angleLayout = root.findViewById<LinearLayout>(R.id.angle_layout)
         angleLayout.setOnClickListener {
             val dlg = Dialog(requireContext())
-            dlg.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT));
+            dlg.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
             dlg.setContentView(R.layout.dialog_angle_up_down)
 
             val upButton = dlg.findViewById<ImageButton>(R.id.up_button)
@@ -316,29 +312,31 @@ class StudyFragment : Fragment() {
         // 시작 버튼
         val playButton = root.findViewById<ImageButton>(R.id.play_button)
 
-        studyViewModel.isPlaying.observe(viewLifecycleOwner, Observer {
+        statusManager.isPlaying.observe(viewLifecycleOwner) {
             if (it) {
                 playButton.setImageResource(R.drawable.ic_baseline_stop_36)
             } else {
                 playButton.setImageResource(R.drawable.ic_baseline_play_arrow_36)
             }
-        })
+        }
 
         playButton.setOnClickListener {
             // TODO: 블루투스를 연결 할 수 없을 때 주석 처리
-//            if (studyViewModel.studyManager.bluetoothSPP.serviceState != BluetoothState.STATE_CONNECTED ||
-//                studyViewModel.studyManager.bluetoothSPP2.serviceState != BluetoothState.STATE_CONNECTED) {
+//            if (studyManager.bluetoothSPP.serviceState != BluetoothState.STATE_CONNECTED ||
+//                studyManager.bluetoothSPP2.serviceState != BluetoothState.STATE_CONNECTED) {
 //                Toast.makeText(requireActivity().applicationContext, "블루투스 기기를 연결 해주세요", Toast.LENGTH_SHORT).show()
 //                return@setOnClickListener
 //            }
-            if (studyViewModel.isPlaying.value == true) { // 공부 종료
-                studyViewModel.isPlaying.value = false
+
+            if (statusManager.isPlaying.value == true) { // 공부 종료
+                statusManager.isSendMessage = false
+                statusManager.isPlaying.value = false
                 studyViewModel.updateStudy()
-                studyViewModel.resetDesk()
                 val dlg = Dialog(requireContext()) // 지우개 가루 청소
-                dlg.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT));
-                dlg.setCancelable(false);
+                dlg.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+                dlg.setCancelable(false)
                 dlg.setContentView(R.layout.dialog_clean)
+
                 val okButton = dlg.findViewById<Button>(R.id.clean_ok_button)
                 okButton.setOnClickListener {
                     Log.i("MyTag", "지우개 가루 청소")
@@ -357,9 +355,8 @@ class StudyFragment : Fragment() {
                     studyViewModel.stopStopWatch()
                 }
             } else { // 공부 시작
+                statusManager.isSendMessage = true
                 studyViewModel.createStudy()
-                studyManager.writeMessage(BluetoothMessage.DESK_RESTORATION)
-
                 if (statusManager.timeCountType == TimeCountType.TIMER) {
                     studyViewModel.startStudyTimer()
                 } else if (statusManager.timeCountType == TimeCountType.STOP_WATCH) {
@@ -369,19 +366,19 @@ class StudyFragment : Fragment() {
         }
 
         // 토스트 메시지, 효과음 출력
-        studyViewModel.toastingMessage.observe(viewLifecycleOwner, Observer {
+        studyViewModel.toastingMessage.observe(viewLifecycleOwner) {
             if (it != null) {
                 Toast.makeText(requireActivity().applicationContext, it, Toast.LENGTH_SHORT).show()
                 studyViewModel.toastingMessage.value = null
                 mediaPlayer?.start()
             }
-        })
+        }
 
         // 테스트용 메시지 전송 다이얼로그
         val testSendMessageButton = root.findViewById<Button>(R.id.test_send_message_button)
         testSendMessageButton.setOnClickListener {
             val dlg = Dialog(requireContext())
-            dlg.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT));
+            dlg.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
             dlg.setContentView(R.layout.dialog_message)
 
             val test1 = dlg.findViewById<Button>(R.id.test_1)
@@ -462,13 +459,35 @@ class StudyFragment : Fragment() {
             }
             val test20 = dlg.findViewById<Button>(R.id.test_20)
             test20.setOnClickListener {
-                studyViewModel.sendMessageForTest(BluetoothMessage.STUDY_END)
+                studyViewModel.sendMessageForTest(BluetoothMessage.STUDY_END_PULSE)
+            }
+            val test21 = dlg.findViewById<Button>(R.id.test_21)
+            test21.setOnClickListener {
+                studyViewModel.sendMessageForTest(BluetoothMessage.CLEAN)
             }
 
             dlg.show()
         }
 
         return root
+    }
+
+    private fun stopStudy() {
+        if (statusManager.isPlaying.value == true) { // 공부 종료
+            statusManager.isPlaying.value = false
+            studyViewModel.updateStudy()
+
+            if (statusManager.timeCountType == TimeCountType.TIMER) {
+                studyViewModel.stopTimer()
+            } else if (statusManager.timeCountType == TimeCountType.STOP_WATCH) {
+                studyViewModel.stopStopWatch()
+            }
+        }
+    }
+
+    override fun onDestroy() {
+        stopStudy()
+        super.onDestroy()
     }
 
 }

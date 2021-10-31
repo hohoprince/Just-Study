@@ -271,6 +271,16 @@
                     android:textSize="16sp"
                     android:backgroundTint="@color/black"/>
 
+            <Button
+                    android:text="지우개 가루 청소"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/test_21"
+                    android:layout_weight="1"
+                    android:layout_margin="4dp"
+                    android:textSize="16sp"
+                    android:backgroundTint="@color/black"/>
+
         </LinearLayout>
     </ScrollView>
 
