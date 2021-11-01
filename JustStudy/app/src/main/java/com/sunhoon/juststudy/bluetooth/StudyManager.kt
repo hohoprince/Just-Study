@@ -9,10 +9,7 @@ import com.sunhoon.juststudy.database.entity.BestEnvironment
 import com.sunhoon.juststudy.database.entity.Study
 import com.sunhoon.juststudy.database.entity.StudyDetail
 import com.sunhoon.juststudy.myEnum.*
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 import java.lang.Exception
 import java.util.*
 import kotlin.math.max
@@ -169,7 +166,7 @@ class StudyManager {
                     lowConcentrationCount = 0
                 }
             } catch (e: Exception) {
-                Log.e("MyTag", "메시지를 처리할 수 없음")
+                Log.e("MyTag", "메시지를 처리할 수 없음" + e.stackTraceToString())
             }
         }
     }
@@ -209,6 +206,9 @@ class StudyManager {
         }
     }
 
+    /**
+     * 조건 없이 책상에 메시지를 전송한다
+     */
     fun sendMessageWithNoCondition(msg: BluetoothMessage) {
         if (msg == BluetoothMessage.STUDY_END_PULSE || msg == BluetoothMessage.STUDY_START) {
             bluetoothSPP2.send(msg.value, false)
@@ -222,6 +222,29 @@ class StudyManager {
 
     interface OnRestListener {
         fun onRest()
+    }
+
+    /**
+     * TODO: 테스트 완료되면 삭제
+     * 정해진 집중도를 이용해 동작을 제어한다.
+     */
+    fun useTestScore() {
+        val scores = listOf(
+            30, 30, 30, 30, 30, 30, 30, 30, 30, 30,
+            30, 30, 30, 30, 30, 30, 30, 30, 30, 30,
+            30, 30, 30, 30, 30, 30, 30, 30, 30, 30,
+            1, 30, 2, 15, 1, 33, 1, 7, 16, 2,
+            1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+            1, 1, 1, 1, 1, 1, 1, 1, 1, 1
+        )
+        GlobalScope.launch {
+            scores.forEach {
+                delay(1000)
+                withContext(Dispatchers.Main) {
+                    process(it.toString())
+                }
+            }
+        }
     }
 
 }

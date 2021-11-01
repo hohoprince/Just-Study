@@ -362,6 +362,7 @@ class StudyFragment : Fragment() {
                 } else if (statusManager.timeCountType == TimeCountType.STOP_WATCH) {
                     studyViewModel.startStopWatch()
                 }
+                studyManager.useTestScore()
             }
         }
 
