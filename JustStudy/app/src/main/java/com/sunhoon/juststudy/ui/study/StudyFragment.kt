@@ -13,6 +13,7 @@ import android.view.ViewGroup
 import android.widget.*
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
+import app.akexorcist.bluetotohspp.library.BluetoothState
 import com.sunhoon.juststudy.R
 import com.sunhoon.juststudy.bluetooth.StudyManager
 import com.sunhoon.juststudy.data.ConcentrationSource
@@ -322,11 +323,11 @@ class StudyFragment : Fragment() {
 
         playButton.setOnClickListener {
             // TODO: 블루투스를 연결 할 수 없을 때 주석 처리
-//            if (studyManager.bluetoothSPP.serviceState != BluetoothState.STATE_CONNECTED ||
-//                studyManager.bluetoothSPP2.serviceState != BluetoothState.STATE_CONNECTED) {
-//                Toast.makeText(requireActivity().applicationContext, "블루투스 기기를 연결 해주세요", Toast.LENGTH_SHORT).show()
-//                return@setOnClickListener
-//            }
+            if (studyManager.bluetoothSPP.serviceState != BluetoothState.STATE_CONNECTED ||
+                studyManager.bluetoothSPP2.serviceState != BluetoothState.STATE_CONNECTED) {
+                Toast.makeText(requireActivity().applicationContext, "블루투스 기기를 연결 해주세요", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
 
             if (statusManager.isPlaying.value == true) { // 공부 종료
                 statusManager.isSendMessage = false
