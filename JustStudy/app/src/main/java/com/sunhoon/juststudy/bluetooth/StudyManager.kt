@@ -9,10 +9,7 @@ import com.sunhoon.juststudy.database.entity.BestEnvironment
 import com.sunhoon.juststudy.database.entity.Study
 import com.sunhoon.juststudy.database.entity.StudyDetail
 import com.sunhoon.juststudy.myEnum.*
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 import java.lang.Exception
 import java.util.*
 import kotlin.math.max
@@ -108,6 +105,34 @@ class StudyManager {
         }
     }
 
+    private fun changeLampWithIndex(index: Int) {
+        when (lampRankingList[index % lampRankingList.size]) {
+            Lamp.NONE -> {
+                selectionIndex += 1
+                changeLampWithIndex(selectionIndex)
+            }
+            Lamp.LAMP_2700K -> sendMessage(BluetoothMessage.LAMP_2700K)
+            Lamp.LAMP_4000K -> sendMessage(BluetoothMessage.LAMP_4000K)
+            Lamp.LAMP_6500K -> sendMessage(BluetoothMessage.LAMP_6500K)
+            else -> Log.w("MyTag", "잘못된 램프 밝기")
+        }
+    }
+
+    private fun changeWhiteNoiseWithIndex(index: Int) {
+        when (whiteNoiseRankingList[index % whiteNoiseRankingList.size]) {
+            WhiteNoise.NONE -> {
+                selectionIndex += 1
+                changeWhiteNoiseWithIndex(selectionIndex)
+            }
+            WhiteNoise.RAIN -> sendMessage(BluetoothMessage.WHITE_NOISE_RAIN)
+            WhiteNoise.FIREWOOD -> sendMessage(BluetoothMessage.WHITE_NOISE_FIREWOOD)
+            WhiteNoise.MUSIC_1 -> sendMessage(BluetoothMessage.WHITE_NOISE_MUSIC_1)
+            WhiteNoise.MUSIC_2 -> sendMessage(BluetoothMessage.WHITE_NOISE_MUSIC_2)
+            WhiteNoise.MUSIC_3 -> sendMessage(BluetoothMessage.WHITE_NOISE_MUSIC_3)
+            else -> Log.w("MyTag", "잘못된 백색 소음")
+        }
+    }
+
     /**
      * 전달받은 메시지를 처리한다
      */
@@ -123,7 +148,8 @@ class StudyManager {
                 if (ConcentrationLevel.getByValue(score).ordinal < minConcentration.value?.ordinal!!) { // 현재 집중도 < 최소 집중도
                     lowConcentrationCount += 1
                     Log.i("MyTag", "lowConcentrationCount increase: $lowConcentrationCount")
-                    if (lowConcentrationCount >= 10) { // 연속 10번 집중도가 좋지 않을 때 환경 변경
+                    // FIXME: 5번에서 10번으로 변경
+                    if (lowConcentrationCount >= 5) { // 연속 10번 집중도가 좋지 않을 때 환경 변경
                         environmentChangeCount += 1
                         lowConcentrationCount = 0
                         Log.i("MyTag", "environmentChangeCount increase: $environmentChangeCount")
@@ -139,26 +165,11 @@ class StudyManager {
                         GlobalScope.launch {
                             val index = selectionIndex
                             if (currentLamp.value == Lamp.AUTO) {
-                                when (lampRankingList[index % lampRankingList.size]) {
-                                    Lamp.NONE -> sendMessage(BluetoothMessage.LAMP_NONE)
-                                    Lamp.LAMP_2700K -> sendMessage(BluetoothMessage.LAMP_2700K)
-                                    Lamp.LAMP_4000K -> sendMessage(BluetoothMessage.LAMP_4000K)
-                                    Lamp.LAMP_6500K -> sendMessage(BluetoothMessage.LAMP_6500K)
-                                    else -> Log.w("MyTag", "잘못된 램프 밝기")
-                                }
-                                delay(1000)
+                                changeLampWithIndex(index)
                             }
-
+                            delay(2000)
                             if (currentWhiteNoise.value == WhiteNoise.AUTO) {
-                                when (whiteNoiseRankingList[index % whiteNoiseRankingList.size]) {
-                                    WhiteNoise.NONE -> sendMessage(BluetoothMessage.WHITE_NOISE_NONE)
-                                    WhiteNoise.RAIN -> sendMessage(BluetoothMessage.WHITE_NOISE_RAIN)
-                                    WhiteNoise.FIREWOOD -> sendMessage(BluetoothMessage.WHITE_NOISE_FIREWOOD)
-                                    WhiteNoise.MUSIC_1 -> sendMessage(BluetoothMessage.WHITE_NOISE_MUSIC_1)
-                                    WhiteNoise.MUSIC_2 -> sendMessage(BluetoothMessage.WHITE_NOISE_MUSIC_2)
-                                    WhiteNoise.MUSIC_3 -> sendMessage(BluetoothMessage.WHITE_NOISE_MUSIC_3)
-                                    else -> Log.w("MyTag", "잘못된 백색 소음")
-                                }
+                                changeWhiteNoiseWithIndex(index)
                             }
                         }
 
@@ -169,7 +180,7 @@ class StudyManager {
                     lowConcentrationCount = 0
                 }
             } catch (e: Exception) {
-                Log.e("MyTag", "메시지를 처리할 수 없음")
+                Log.e("MyTag", "메시지를 처리할 수 없음" + e.stackTraceToString())
             }
         }
     }
@@ -209,6 +220,9 @@ class StudyManager {
         }
     }
 
+    /**
+     * 조건 없이 책상에 메시지를 전송한다
+     */
     fun sendMessageWithNoCondition(msg: BluetoothMessage) {
         if (msg == BluetoothMessage.STUDY_END_PULSE || msg == BluetoothMessage.STUDY_START) {
             bluetoothSPP2.send(msg.value, false)
@@ -222,6 +236,44 @@ class StudyManager {
 
     interface OnRestListener {
         fun onRest()
+    }
+
+    /**
+     * TODO: 테스트 완료되면 삭제
+     * 정해진 집중도를 이용해 동작을 제어한다.
+     */
+    fun useTestScore() {
+        val scores = listOf(
+            1, 30, 2, 15, 1,
+            5, 1, 1, 1, 1,
+            1, 1, 1, 1, 1,
+            1, 1, 1, 1, 1,
+            1, 1, 1, 1, 1,
+            1, 1, 1, 1, 1, // 60초
+
+            1, 1, 5, 5, 5,
+            1, 1, 1, // 16초
+
+            1, 1, 5, 5, 5,
+            1, 1, 1, 1, 1,
+            1, 1, 5, 5, 5, // 30초
+
+            1, 1, 5, 5, 5,
+            1, 1, 1, 1, 1,
+            30, 17, 30, 17, 30,
+            17, 30, 30, 30, 30,
+            30, 30, 30, 17, 30,
+            17, 5, 5, 30, 30 // 60초
+        )
+        GlobalScope.launch {
+            scores.forEach {
+                delay(2000)
+                withContext(Dispatchers.Main) {
+                    Log.i("MyTag", "Received Message: $it")
+                    process(it.toString())
+                }
+            }
+        }
     }
 
 }

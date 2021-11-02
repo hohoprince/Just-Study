@@ -135,7 +135,7 @@ class StudyViewModel(application: Application) : AndroidViewModel(application) {
 //            BreakTime.getTimeByOrdinal(statusManager.breakTime), _time, this
 //        )
         // FIXME: 테스트용 휴식시간
-        val time = (40 * 1000).toLong()
+        val time = (30 * 1000).toLong()
         setRemainTime(time)
         studyTimer = StudyTimer(time,100, time
             , _time, this)
@@ -298,7 +298,7 @@ class StudyViewModel(application: Application) : AndroidViewModel(application) {
      * 블루투스 메시지 전송 테스트용
      */
     fun sendMessageForTest(message: BluetoothMessage) {
-        studyManager.sendMessage(message)
+        studyManager.sendMessageWithNoCondition(message)
     }
 
 }
