@@ -37,6 +37,9 @@ class MainActivity : AppCompatActivity() {
 
     private var deviceCount = 0
 
+    val deskMacAddress = "98:D3:41:FD:5A:01"
+    val pulseMacAddress = "98:D3:31:FD:80:02"
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -60,14 +63,13 @@ class MainActivity : AppCompatActivity() {
         studyManager.bluetoothSPP2 = bluetoothSPP2
 
 
-        // FIXME: 데모가 끝나면 주석 제거
         bluetoothSPP1.setOnDataReceivedListener { _, message ->
-            //Log.i("MyTag", "Received Message: $message")
-            //studyManager.process(message)
+            Log.i("MyTag", "Received Message: $message")
+            studyManager.process(message)
         }
         bluetoothSPP2.setOnDataReceivedListener { _, message ->
-            //Log.i("MyTag", "Received Message: $message")
-            //studyManager.process(message)
+            Log.i("MyTag", "Received Message: $message")
+            studyManager.process(message)
         }
 
         val bluetoothConnectionListener = object: BluetoothSPP.BluetoothConnectionListener {
@@ -77,7 +79,6 @@ class MainActivity : AppCompatActivity() {
                 Log.i("MyTag", "bluetooth 연결: name = $name")
                 deviceCount += 1
 
-                // FIXME: 연결할 블루투스 장치 개수만큼 수정
                 if (deviceCount == 2) {
                     val dlg = Dialog(this@MainActivity)
                     dlg.setContentView(R.layout.dialog_connected)
@@ -172,16 +173,13 @@ class MainActivity : AppCompatActivity() {
             bluetoothSPP1.startService(BluetoothState.DEVICE_OTHER)
             bluetoothSPP2.startService(BluetoothState.DEVICE_OTHER)
             bluetoothSPP1.pairedDeviceAddress.forEach { address ->
-                if (address == "98:D3:41:FD:5A:01") {
+                if (address == deskMacAddress) {
                     Log.i("MyTag", "spp1: 블루투스 기기 연결 시도 $address")
                     bluetoothSPP1.connect(address)
                 }
             }
             bluetoothSPP2.pairedDeviceAddress.forEach { address ->
-                // FIXME: 심박수 센서 MAC 주소 변경
-//                val btMacAddress = "98:D3:91:FD:B9:84" // BT1
-                val btMacAddress = "98:D3:31:FD:80:02"
-                if (address == btMacAddress) {
+                if (address == pulseMacAddress) {
                     Log.i("MyTag", "spp2: 블루투스 기기 연결 시도 $address")
                     bluetoothSPP2.connect(address)
                 }

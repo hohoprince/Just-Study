@@ -148,8 +148,7 @@ class StudyManager {
                 if (ConcentrationLevel.getByValue(score).ordinal < minConcentration.value?.ordinal!!) { // 현재 집중도 < 최소 집중도
                     lowConcentrationCount += 1
                     Log.i("MyTag", "lowConcentrationCount increase: $lowConcentrationCount")
-                    // FIXME: 5번에서 10번으로 변경
-                    if (lowConcentrationCount >= 5) { // 연속 10번 집중도가 좋지 않을 때 환경 변경
+                    if (lowConcentrationCount >= 10) { // 연속 10번 집중도가 좋지 않을 때 환경 변경
                         environmentChangeCount += 1
                         lowConcentrationCount = 0
                         Log.i("MyTag", "environmentChangeCount increase: $environmentChangeCount")
@@ -236,44 +235,6 @@ class StudyManager {
 
     interface OnRestListener {
         fun onRest()
-    }
-
-    /**
-     * TODO: 테스트 완료되면 삭제
-     * 정해진 집중도를 이용해 동작을 제어한다.
-     */
-    fun useTestScore() {
-        val scores = listOf(
-            1, 30, 2, 15, 1,
-            5, 1, 1, 1, 1,
-            1, 1, 1, 1, 1,
-            1, 1, 1, 1, 1,
-            1, 1, 1, 1, 1,
-            1, 1, 1, 1, 1, // 60초
-
-            1, 1, 5, 5, 5,
-            1, 1, 1, // 16초
-
-            1, 1, 5, 5, 5,
-            1, 1, 1, 1, 1,
-            1, 1, 5, 5, 5, // 30초
-
-            1, 1, 5, 5, 5,
-            1, 1, 1, 1, 1,
-            30, 17, 30, 17, 30,
-            17, 30, 30, 30, 30,
-            30, 30, 30, 17, 30,
-            17, 5, 5, 30, 30 // 60초
-        )
-        GlobalScope.launch {
-            scores.forEach {
-                delay(2000)
-                withContext(Dispatchers.Main) {
-                    Log.i("MyTag", "Received Message: $it")
-                    process(it.toString())
-                }
-            }
-        }
     }
 
 }
