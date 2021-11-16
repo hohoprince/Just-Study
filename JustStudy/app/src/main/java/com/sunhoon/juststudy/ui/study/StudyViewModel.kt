@@ -97,16 +97,11 @@ class StudyViewModel(application: Application) : AndroidViewModel(application) {
             statusManager.remainTime, 1000,
             statusManager.remainTime, _time, this
         )
-        // FIXME: 테스트용 공부시간
-//        studyTimer = StudyTimer((10 * 1000).toLong(), 100,
-//            (10 * 1000).toLong(), _time, this)
         studyTimer.setOnExtendTimeListener(object : StudyTimer.OnExtendTimeListener {
             override fun onTime() { // 학습 80% 이상 진행
                 // 집중도가 80 이상일 때 학습 시간을 연장
                 if (currentConcentration.value!! >= 80) {
-                    // FIXME: 추가 공부 시간 15초(15_000)에서 10분(600_000)으로 변경
-                     val newTime = statusManager.remainTime + 15_000
-//                    val newTime = statusManager.remainTime + 600_000
+                    val newTime = statusManager.remainTime + 600_000
                     studyTimer.cancel()
                     studyTimer = StudyTimer(
                         newTime, 100, newTime,
@@ -128,17 +123,13 @@ class StudyViewModel(application: Application) : AndroidViewModel(application) {
     fun startBreakTimer() {
         studyTimer.cancel()
         statusManager.progressStatus.value = ProgressStatus.RESTING
-        // FIXME: 휴식 시간
-//        setRemainTime(BreakTime.getTimeByOrdinal(statusManager.breakTime))
-//        studyTimer = StudyTimer(
-//            BreakTime.getTimeByOrdinal(statusManager.breakTime), 100,
-//            BreakTime.getTimeByOrdinal(statusManager.breakTime), _time, this
-//        )
-        // FIXME: 테스트용 휴식시간
-        val time = (30 * 1000).toLong()
-        setRemainTime(time)
-        studyTimer = StudyTimer(time,100, time
-            , _time, this)
+
+        setRemainTime(BreakTime.getTimeByOrdinal(statusManager.breakTime))
+        studyTimer = StudyTimer(
+            BreakTime.getTimeByOrdinal(statusManager.breakTime), 100,
+            BreakTime.getTimeByOrdinal(statusManager.breakTime), _time, this
+        )
+
         studyTimer.start()
         toastingMessage.value = "휴식 시작"
         Log.i("MyTag", "휴식 시작")
