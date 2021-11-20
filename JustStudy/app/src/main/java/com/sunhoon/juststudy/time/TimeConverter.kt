@@ -23,8 +23,4 @@ object TimeConverter {
         return "$remainHours:$remainMinutes:$remainSeconds"
     }
 
-    fun stringMinuteToLong(time: String): Long {
-        return (time.toInt() * 60).toLong()
-    }
-
 }

@@ -169,66 +169,7 @@
                 android:background="@color/gray_light"
                 android:clickable="true"/>
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/startScreenLayout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="16dp">
-
-            <TextView
-                    android:text="시작 화면"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/textView17"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    android:textSize="16sp"
-                    android:textColor="@color/black"
-                    app:layout_constraintStart_toEndOf="@+id/imageView3"
-                    android:layout_marginStart="8dp"/>
-
-            <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/start_screen_textview"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    android:textSize="16sp"
-                    android:textColor="@color/navy_primary"
-                    tools:text="홈"/>
-
-            <ImageView
-                    android:src="@drawable/ic_smartphone_24dp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/imageView3"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent"/>
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/gray_light"
-                android:clickable="true"/>
-
         <!-- 테스트 후 삭제 -->
-
-        <Button
-                android:text="insert_test_data"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/test_insert_button"
-                android:visibility="visible"/>
-
-        <Button
-                android:text="delete_test_data"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/test_delete_button"
-                android:visibility="visible"/>
 
         <!-- /테스트 후 삭제 -->
 

@@ -34,7 +34,6 @@ class SettingsFragment : Fragment() {
 
         // SharedPreference 값 불러오기
         val sharedPref = SharedPref.getSharedPref(requireActivity())
-        settingsViewModel.startScreen.value = sharedPref.getInt("startScreen", 0)
         settingsViewModel.breakTime.value = sharedPref.getInt("breakTime", 0)
         settingsViewModel.minConcentration.value = sharedPref.getInt("minConcentration", 0)
         settingsViewModel.setStringConTime(TimeConverter.longToStringMinute(sharedPref.getLong("conTime", 0L)))
@@ -59,16 +58,6 @@ class SettingsFragment : Fragment() {
             }
             breakTimeTextView.text = text
             sharedPref.edit().putInt("breakTime", it).apply()
-        }
-
-        val startScreenTextView = root.findViewById<TextView>(R.id.start_screen_textview)
-        settingsViewModel.startScreen.observe(viewLifecycleOwner) {
-            when (it) {
-                0 -> startScreenTextView.text = "홈"
-                1 -> startScreenTextView.text = "공부"
-                2 -> startScreenTextView.text = "설정"
-            }
-            sharedPref.edit().putInt("startScreen", it).apply()
         }
 
         // 집중 시간 설정
@@ -172,50 +161,6 @@ class SettingsFragment : Fragment() {
             minConcentrationTextView.text = text
             sharedPref.edit().putInt("minConcentration", it).apply()
             settingsViewModel.setMinConcentration(ConcentrationLevel.getByOrdinal(it))
-        }
-
-        // 시작 화면 설정
-        val startScreenLayout = root.findViewById<ConstraintLayout>(R.id.startScreenLayout)
-        startScreenLayout.setOnClickListener {
-            val dlg = Dialog(requireContext())
-            dlg.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-            dlg.setCancelable(false)
-            dlg.setContentView(R.layout.dialog_start_screen)
-
-            // 라디오 그룹
-            val radioGroup = dlg.findViewById<RadioGroup>(R.id.radioGroup)
-            var buttonId = 0
-            when (settingsViewModel.startScreen.value) {
-                0 -> buttonId = R.id.radio_screen1
-                1 -> buttonId = R.id.radio_screen2
-                2 -> buttonId = R.id.radio_screen3
-            }
-            radioGroup.check(buttonId)
-            radioGroup.setOnCheckedChangeListener { _, checkedId ->
-                when (checkedId) {
-                    R.id.radio_screen1 -> settingsViewModel.startScreen.value = 0
-                    R.id.radio_screen2 -> settingsViewModel.startScreen.value = 1
-                    R.id.radio_screen3 -> settingsViewModel.startScreen.value = 2
-                }
-            }
-
-            // 확인 버튼
-            val okButton = dlg.findViewById<Button>(R.id.start_screen_ok_button)
-            okButton.setOnClickListener {
-                dlg.dismiss()
-            }
-
-            dlg.show()
-        }
-
-        // FIXME: 테스트 종료되면 삭제
-        val insertTestDataButton = root.findViewById<Button>(R.id.test_insert_button)
-        insertTestDataButton.setOnClickListener {
-            settingsViewModel.createTestData()
-        }
-        val deleteTestDataButton = root.findViewById<Button>(R.id.test_delete_button)
-        deleteTestDataButton.setOnClickListener {
-            settingsViewModel.deleteTestData()
         }
 
         return root
